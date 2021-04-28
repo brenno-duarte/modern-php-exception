@@ -5,12 +5,63 @@ namespace ModernPHPException\Exception;
 use ModernPHPException\Exception\CustomLogicException;
 use ModernPHPException\Exception\CustomRuntimeException;
 
-abstract class HandlerException
+trait HandlerExceptionTrait
 {
     /**
      * @var string
      */
-    public string $file = "";
+    private string $file = "";
+
+    /**
+     * @var string
+     */
+    private string $title;
+
+    /**
+     * @var array
+     */
+    private array $indicesServer = [
+        'PHP_SELF',
+        'argv',
+        'argc',
+        'GATEWAY_INTERFACE',
+        'SERVER_ADDR',
+        'SERVER_NAME',
+        'SERVER_SOFTWARE',
+        'SERVER_PROTOCOL',
+        'REQUEST_METHOD',
+        'REQUEST_TIME',
+        'REQUEST_TIME_FLOAT',
+        'QUERY_STRING',
+        'DOCUMENT_ROOT',
+        'HTTP_ACCEPT',
+        'HTTP_ACCEPT_CHARSET',
+        'HTTP_ACCEPT_ENCODING',
+        'HTTP_ACCEPT_LANGUAGE',
+        'HTTP_CONNECTION',
+        'HTTP_HOST',
+        'HTTP_REFERER',
+        'HTTP_USER_AGENT',
+        'HTTPS',
+        'REMOTE_ADDR',
+        'REMOTE_HOST',
+        'REMOTE_PORT',
+        'REMOTE_USER',
+        'REDIRECT_REMOTE_USER',
+        'SCRIPT_FILENAME',
+        'SERVER_ADMIN',
+        'SERVER_PORT',
+        'SERVER_SIGNATURE',
+        'PATH_TRANSLATED',
+        'SCRIPT_NAME',
+        'REQUEST_URI',
+        'PHP_AUTH_DIGEST',
+        'PHP_AUTH_USER',
+        'PHP_AUTH_PW',
+        'AUTH_TYPE',
+        'PATH_INFO',
+        'ORIG_PATH_INFO'
+    ];
 
     /**
      * @param int $code
@@ -18,9 +69,9 @@ abstract class HandlerException
      * @param string $file
      * @param int $line
      * 
-     * @return HandlerException
+     * @return self
      */
-    public function errorHandler($code, string $message, string $file, $line): HandlerException
+    public function errorHandler($code, string $message, string $file, $line): self
     {
         $type = error_get_last();
         $e = new \ErrorException($message, $code, $type, $file, $line);
@@ -45,6 +96,7 @@ abstract class HandlerException
                 ];
             }
 
+            $this->title = $message;
             $this->setFile($file);
             $this->render();
 
@@ -57,9 +109,9 @@ abstract class HandlerException
     /**
      * @param mixed $exception
      * 
-     * @return HandlerException
+     * @return self
      */
-    public function exceptionHandler($exception): HandlerException
+    public function exceptionHandler($exception): self
     {
         $message = $exception->getMessage();
         $code = $exception->getCode();
@@ -79,7 +131,8 @@ abstract class HandlerException
             'file' => $main_file,
             'line' => $line
         ];
-        
+
+        $this->title = $message;
         $this->setFile($main_file);
         $this->render();
 
@@ -87,11 +140,17 @@ abstract class HandlerException
     }
 
     /**
-     * @return HandlerException
+     * @return self
      */
-    private function render(): HandlerException
+    private function render(): self
     {
         if (file_exists($this->getFile())) {
+            if ($this->format == "json") {
+                $this->renderJson();
+
+                return $this;
+            }
+
             $this->loadAssets($this->info_exception);
 
             include_once 'templates/error-page.php';
@@ -103,9 +162,9 @@ abstract class HandlerException
     /**
      * @param array $line
      * 
-     * @return HandlerException
+     * @return self
      */
-    private function loadAssets(array $info): HandlerException
+    private function loadAssets(array $info): self
     {
         print_r('<head>');
 
@@ -120,7 +179,7 @@ abstract class HandlerException
         } else {
             print_r("\n\n" . '.' . pathinfo($info['file'])['filename'] . ' .hljs-ln-line[data-line-number="' . $info['line'] . '"] { background-color: #FF3030 !important; font-weight: bold; }');
         }
-        
+
         print_r('</style>');
 
         /* Add scripts JS */
@@ -136,9 +195,9 @@ abstract class HandlerException
     /**
      * Get the value of file
      *
-     * @return  string
+     * @return string
      */
-    public function getFile()
+    public function getFile(): string
     {
         return $this->file;
     }
@@ -146,13 +205,23 @@ abstract class HandlerException
     /**
      * Set the value of file
      *
-     * @param  string  $file
+     * @param string  $file
      *
-     * @return  self
+     * @return self
      */
-    public function setFile(string $file)
+    public function setFile(string $file): self
     {
         $this->file = $file;
+
+        return $this;
+    }
+
+    /**
+     * @return self
+     */
+    private function renderJson(): self
+    {
+        echo json_encode(["error" => $this->info_exception], JSON_UNESCAPED_UNICODE);
 
         return $this;
     }

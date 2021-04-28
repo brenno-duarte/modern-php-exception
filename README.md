@@ -17,6 +17,16 @@ $exc->start();
 
 From there, all errors and exceptions that are triggered will be displayed through the ModernPHPException component.
 
+## Return in JSON
+
+To return an exception in JSON, use the `setFromJson()` method.
+
+```php
+$exc = new ModernPHPException();
+$exc->setFromJson();
+$exc->start();
+```
+
 ## Test
 
 If you want to test the component, use the `UserTest` class inside the `test/` folder or use the code below in your `index.php`.

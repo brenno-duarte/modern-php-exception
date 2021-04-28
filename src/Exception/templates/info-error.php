@@ -18,14 +18,14 @@
 
             <pre><code class="language-php code-exception <?= pathinfo($info['file'])['filename'] ?>"><?= htmlentities(file_get_contents($info['file'])) ?></code></pre>
 
-            <div class="accordion" id="accordionExample">
+            <div class="accordion" id="accordionError">
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="errorDetails">
                         <button class="accordion-button bg-info-exc text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseError" aria-expanded="true" aria-controls="collapseError">
-                            EXCEPTION INFO
+                            EXCEPTION INFORMATION
                         </button>
                     </h2>
-                    <div id="collapseError" class="accordion-collapse collapse show" aria-labelledby="errorDetails" data-bs-parent="#accordionExample">
+                    <div id="collapseError" class="accordion-collapse collapse show" aria-labelledby="errorDetails" data-bs-parent="#accordionError">
                         <div class="accordion-body">
                             <?php if ($info['message']) : ?>
                                 <p><strong>Message:</strong> <?= $info['message'] ?></p>
@@ -38,7 +38,6 @@
                                 <p><strong>Code:</strong> <?= $info['code'] ?></p>
                             <?php endif; ?>
 
-                            <!-- <p><strong>Previous Exception:</strong> ?= $exception->getPrevious() ?></p> -->
                             <p><strong>HTTP Code:</strong> <?= http_response_code() ?></p>
                         </div>
                     </div>

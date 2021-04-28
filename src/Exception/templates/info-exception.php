@@ -17,14 +17,14 @@
 
         <pre><code class="language-php code-exception <?= pathinfo($this->info_exception['file'])['filename'] ?>"><?= htmlentities(file_get_contents($this->info_exception['file'])) ?></code></pre>
 
-        <div class="accordion" id="accordionExample">
+        <div class="accordion" id="accordionException">
             <div class="accordion-item">
-                <h2 class="accordion-header" id="errorDetails">
-                    <button class="accordion-button bg-info-exc text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseError" aria-expanded="true" aria-controls="collapseError">
-                        EXCEPTION INFO
+                <h2 class="accordion-header" id="exceptionDetails">
+                    <button class="accordion-button bg-info-exc text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseException" aria-expanded="true" aria-controls="collapseException">
+                        EXCEPTION INFORMATION
                     </button>
                 </h2>
-                <div id="collapseError" class="accordion-collapse collapse show" aria-labelledby="errorDetails" data-bs-parent="#accordionExample">
+                <div id="collapseException" class="accordion-collapse collapse show" aria-labelledby="exceptionDetails" data-bs-parent="#accordionException">
                     <div class="accordion-body">
                         <?php if ($this->info_exception['message']) : ?>
                             <p><strong>Message:</strong> <?= $this->info_exception['message'] ?></p>
@@ -37,7 +37,6 @@
                             <p><strong>Code:</strong> <?= $this->info_exception['code'] ?></p>
                         <?php endif; ?>
 
-                        <!-- <p><strong>Previous Exception:</strong> ?= $exception->getPrevious() ?></p> -->
                         <p><strong>HTTP Code:</strong> <?= http_response_code() ?></p>
                     </div>
                 </div>

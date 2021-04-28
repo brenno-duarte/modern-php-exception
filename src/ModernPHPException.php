@@ -2,34 +2,46 @@
 
 namespace ModernPHPException;
 
-use ModernPHPException\Exception\HandlerException;
+use ModernPHPException\Exception\HandlerExceptionTrait;
 
-class ModernPHPException extends HandlerException
+class ModernPHPException
 {
-    /**
-     * @var string
-     */
-    public string $type;
-
-    /**
-     * @var array
-     */
-    public array $files = [];
-
-    /**
-     * @var array
-     */
-    public array $line = [];
-
-    /**
-     * @var array
-     */
-    public array $info_exception = [];
+    use HandlerExceptionTrait;
 
     /**
      * @var string
      */
-    public string $main_file;
+    protected string $type;
+
+    /**
+     * @var array
+     */
+    protected array $files = [];
+
+    /**
+     * @var array
+     */
+    protected array $line = [];
+
+    /**
+     * @var array
+     */
+    protected array $info_exception = [];
+
+    /**
+     * @var string
+     */
+    protected string $main_file;
+
+    /**
+     * @var string
+     */
+    protected string $format = "";
+
+    /**
+     * @var string
+     */
+    protected string $version = "0.2.0";
 
     /**
      * @return ModernPHPException
@@ -43,15 +55,11 @@ class ModernPHPException extends HandlerException
     }
 
     /**
-     * @param mixed $value
-     * 
      * @return ModernPHPException
      */
-    private function pre($value): ModernPHPException
+    public function setFromJson(): ModernPHPException
     {
-        echo '<pre>';
-        print_r($value);
-        echo '</pre>';
+        $this->format = "json";
 
         return $this;
     }
