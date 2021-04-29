@@ -2,6 +2,15 @@
     "name": "brenno-duarte/modern-php-exception",
     "description": "PHP errors in a modern way",
     "license": "MIT",
+    "keywords": [
+        "exception",
+        "throwable",
+        "exception-handler",
+        "error-handler",
+        "whoops",
+        "handler",
+        "php-exception"
+    ],
     "require": {
         "php": "^7.4|^8.0"
     },
