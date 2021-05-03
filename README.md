@@ -2,7 +2,7 @@
 
 PHP errors in a modern way
 
-<img src="https://res.cloudinary.com/bdlsltfmk/image/upload/v1619615136/php_exception_qt1wpg.png">
+<img src="https://res.cloudinary.com/bdlsltfmk/image/upload/v1619660763/exception-2_rqjirs.png">
 
 ## How to use
 
