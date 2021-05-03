@@ -1,11 +1,11 @@
 <?php if ($this->type == 'error') : ?>
     <?php foreach ($this->info_exception as $info) : ?>
-        <section class="hidden" id="<?= pathinfo($info['file'])['filename'] ?>">
+        <section class="hidden bg-main-info-exc p-3 rounded-3" id="<?= pathinfo($info['file'])['filename'] ?>">
 
             <?php if ($info['message']) : ?>
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <h3><?= $info['message'] ?></h3>
+                        <h3 class="fw-bold"><?= $info['message'] ?></h3>
                     </div>
 
                     <div class="col-md-6 d-flex flex-row-reverse bd-highlight">
@@ -18,10 +18,10 @@
 
             <pre><code class="language-php code-exception <?= pathinfo($info['file'])['filename'] ?>"><?= htmlentities(file_get_contents($info['file'])) ?></code></pre>
 
-            <div class="accordion" id="accordionError">
+            <div class="accordion accordion-flush" id="accordionError">
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="errorDetails">
-                        <button class="accordion-button bg-info-exc text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseError" aria-expanded="true" aria-controls="collapseError">
+                        <button class="accordion-button bg-info-exc" type="button" data-bs-toggle="collapse" data-bs-target="#collapseError" aria-expanded="true" aria-controls="collapseError">
                             EXCEPTION INFORMATION
                         </button>
                     </h2>

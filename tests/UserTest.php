@@ -15,4 +15,9 @@ class UserTest
     {
         $this->name = $name;
     }
+
+    public static function staticCall()
+    {
+        return __CLASS__;
+    }
 }

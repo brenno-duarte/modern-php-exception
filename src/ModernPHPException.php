@@ -41,7 +41,7 @@ class ModernPHPException
     /**
      * @var string
      */
-    protected string $version = "0.2.0";
+    protected string $version = "0.3.0";
 
     /**
      * @return ModernPHPException

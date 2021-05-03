@@ -15,7 +15,22 @@ trait HandlerExceptionTrait
     /**
      * @var string
      */
-    private string $title;
+    private string $title = "";
+
+    /**
+     * @var string
+     */
+    private string $theme_code = "code-2";
+
+    /**
+     * @var string
+     */
+    private string $theme = "light";
+
+    /**
+     * @var string
+     */
+    private string $color_alert = "FFD700";
 
     /**
      * @var array
@@ -96,7 +111,10 @@ trait HandlerExceptionTrait
                 ];
             }
 
-            $this->title = $message;
+            if ($this->getTitle() == "" || empty($this->getTitle())) {
+                $this->setTitle("ModernPHPException: " . $message);
+            }
+
             $this->setFile($file);
             $this->render();
 
@@ -118,9 +136,9 @@ trait HandlerExceptionTrait
         $main_file = $exception->getFile();
         $line = $exception->getLine();
 
-        $exception = new CustomLogicException($message, $code);
-        $exception->setLine($line);
-        $exception->setFile($main_file);
+        $custom_exception = new CustomLogicException($message, $code);
+        $custom_exception->setLine($line);
+        $custom_exception->setFile($main_file);
 
         $this->main_file = pathinfo($main_file)['filename'];
         $this->type = 'exception';
@@ -129,65 +147,16 @@ trait HandlerExceptionTrait
             'message' => $message,
             'code' => $code,
             'file' => $main_file,
-            'line' => $line
+            'line' => $line,
+            'type_exc' => get_class($exception)
         ];
 
-        $this->title = $message;
+        if ($this->getTitle() == "" || empty($this->getTitle())) {
+            $this->setTitle("ModernPHPException: " . $message);
+        }
+
         $this->setFile($main_file);
         $this->render();
-
-        return $this;
-    }
-
-    /**
-     * @return self
-     */
-    private function render(): self
-    {
-        if (file_exists($this->getFile())) {
-            if ($this->format == "json") {
-                $this->renderJson();
-
-                return $this;
-            }
-
-            $this->loadAssets($this->info_exception);
-
-            include_once 'templates/error-page.php';
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param array $line
-     * 
-     * @return self
-     */
-    private function loadAssets(array $info): self
-    {
-        print_r('<head>');
-
-        /* Add style CSS */
-        print_r('<style>' . file_get_contents('assets/styles/default.css', FILE_USE_INCLUDE_PATH));
-        print_r(file_get_contents('assets/styles/code-1.css', FILE_USE_INCLUDE_PATH));
-
-        if (isset($info[0]['function'])) {
-            foreach ($info as $info) {
-                print_r("\n\n" . '.' . pathinfo($info['file'])['filename'] . ' .hljs-ln-line[data-line-number="' . $info['line'] . '"] { background-color: #FF3030 !important; font-weight: bold; }');
-            }
-        } else {
-            print_r("\n\n" . '.' . pathinfo($info['file'])['filename'] . ' .hljs-ln-line[data-line-number="' . $info['line'] . '"] { background-color: #FF3030 !important; font-weight: bold; }');
-        }
-
-        print_r('</style>');
-
-        /* Add scripts JS */
-        print_r('<script>' . file_get_contents('assets/js/highlight.pack.js', FILE_USE_INCLUDE_PATH));
-        print_r(file_get_contents('assets/js/highlightjs-line-numbers.js', FILE_USE_INCLUDE_PATH) . '</script>');
-        print_r('<script>hljs.highlightAll(); hljs.initLineNumbersOnLoad();</script>');
-
-        print_r('</head>');
 
         return $this;
     }
@@ -222,6 +191,154 @@ trait HandlerExceptionTrait
     private function renderJson(): self
     {
         echo json_encode(["error" => $this->info_exception], JSON_UNESCAPED_UNICODE);
+
+        return $this;
+    }
+
+    /**
+     * Get the value of title
+     *
+     * @return  string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Set the value of title
+     *
+     * @param  string  $title
+     *
+     * @return  self
+     */
+    public function setTitle(string $title)
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * @return self
+     */
+    public function useCodeDark(): self
+    {
+        $this->theme_code = "code-1";
+        $this->color_alert = "FF3030";
+
+        return $this;
+    }
+
+    /**
+     * @return self
+     */
+    public function useCodeLight(): self
+    {
+        $this->theme_code = "code-2";
+
+        return $this;
+    }
+
+    /**
+     * @return self
+     */
+    public function useDarkTheme(): self
+    {
+        $this->theme = "dark";
+
+        return $this;
+    }
+
+    /**
+     * Get the value of theme_code
+     *
+     * @return string
+     */
+    private function getTheme(string $theme_code = null): string
+    {
+        if ($theme_code != null) {
+            return $theme_code;
+        }
+        
+        return $this->theme_code;
+    }
+
+    /**
+     * @return self
+     */
+    private function render(): self
+    {
+        if (file_exists($this->getFile())) {
+            if ($this->format == "json") {
+                $this->renderJson();
+
+                return $this;
+            }
+
+            $this->loadAssets($this->info_exception);
+            include_once 'templates/error-page.php';
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param array $line
+     * 
+     * @return self
+     */
+    private function loadAssets(array $info): self
+    {
+        print_r('<head>');
+
+        $this->loadCss($info);
+        $this->loadJs();
+
+        print_r('</head>');
+
+        return $this;
+    }
+
+    /**
+     * @return self
+     */
+    private function loadJs(): self
+    {
+        /* Add scripts JS */
+        print_r('<script>' . file_get_contents('assets/js/highlight.pack.js', FILE_USE_INCLUDE_PATH));
+        print_r(file_get_contents('assets/js/highlightjs-line-numbers.js', FILE_USE_INCLUDE_PATH) . '</script>');
+        print_r('<script>hljs.highlightAll(); hljs.initLineNumbersOnLoad();</script>');
+
+        return $this;
+    }
+
+    /**
+     * @param array $info
+     * 
+     * @return self
+     */
+    private function loadCss(array $info): self
+    {
+        if ($this->theme == "dark") {
+            $this->theme_code = "code-1";
+            $this->color_alert = "FF3030";
+        }
+
+        /* Add style CSS */
+        print_r('<style>' . file_get_contents('assets/styles/default.css', FILE_USE_INCLUDE_PATH));
+        print_r(file_get_contents("assets/styles/{$this->getTheme()}.css", FILE_USE_INCLUDE_PATH));
+
+        if (isset($info[0]['function'])) {
+            foreach ($info as $info) {
+                print_r("\n\n" . '.' . pathinfo($info['file'])['filename'] . ' .hljs-ln-line[data-line-number="' . $info['line'] . '"] { background-color: #'.$this->color_alert.' !important; font-weight: bold; }');
+            }
+        } else {
+            print_r("\n\n" . '.' . pathinfo($info['file'])['filename'] . ' .hljs-ln-line[data-line-number="' . $info['line'] . '"] { background-color: #'.$this->color_alert.' !important; font-weight: bold; }');
+        }
+
+        print_r(file_get_contents("assets/styles/{$this->theme}.css", FILE_USE_INCLUDE_PATH));
+        print_r('</style>');
 
         return $this;
     }

@@ -1,10 +1,10 @@
 <?php if ($this->type == 'exception') : ?>
-    <section class="hidden" id="<?= pathinfo($this->info_exception['file'])['filename'] ?>">
+    <section class="hidden bg-main-info-exc p-3 rounded-3" id="<?= pathinfo($this->info_exception['file'])['filename'] ?>">
 
         <?php if ($this->info_exception['message']) : ?>
             <div class="row mb-3">
                 <div class="col-md-6">
-                    <h3><?= $this->info_exception['message'] ?></h3>
+                    <h3 class="fw-bold"><?= $this->info_exception['message'] ?></h3>
                 </div>
 
                 <div class="col-md-6 d-flex flex-row-reverse bd-highlight">
@@ -17,10 +17,10 @@
 
         <pre><code class="language-php code-exception <?= pathinfo($this->info_exception['file'])['filename'] ?>"><?= htmlentities(file_get_contents($this->info_exception['file'])) ?></code></pre>
 
-        <div class="accordion" id="accordionException">
+        <div class="accordion accordion-flush" id="accordionException">
             <div class="accordion-item">
                 <h2 class="accordion-header" id="exceptionDetails">
-                    <button class="accordion-button bg-info-exc text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseException" aria-expanded="true" aria-controls="collapseException">
+                    <button class="accordion-button bg-info-exc" type="button" data-bs-toggle="collapse" data-bs-target="#collapseException" aria-expanded="true" aria-controls="collapseException">
                         EXCEPTION INFORMATION
                     </button>
                 </h2>
@@ -31,6 +31,7 @@
                         <?php endif; ?>
 
                         <p><strong>File:</strong> <?= $this->info_exception['file'] ?></p>
+                        <p><strong>Type Exception:</strong> <?= $this->info_exception['type_exc'] ?></p>
                         <p><strong>Line:</strong> <?= $this->info_exception['line'] ?></p>
 
                         <?php if ($this->info_exception['code']) : ?>

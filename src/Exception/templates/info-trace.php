@@ -1,10 +1,10 @@
 <?php if ($this->type == 'error') : ?>
     <section class="code-exception">
         <?php foreach ($this->info_exception as $info) : ?>
-            <a href="#" onclick="show('<?= pathinfo($info['file'])['filename'] ?>')" class="list-group-item list-group-item-action" aria-current="true">
+            <a href="#" onclick="show('<?= pathinfo($info['file'])['filename'] ?>')" class="list-group-item list-group-item-action dark-trace" aria-current="true">
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1">
-                        <?= pathinfo($info['file'])['basename'] ?>: <span class="badge bg-primary"><?= $info['line'] ?></span>
+                        <?= pathinfo($info['file'])['basename'] ?>: <span class="badge bg-trace"><?= $info['line'] ?></span>
                     </h5>
                 </div>
 
@@ -14,14 +14,14 @@
     </section>
 <?php elseif ($this->type == 'exception') : ?>
     <section class="code-exception">
-        <a href="#" class="list-group-item list-group-item-action" aria-current="true">
+        <a href="#" class="list-group-item list-group-item-action dark-trace" aria-current="true">
             <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1">
-                    <?= pathinfo($this->info_exception['file'])['basename'] ?>: <span class="badge bg-primary"><?= $this->info_exception['line'] ?></span>
+                    <?= pathinfo($this->info_exception['file'])['basename'] ?>: <span class="badge bg-trace"><?= $this->info_exception['line'] ?></span>
                 </h5>
             </div>
 
-            <p class="mb-1 text-primary"><?= $this->info_exception['file'] ?></p>
+            <p class="mb-1 txt-dark-theme"><?= $this->info_exception['file'] ?></p>
         </a>
     </section>
 <?php endif; ?>

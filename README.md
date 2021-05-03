@@ -27,6 +27,38 @@ $exc->setFromJson();
 $exc->start();
 ```
 
+## Changing the title
+
+You can change the page title using `setTitle`.
+
+```php
+# ...
+$exc->setTitle("My title");
+# ...
+```
+
+## Dark mode
+
+### Dark mode only in code
+
+To change only the code theme, use `useCodeDark`.
+
+```php
+#...
+$exc->useCodeDark();
+#...
+```
+
+### Dark mode in every exception
+
+To change the whole theme, use `useDarkTheme`.
+
+```php
+#...
+$exc->useDarkTheme();
+#...
+```
+
 ## Test
 
 If you want to test the component, use the `UserTest` class inside the `test/` folder or use the code below in your `index.php`.
