@@ -1,8 +1,8 @@
 <?php if ($this->type == 'exception') : ?>
-    <section class="hidden bg-main-info-exc p-3 rounded-3" id="<?= pathinfo($this->info_exception['file'])['filename'] ?>">
+    <section class="hidden bg-main-info-exc rounded-3" id="<?= pathinfo($this->info_exception['file'])['filename'] ?>">
 
         <?php if ($this->info_exception['message']) : ?>
-            <div class="row mb-3">
+            <div class="row mb-3 p-3">
                 <div class="col-md-6">
                     <h3 class="fw-bold"><?= $this->info_exception['message'] ?></h3>
                 </div>
@@ -15,7 +15,7 @@
             </div>
         <?php endif; ?>
 
-        <pre><code class="language-php code-exception <?= pathinfo($this->info_exception['file'])['filename'] ?>"><?= htmlentities(file_get_contents($this->info_exception['file'])) ?></code></pre>
+        <pre><code class="language-php code-exception p-3 <?= pathinfo($this->info_exception['file'])['filename'] ?>"><?= htmlentities(file_get_contents($this->info_exception['file'])) ?></code></pre>
 
         <div class="accordion accordion-flush" id="accordionException">
             <div class="accordion-item">
@@ -30,14 +30,19 @@
                             <p><strong>Message:</strong> <?= $this->info_exception['message'] ?></p>
                         <?php endif; ?>
 
+                        <hr>
                         <p><strong>File:</strong> <?= $this->info_exception['file'] ?></p>
+                        <hr>
                         <p><strong>Type Exception:</strong> <?= $this->info_exception['type_exc'] ?></p>
+                        <hr>
                         <p><strong>Line:</strong> <?= $this->info_exception['line'] ?></p>
+                        <hr>
 
                         <?php if ($this->info_exception['code']) : ?>
                             <p><strong>Code:</strong> <?= $this->info_exception['code'] ?></p>
                         <?php endif; ?>
 
+                        <hr>
                         <p><strong>HTTP Code:</strong> <?= http_response_code() ?></p>
                     </div>
                 </div>

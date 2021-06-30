@@ -39,9 +39,23 @@ class ModernPHPException
     protected string $format = "";
 
     /**
+     * @var Bench
+     */
+    protected Bench $bench;
+
+    /**
      * @var string
      */
-    protected string $version = "0.3.0";
+    protected string $version = "0.4.0";
+
+    /**
+     * Construct
+     */
+    public function __construct()
+    {
+        $this->bench = new Bench();
+        $this->bench->start();
+    }
 
     /**
      * @return ModernPHPException
@@ -50,6 +64,8 @@ class ModernPHPException
     {
         set_exception_handler([$this, 'exceptionHandler']);
         set_error_handler([$this, 'errorHandler']);
+
+        $this->bench->end();
 
         return $this;
     }
@@ -60,6 +76,16 @@ class ModernPHPException
     public function setFromJson(): ModernPHPException
     {
         $this->format = "json";
+
+        return $this;
+    }
+
+    /**
+     * @return ModernPHPException
+     */
+    public function productionMode(): ModernPHPException
+    {
+        $this->format = "production";
 
         return $this;
     }

@@ -1,9 +1,9 @@
 <?php if ($this->type == 'error') : ?>
     <?php foreach ($this->info_exception as $info) : ?>
-        <section class="hidden bg-main-info-exc p-3 rounded-3" id="<?= pathinfo($info['file'])['filename'] ?>">
+        <section class="hidden bg-main-info-exc rounded-3" id="<?= pathinfo($info['file'])['filename'] ?>">
 
             <?php if ($info['message']) : ?>
-                <div class="row mb-3">
+                <div class="row mb-3 p-3">
                     <div class="col-md-6">
                         <h3 class="fw-bold"><?= $info['message'] ?></h3>
                     </div>
@@ -16,7 +16,7 @@
                 </div>
             <?php endif; ?>
 
-            <pre><code class="language-php code-exception <?= pathinfo($info['file'])['filename'] ?>"><?= htmlentities(file_get_contents($info['file'])) ?></code></pre>
+            <pre><code class="language-php code-exception p-3 <?= pathinfo($info['file'])['filename'] ?>"><?= htmlentities(file_get_contents($info['file'])) ?></code></pre>
 
             <div class="accordion accordion-flush" id="accordionError">
                 <div class="accordion-item">
@@ -31,13 +31,17 @@
                                 <p><strong>Message:</strong> <?= $info['message'] ?></p>
                             <?php endif; ?>
 
+                            <hr>
                             <p><strong>File:</strong> <?= $info['file'] ?></p>
+                            <hr>
                             <p><strong>Line:</strong> <?= $info['line'] ?></p>
+                            <hr>
 
                             <?php if ($info['code']) : ?>
                                 <p><strong>Code:</strong> <?= $info['code'] ?></p>
                             <?php endif; ?>
 
+                            <hr>
                             <p><strong>HTTP Code:</strong> <?= http_response_code() ?></p>
                         </div>
                     </div>

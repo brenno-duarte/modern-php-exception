@@ -59,6 +59,18 @@ $exc->useDarkTheme();
 #...
 ```
 
+# Production mode
+
+When a project made in PHP is in production, it's not good to have technical errors. Therefore, you can display a screen for these cases.
+
+```php
+#...
+$exc->productionMode();
+#...
+```
+
+<img src="https://res.cloudinary.com/bdlsltfmk/image/upload/v1625058687/error_screen_k09avd.png">
+
 ## Test
 
 If you want to test the component, use the `UserTest` class inside the `test/` folder or use the code below in your `index.php`.

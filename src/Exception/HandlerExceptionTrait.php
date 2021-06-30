@@ -260,7 +260,7 @@ trait HandlerExceptionTrait
         if ($theme_code != null) {
             return $theme_code;
         }
-        
+
         return $this->theme_code;
     }
 
@@ -274,6 +274,9 @@ trait HandlerExceptionTrait
                 $this->renderJson();
 
                 return $this;
+            } elseif ($this->format == "production") {
+                include_once 'templates/error-production.php';
+                exit;
             }
 
             $this->loadAssets($this->info_exception);
@@ -331,10 +334,10 @@ trait HandlerExceptionTrait
 
         if (isset($info[0]['function'])) {
             foreach ($info as $info) {
-                print_r("\n\n" . '.' . pathinfo($info['file'])['filename'] . ' .hljs-ln-line[data-line-number="' . $info['line'] . '"] { background-color: #'.$this->color_alert.' !important; font-weight: bold; }');
+                print_r("\n\n" . '.' . pathinfo($info['file'])['filename'] . ' .hljs-ln-line[data-line-number="' . $info['line'] . '"] { background-color: #' . $this->color_alert . ' !important; font-weight: bold; }');
             }
         } else {
-            print_r("\n\n" . '.' . pathinfo($info['file'])['filename'] . ' .hljs-ln-line[data-line-number="' . $info['line'] . '"] { background-color: #'.$this->color_alert.' !important; font-weight: bold; }');
+            print_r("\n\n" . '.' . pathinfo($info['file'])['filename'] . ' .hljs-ln-line[data-line-number="' . $info['line'] . '"] { background-color: #' . $this->color_alert . ' !important; font-weight: bold; }');
         }
 
         print_r(file_get_contents("assets/styles/{$this->theme}.css", FILE_USE_INCLUDE_PATH));

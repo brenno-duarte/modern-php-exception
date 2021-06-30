@@ -42,7 +42,7 @@ h3 {
 }
 
 .txt-dark-theme {
-    color: #FFD700 !important;
+    color: #1E90FF !important;
 }
 
 .txt-dark-theme-2 {
@@ -53,7 +53,7 @@ h3 {
 
 * {
     scrollbar-width: #363636;
-    scrollbar-color: #CD950C #363636;
+    scrollbar-color: #828282 #363636;
 }
 
 /* Works on Chrome, Edge, and Safari */
@@ -67,7 +67,7 @@ h3 {
 }
 
 *::-webkit-scrollbar-thumb {
-    background-color: #CD950C;
+    background-color: #828282;
     border-radius: 20px;
     border: 3px solid #363636;
 }
