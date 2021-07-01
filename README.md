@@ -4,6 +4,14 @@ PHP errors in a modern way
 
 <img src="https://res.cloudinary.com/bdlsltfmk/image/upload/v1620047557/exception_uzifw3.png">
 
+## Installing via Composer
+
+Use the command below:
+
+```
+composer require brenno-duarte/modern-php-exception
+```
+
 ## How to use
 
 You only need to call a single method as shown below.
