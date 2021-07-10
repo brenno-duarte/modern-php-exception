@@ -161,11 +161,17 @@ class Bench
         return sprintf($format, $time, $unit);
     }
 
+    /**
+     * @return null|string
+     */
     public function hasEnded()
     {
         return isset($this->end_time);
     }
 
+    /**
+     * @return null|string
+     */
     public function hasStarted()
     {
         return isset($this->start_time);

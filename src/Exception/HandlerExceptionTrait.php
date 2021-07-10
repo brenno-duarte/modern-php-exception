@@ -186,16 +186,6 @@ trait HandlerExceptionTrait
     }
 
     /**
-     * @return self
-     */
-    private function renderJson(): self
-    {
-        echo json_encode(["error" => $this->info_exception], JSON_UNESCAPED_UNICODE);
-
-        return $this;
-    }
-
-    /**
      * Get the value of title
      *
      * @return  string
@@ -270,6 +260,9 @@ trait HandlerExceptionTrait
     private function render(): self
     {
         if (file_exists($this->getFile())) {
+
+            $this->renderCli();
+
             if ($this->format == "json") {
                 $this->renderJson();
 
@@ -281,6 +274,44 @@ trait HandlerExceptionTrait
 
             $this->loadAssets($this->info_exception);
             include_once 'templates/error-page.php';
+        }
+
+        return $this;
+    }
+
+        /**
+     * @return self
+     */
+    private function renderJson(): self
+    {
+        echo json_encode(["error" => $this->info_exception], JSON_UNESCAPED_UNICODE);
+
+        return $this;
+    }
+
+    /**
+     * @return self
+     */
+    private function renderCli(): self
+    {
+        $verify = $this->isCli();
+        $array = $this->info_exception;
+
+        if ($verify == true) {
+            if (count($array) == count($array, COUNT_RECURSIVE)) {
+                echo "\n\nMessage: " . $this->info_exception['message']."\n";
+                echo "File: " . $this->info_exception['file']."\n";
+                echo "Line: " . $this->info_exception['line']."\n";
+            } else {
+                foreach ($array as $exception) {
+                    echo "\nMessage: " . $exception['message']."\n";
+                    echo "File: " . $exception['file']."\n";
+                    echo "Line: " . $exception['line']."\n";
+                    echo "\n";
+                }
+            }
+            
+            exit;
         }
 
         return $this;
@@ -301,6 +332,34 @@ trait HandlerExceptionTrait
         print_r('</head>');
 
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCli(): bool
+    {
+        if (defined('STDIN')) {
+            return true;
+        }
+
+        if (php_sapi_name() === "cli") {
+            return true;
+        }
+
+        if (PHP_SAPI === 'cli') {
+            return true;
+        }
+
+        if (stristr(PHP_SAPI, 'cgi') and getenv('TERM')) {
+            return true;
+        }
+
+        if (empty($_SERVER['REMOTE_ADDR']) and !isset($_SERVER['HTTP_USER_AGENT']) and count($_SERVER['argv']) > 0) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
