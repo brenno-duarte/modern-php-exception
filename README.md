@@ -79,6 +79,28 @@ $exc->productionMode();
 
 <img src="https://res.cloudinary.com/bdlsltfmk/image/upload/v1625058687/error_screen_k09avd.png">
 
+## Custom exception
+
+Sometimes we want to display an exception with a custom message. For that, you can use the `errorHandler` class to handle this exception.
+
+```php
+#...
+
+function divide($x, $y) {
+    if ($y == 0) {
+        throw new \Exception('is a division by zero.');
+    }
+    $result = $x / $y;
+    return $result;
+};
+
+try {
+    echo divide(5.0)."<br/>";
+} catch (\Exception $e) {
+    $exc->errorHandler(500, "Caught Exception: " . $e->getMessage(), __FILE__, __LINE__);
+}
+``` 
+
 ## Test
 
 If you want to test the component, use the `UserTest` class inside the `test/` folder or use the code below in your `index.php`.
