@@ -279,7 +279,7 @@ trait HandlerExceptionTrait
         return $this;
     }
 
-        /**
+    /**
      * @return self
      */
     private function renderJson(): self
@@ -299,18 +299,18 @@ trait HandlerExceptionTrait
 
         if ($verify == true) {
             if (count($array) == count($array, COUNT_RECURSIVE)) {
-                echo "\n\nMessage: " . $this->info_exception['message']."\n";
-                echo "File: " . $this->info_exception['file']."\n";
-                echo "Line: " . $this->info_exception['line']."\n";
+                echo "\n\nMessage: " . $this->info_exception['message'] . "\n";
+                echo "File: " . $this->info_exception['file'] . "\n";
+                echo "Line: " . $this->info_exception['line'] . "\n";
             } else {
                 foreach ($array as $exception) {
-                    echo "\nMessage: " . $exception['message']."\n";
-                    echo "File: " . $exception['file']."\n";
-                    echo "Line: " . $exception['line']."\n";
+                    echo "\nMessage: " . $exception['message'] . "\n";
+                    echo "File: " . $exception['file'] . "\n";
+                    echo "Line: " . $exception['line'] . "\n";
                     echo "\n";
                 }
             }
-            
+
             exit;
         }
 
@@ -337,7 +337,7 @@ trait HandlerExceptionTrait
     /**
      * @return bool
      */
-    public function isCli(): bool
+    private function isCli(): bool
     {
         if (defined('STDIN')) {
             return true;

@@ -16,7 +16,7 @@ class UserTest
         $this->name = $name;
     }
 
-    public static function staticCall()
+    public static function staticCall(): UserClass
     {
         return __CLASS__;
     }

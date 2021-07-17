@@ -40,9 +40,9 @@
 
                         <?php if ($this->info_exception['code']) : ?>
                             <p><strong>Code:</strong> <?= $this->info_exception['code'] ?></p>
+                            <hr>
                         <?php endif; ?>
 
-                        <hr>
                         <p><strong>HTTP Code:</strong> <?= http_response_code() ?></p>
                     </div>
                 </div>

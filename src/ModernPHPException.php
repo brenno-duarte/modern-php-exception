@@ -46,7 +46,7 @@ class ModernPHPException
     /**
      * @var string
      */
-    protected string $version = "0.5.0";
+    protected string $version = "0.5.1";
 
     /**
      * Construct
@@ -79,16 +79,6 @@ class ModernPHPException
 
         return $this;
     }
-
-    /**
-     * @return ModernPHPException
-     */
-    /* public function setFromText(): ModernPHPException
-    {
-        $this->format = "text";
-
-        return $this;
-    } */
 
     /**
      * @return ModernPHPException

@@ -39,9 +39,9 @@
 
                             <?php if ($info['code']) : ?>
                                 <p><strong>Code:</strong> <?= $info['code'] ?></p>
+                                <hr>
                             <?php endif; ?>
 
-                            <hr>
                             <p><strong>HTTP Code:</strong> <?= http_response_code() ?></p>
                         </div>
                     </div>
