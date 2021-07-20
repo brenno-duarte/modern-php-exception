@@ -1,5 +1,5 @@
 <?php if ($this->type == 'exception') : ?>
-    <section class="hidden bg-main-info-exc rounded-3" id="<?= pathinfo($this->info_exception['file'])['filename'] ?>">
+    <section class="hidden bg-main-info-exc rounded-3" id="<?= strtolower(pathinfo($this->info_exception['file'])['filename']) ?>">
 
         <?php if ($this->info_exception['message']) : ?>
             <div class="row mb-3 p-3">
@@ -15,7 +15,7 @@
             </div>
         <?php endif; ?>
 
-        <pre><code class="language-php code-exception p-3 <?= pathinfo($this->info_exception['file'])['filename'] ?>"><?= htmlentities(file_get_contents($this->info_exception['file'])) ?></code></pre>
+        <pre><code class="language-php code-exception p-3 <?= strtolower(pathinfo($this->info_exception['file'])['filename']) ?>"><?= htmlentities(file_get_contents($this->info_exception['file'])) ?></code></pre>
 
         <div class="accordion accordion-flush" id="accordionException">
             <div class="accordion-item">

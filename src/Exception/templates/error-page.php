@@ -18,6 +18,10 @@
             position: fixed;
             bottom: 5px;
         }
+
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 
@@ -59,7 +63,7 @@
     <script>
         window.onload = function() {
             for (var i = 0; i < 10; i++) {
-                show('<?= $this->main_file ?>')
+                show('<?= strtolower($this->main_file) ?>')
             }
         };
 

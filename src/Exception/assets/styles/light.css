@@ -7,10 +7,6 @@ h3 {
     color: #CD3333;
 }
 
-.hidden {
-    display: none;
-}
-
 .bg-info-exc {
     font-weight: bold;
     color: #1874CD !important;

@@ -98,7 +98,7 @@ trait HandlerExceptionTrait
 
             $trace = $exception->getTrace();
             $main_file = $exception->getFile();
-            $this->main_file = pathinfo($main_file)['filename'];
+
             $this->type = 'error';
 
             foreach ($trace as $trace) {
@@ -110,6 +110,8 @@ trait HandlerExceptionTrait
                     'function' => $trace['function']
                 ];
             }
+
+            $this->main_file = pathinfo($main_file)['filename'] . str_replace(['#', '{', '}', '(', ')'], '', $this->info_exception[0]['function']);
 
             if ($this->getTitle() == "" || empty($this->getTitle())) {
                 $this->setTitle("ModernPHPException: " . $message);
@@ -272,7 +274,7 @@ trait HandlerExceptionTrait
                 exit;
             }
 
-            $this->loadAssets($this->info_exception);
+            $this->loadAssets($this->info_exception, true);
             include_once 'templates/error-page.php';
         }
 
@@ -322,12 +324,12 @@ trait HandlerExceptionTrait
      * 
      * @return self
      */
-    private function loadAssets(array $info): self
+    private function loadAssets(array $info, $show = false): self
     {
         print_r('<head>');
 
-        $this->loadCss($info);
-        $this->loadJs();
+        $this->loadCss($info, $show);
+        $this->loadJs($show);
 
         print_r('</head>');
 
@@ -365,12 +367,14 @@ trait HandlerExceptionTrait
     /**
      * @return self
      */
-    private function loadJs(): self
+    private function loadJs(bool $show = false): self
     {
-        /* Add scripts JS */
-        print_r('<script>' . file_get_contents('assets/js/highlight.pack.js', FILE_USE_INCLUDE_PATH));
-        print_r(file_get_contents('assets/js/highlightjs-line-numbers.js', FILE_USE_INCLUDE_PATH) . '</script>');
-        print_r('<script>hljs.highlightAll(); hljs.initLineNumbersOnLoad();</script>');
+        if ($show == true) {
+            /* Add scripts JS */
+            print_r('<script>' . file_get_contents('assets/js/highlight.pack.js', FILE_USE_INCLUDE_PATH));
+            print_r(file_get_contents('assets/js/highlightjs-line-numbers.js', FILE_USE_INCLUDE_PATH) . '</script>');
+            print_r('<script>hljs.highlightAll(); hljs.initLineNumbersOnLoad();</script>');
+        }
 
         return $this;
     }
@@ -380,27 +384,29 @@ trait HandlerExceptionTrait
      * 
      * @return self
      */
-    private function loadCss(array $info): self
+    private function loadCss(array $info, bool $show = false): self
     {
-        if ($this->theme == "dark") {
-            $this->theme_code = "code-1";
-            $this->color_alert = "FF3030";
-        }
+        if ($show == true) {
+            if ($this->theme == "dark") {
+                $this->theme_code = "code-1";
+                $this->color_alert = "FF3030";
+            }
 
-        /* Add style CSS */
-        print_r('<style>' . file_get_contents('assets/styles/default.css', FILE_USE_INCLUDE_PATH));
-        print_r(file_get_contents("assets/styles/{$this->getTheme()}.css", FILE_USE_INCLUDE_PATH));
+            /* Add style CSS */
+            print_r('<style>' . file_get_contents('assets/styles/default.css', FILE_USE_INCLUDE_PATH));
+            print_r(file_get_contents("assets/styles/{$this->getTheme()}.css", FILE_USE_INCLUDE_PATH));
 
-        if (isset($info[0]['function'])) {
-            foreach ($info as $info) {
+            if (isset($info[0]['function'])) {
+                foreach ($info as $info) {
+                    print_r("\n\n" . '.' . strtolower(pathinfo($info['file'])['filename'] . str_replace(['#', '{', '}', '(', ')'], '', $info['function'])) . ' .hljs-ln-line[data-line-number="' . $info['line'] . '"] { background-color: #' . $this->color_alert . ' !important; font-weight: bold; }');
+                }
+            } else {
                 print_r("\n\n" . '.' . pathinfo($info['file'])['filename'] . ' .hljs-ln-line[data-line-number="' . $info['line'] . '"] { background-color: #' . $this->color_alert . ' !important; font-weight: bold; }');
             }
-        } else {
-            print_r("\n\n" . '.' . pathinfo($info['file'])['filename'] . ' .hljs-ln-line[data-line-number="' . $info['line'] . '"] { background-color: #' . $this->color_alert . ' !important; font-weight: bold; }');
-        }
 
-        print_r(file_get_contents("assets/styles/{$this->theme}.css", FILE_USE_INCLUDE_PATH));
-        print_r('</style>');
+            print_r(file_get_contents("assets/styles/{$this->theme}.css", FILE_USE_INCLUDE_PATH));
+            print_r('</style>');
+        }
 
         return $this;
     }

@@ -1,7 +1,7 @@
 <?php if ($this->type == 'error') : ?>
     <section class="code-exception">
         <?php foreach ($this->info_exception as $info) : ?>
-            <a href="#" onclick="show('<?= pathinfo($info['file'])['filename'] ?>')" class="list-group-item list-group-item-action dark-trace" aria-current="true">
+            <a href="#" onclick="show('<?= strtolower(pathinfo($info['file'])['filename'] . str_replace(['#', '{', '}', '(', ')'], '', $info['function'])) ?>')" class="list-group-item list-group-item-action dark-trace" aria-current="true">
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1">
                         <?= pathinfo($info['file'])['basename'] ?>: <span class="badge bg-trace"><?= $info['line'] ?></span>
