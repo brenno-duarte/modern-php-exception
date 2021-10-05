@@ -22,6 +22,15 @@
         .hidden {
             display: none;
         }
+
+        .message {
+            word-wrap: break-word;
+        }
+
+        .msg {
+            color: #FF0000;
+            font-weight: bold;
+        }
     </style>
 </head>
 

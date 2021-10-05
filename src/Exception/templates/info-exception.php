@@ -3,7 +3,7 @@
 
         <?php if ($this->info_exception['message']) : ?>
             <div class="row mb-3 p-3">
-                <div class="col-md-6">
+                <div class="col-md-6 message">
                     <h3 class="fw-bold"><?= $this->info_exception['message'] ?></h3>
                 </div>
 

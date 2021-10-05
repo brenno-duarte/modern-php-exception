@@ -4,7 +4,7 @@
 
             <?php if (is_string($info['message']) && !empty($info['message'])) : ?>
                 <div class="row mb-3 p-3">
-                    <div class="col-md-6">
+                    <div class="col-md-6 message">
                         <h3 class="fw-bold"><?= $info['message'] ?? "" ?></h3>
                     </div>
 

@@ -46,7 +46,7 @@ class ModernPHPException
     /**
      * @var string
      */
-    protected string $version = "0.5.2";
+    protected string $version = "1.0.0";
 
     /**
      * Construct
@@ -81,12 +81,11 @@ class ModernPHPException
     }
 
     /**
-     * @return ModernPHPException
+     * @return void
      */
-    public function productionMode(): ModernPHPException
+    public function productionMode(): void
     {
-        $this->format = "production";
-
-        return $this;
+        include_once 'Exception/templates/error-production.php';
+        exit;
     }
 }

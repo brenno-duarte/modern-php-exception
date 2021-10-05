@@ -269,9 +269,6 @@ trait HandlerExceptionTrait
                 $this->renderJson();
 
                 return $this;
-            } elseif ($this->format == "production") {
-                include_once 'templates/error-production.php';
-                exit;
             }
 
             $this->loadAssets($this->info_exception, true);
