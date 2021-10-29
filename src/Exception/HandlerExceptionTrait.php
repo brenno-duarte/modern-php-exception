@@ -272,7 +272,9 @@ trait HandlerExceptionTrait
             }
 
             $this->loadAssets($this->info_exception, true);
+            
             include_once 'templates/error-page.php';
+            exit;
         }
 
         return $this;
