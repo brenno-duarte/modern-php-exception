@@ -25,6 +25,8 @@ $exc->start();
 
 From there, all errors and exceptions that are triggered will be displayed through the ModernPHPException component.
 
+You can change the return, title and theme settings in the class constructor as shown in the items below.
+
 ## Return in JSON
 
 To return an exception in JSON, use the `setFromJson()` method.
@@ -32,6 +34,15 @@ To return an exception in JSON, use the `setFromJson()` method.
 ```php
 $exc = new ModernPHPException();
 $exc->setFromJson();
+$exc->start();
+```
+
+Or, use an array in the class's constructor.
+
+```php
+$exc = new ModernPHPException([
+    'type' => 'json'
+]);
 $exc->start();
 ```
 
@@ -43,6 +54,15 @@ You can change the page title using `setTitle`.
 # ...
 $exc->setTitle("My title");
 # ...
+```
+
+Or, use an array in the class's constructor.
+
+```php
+$exc = new ModernPHPException([
+    'title' => 'My title'
+]);
+$exc->start();
 ```
 
 ## Dark mode
@@ -57,6 +77,15 @@ $exc->useCodeDark();
 #...
 ```
 
+Or, use an array in the class's constructor.
+
+```php
+$exc = new ModernPHPException([
+    'dark_mode' => 'code'
+]);
+$exc->start();
+```
+
 ### Dark mode in every exception
 
 To change the whole theme, use `useDarkTheme`.
@@ -67,6 +96,15 @@ $exc->useDarkTheme();
 #...
 ```
 
+Or, use an array in the class's constructor.
+
+```php
+$exc = new ModernPHPException([
+    'dark_mode' => 'all'
+]);
+$exc->start();
+```
+
 # Production mode
 
 When a project made in PHP is in production, it's not good to have technical errors. Therefore, you can display a screen for these cases.
@@ -74,6 +112,15 @@ When a project made in PHP is in production, it's not good to have technical err
 ```php
 $exc = new ModernPHPException();
 $exc->productionMode();
+```
+
+Or, use an array in the class's constructor.
+
+```php
+$exc = new ModernPHPException([
+    'production_mode' => true
+]);
+$exc->start();
 ```
 
 <img src="https://res.cloudinary.com/bdlsltfmk/image/upload/v1625058687/error_screen_k09avd.png">

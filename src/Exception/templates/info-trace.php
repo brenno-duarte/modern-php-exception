@@ -1,4 +1,4 @@
-<p class="msg">Click on the files below to view the exception</p>
+<p class="bg-info-exc">Click on the files below to view the exception</p>
 <?php if ($this->type == 'error') : ?>
     <section class="code-exception">
         <?php foreach ($this->info_exception as $info) : ?>

@@ -262,17 +262,26 @@ trait HandlerExceptionTrait
     private function render(): self
     {
         if (file_exists($this->getFile())) {
-
             $this->renderCli();
 
-            if ($this->format == "json") {
+            if ($this->format == "json" || $this->config['type'] === "json") {
                 $this->renderJson();
 
                 return $this;
             }
 
+            if ($this->config['title'] !== "") {
+                $this->title = $this->config['title'];
+            }
+
+            if ($this->config['dark_mode'] === "code") {
+                $this->useCodeDark();
+            } elseif ($this->config['dark_mode'] === "all") {
+                $this->useDarkTheme();
+            }
+
             $this->loadAssets($this->info_exception, true);
-            
+
             include_once 'templates/error-page.php';
             exit;
         }
