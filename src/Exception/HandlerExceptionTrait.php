@@ -89,6 +89,11 @@ trait HandlerExceptionTrait
     public function errorHandler($code, string $message, string $file, $line): self
     {
         $type = error_get_last();
+
+        if ($type == null) {
+            $type = 0;
+        }
+
         $e = new \ErrorException($message, $code, $type, $file, $line);
 
         if (E_ERROR) {
@@ -111,7 +116,7 @@ trait HandlerExceptionTrait
                 ];
             }
 
-            $this->main_file = pathinfo($main_file)['filename'] . str_replace(['#', '{', '}', '(', ')'], '', $this->info_exception[0]['function']);
+            $this->main_file = pathinfo($main_file)['filename'] . $this->replaceString($this->info_exception[0]['function']);
 
             if ($this->getTitle() == "" || empty($this->getTitle())) {
                 $this->setTitle("ModernPHPException: " . $message);
@@ -257,17 +262,15 @@ trait HandlerExceptionTrait
     }
 
     /**
-     * @return self
+     * @return void
      */
-    private function render(): self
+    private function render(): void
     {
         if (file_exists($this->getFile())) {
             $this->renderCli();
 
             if ($this->format == "json" || $this->config['type'] === "json") {
                 $this->renderJson();
-
-                return $this;
             }
 
             if ($this->config['title'] !== "") {
@@ -280,23 +283,30 @@ trait HandlerExceptionTrait
                 $this->useDarkTheme();
             }
 
+            if (isset($this->info_exception[0]['function'])) {
+                $exception = reset($this->info_exception);
+                $main_error = basename($exception['file'], 'php') . $exception['function'];
+                $main_error = $this->replaceString(strtolower($main_error));
+            } else {
+                $exception = $this->info_exception;
+                $main_error = strtolower($this->main_file);
+            }
+
             $this->loadAssets($this->info_exception, true);
 
             include_once 'templates/error-page.php';
             exit;
         }
-
-        return $this;
     }
 
     /**
-     * @return self
+     * @return void
      */
-    private function renderJson(): self
+    private function renderJson(): void
     {
         echo json_encode(["error" => $this->info_exception], JSON_UNESCAPED_UNICODE);
 
-        return $this;
+        exit;
     }
 
     /**
@@ -313,12 +323,10 @@ trait HandlerExceptionTrait
                 echo "File: " . $this->info_exception['file'] . "\n";
                 echo "Line: " . $this->info_exception['line'] . "\n";
             } else {
-                foreach ($array as $exception) {
-                    echo "\nMessage: " . $exception['message'] . "\n";
-                    echo "File: " . $exception['file'] . "\n";
-                    echo "Line: " . $exception['line'] . "\n";
-                    echo "\n";
-                }
+                echo "\nMessage: " . $array[0]['message'] . "\n";
+                echo "File: " . $array[0]['file'] . "\n";
+                echo "Line: " . $array[0]['line'] . "\n\n";
+                echo (count($array) - 1) . " other errors";
             }
 
             exit;
@@ -365,7 +373,11 @@ trait HandlerExceptionTrait
             return true;
         }
 
-        if (empty($_SERVER['REMOTE_ADDR']) and !isset($_SERVER['HTTP_USER_AGENT']) and count($_SERVER['argv']) > 0) {
+        if (
+            empty($_SERVER['REMOTE_ADDR']) and
+            !isset($_SERVER['HTTP_USER_AGENT']) and
+            count($_SERVER['argv']) > 0
+        ) {
             return true;
         }
 
@@ -406,7 +418,7 @@ trait HandlerExceptionTrait
 
             if (isset($info[0]['function'])) {
                 foreach ($info as $info) {
-                    print_r("\n\n" . '.' . strtolower(pathinfo($info['file'])['filename'] . str_replace(['#', '{', '}', '(', ')'], '', $info['function'])) . ' .hljs-ln-line[data-line-number="' . $info['line'] . '"] { background-color: #' . $this->color_alert . ' !important; font-weight: bold; }');
+                    print_r("\n\n" . '.' . strtolower(pathinfo($info['file'])['filename'] . $this->replaceString($info['function'])) . ' .hljs-ln-line[data-line-number="' . $info['line'] . '"] { background-color: #' . $this->color_alert . ' !important; font-weight: bold; }');
                 }
             } else {
                 print_r("\n\n" . '.' . pathinfo($info['file'])['filename'] . ' .hljs-ln-line[data-line-number="' . $info['line'] . '"] { background-color: #' . $this->color_alert . ' !important; font-weight: bold; }');
@@ -417,5 +429,15 @@ trait HandlerExceptionTrait
         }
 
         return $this;
+    }
+
+    /**
+     * @param string $value
+     * 
+     * @return string
+     */
+    private function replaceString(string $value): string
+    {
+        return str_replace(['#', '{', '}', '(', ')', '.'], '', $value);
     }
 }

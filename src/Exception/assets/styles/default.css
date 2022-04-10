@@ -9,6 +9,8 @@ Original highlight.js style (c) Ivan Sagalaev <maniac@softwaremaniacs.org>
   overflow-x: auto;
   padding: 0.5em;
   background: #F0F0F0;
+  font-family: 'Ubuntu Mono', sans-serif;
+  letter-spacing: 0.5;
 }
 
 /* Base color: saturation 0; */

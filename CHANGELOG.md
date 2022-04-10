@@ -1,5 +1,19 @@
 # Released Notes
 
+## v1.1.1 - (2022-04-09)
+
+### Changed
+
+- Changed font of `<code>` tag
+
+### Fixed
+
+- Fixed screens not showing
+- Fixed CLI messages
+- Fixed `errorHandler` method
+
+------------------------------------------------
+
 ## v1.1.0 - (2021-11-01)
 
 ## Added

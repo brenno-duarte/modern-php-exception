@@ -46,7 +46,7 @@ class ModernPHPException
     /**
      * @var string
      */
-    protected string $version = "1.0.1";
+    protected string $version = "1.1.1";
 
     /**
      * @var array
