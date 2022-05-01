@@ -2,16 +2,28 @@
 
 namespace ModernPHPException;
 
-use ModernPHPException\Exception\HandlerExceptionTrait;
+use ModernPHPException\Solution;
+use ModernPHPException\Trait\RenderTrait;
+use ModernPHPException\Trait\HelpersTrait;
+use ModernPHPException\Trait\HandlerAssetsTrait;
 
 class ModernPHPException
 {
-    use HandlerExceptionTrait;
+    use HelpersTrait;
+    use HandlerAssetsTrait;
+    use RenderTrait;
+
+    const VERSION = "2.0.0";
 
     /**
-     * @var string
+     * @var Bench
      */
-    protected string $type;
+    protected Bench $bench;
+
+    /**
+     * @var Solution
+     */
+    private Solution $solution;
 
     /**
      * @var array
@@ -24,11 +36,6 @@ class ModernPHPException
     protected array $line = [];
 
     /**
-     * @var array
-     */
-    protected array $info_exception = [];
-
-    /**
      * @var string
      */
     protected string $main_file;
@@ -39,14 +46,39 @@ class ModernPHPException
     protected string $format = "";
 
     /**
-     * @var Bench
+     * @var array
      */
-    protected Bench $bench;
+    protected array $info_error_exception = [];
 
     /**
      * @var string
      */
-    protected string $version = "1.1.1";
+    protected string $type;
+
+    /**
+     * @var mixed
+     */
+    private mixed $error_value = "";
+
+    /**
+     * @var array
+     */
+    protected array $trace = [];
+
+    /**
+     * @var string
+     */
+    private string $file = "";
+
+    /**
+     * @var string
+     */
+    private string $title = "";
+
+    /**
+     * @var string
+     */
+    private string $message_production = "";
 
     /**
      * @var array
@@ -63,6 +95,8 @@ class ModernPHPException
      */
     public function __construct(array $config = [])
     {
+        http_response_code();
+
         if (!empty($config)) {
             foreach ($config as $key => $value) {
                 if (!isset($this->config[$key])) {
@@ -76,11 +110,8 @@ class ModernPHPException
             }
         }
 
-        if ($this->config['production_mode'] === true) {
-            $this->productionMode();
-        }
-
         $this->bench = new Bench();
+        $this->solution = new Solution();
         $this->bench->start();
     }
 
@@ -91,8 +122,6 @@ class ModernPHPException
     {
         set_exception_handler([$this, 'exceptionHandler']);
         set_error_handler([$this, 'errorHandler']);
-
-        $this->bench->end();
 
         return $this;
     }
@@ -108,11 +137,165 @@ class ModernPHPException
     }
 
     /**
+     * @param int $code
+     * 
+     * @return self
+     */
+    public function setError(int $code): self
+    {
+        $this->error_value = match ($code) {
+            E_PARSE => 'Fatal Error',
+            E_ERROR => 'Fatal Error',
+            E_CORE_ERROR => 'Fatal Error',
+            E_COMPILE_ERROR => 'Fatal Error',
+            E_USER_ERROR => 'Fatal Error',
+            E_WARNING => 'Warning',
+            E_USER_WARNING => 'Warning',
+            E_COMPILE_WARNING => 'Warning',
+            E_RECOVERABLE_ERROR => 'Warning',
+            E_NOTICE => 'Notice',
+            E_USER_NOTICE => 'Notice',
+            E_STRICT => 'Strict',
+            E_DEPRECATED => 'Deprecated',
+            E_USER_DEPRECATED => 'Deprecated'
+        };
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getError(): string
+    {
+        return $this->error_value;
+    }
+
+    /**
+     * Get the value of file
+     *
+     * @return string
+     */
+    public function getFile(): string
+    {
+        return $this->file;
+    }
+
+    /**
+     * Set the value of file
+     *
+     * @param string  $file
+     *
+     * @return self
+     */
+    public function setFile(string $file): self
+    {
+        $this->file = $file;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of title
+     *
+     * @return  string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Set the value of title
+     *
+     * @param  string  $title
+     *
+     * @return  self
+     */
+    public function setTitle(string $title)
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * @param int $code
+     * @param string $message
+     * @param string $file
+     * @param int $line
+     * 
      * @return void
      */
-    public function productionMode(): void
+    public function errorHandler(int $code, string $message, string $file, int $line): void
     {
-        include_once 'Exception/templates/error-production.php';
+        $this->info_error_exception = [
+            'message' => ($message ?? ''),
+            'code' => ($code ?? ''),
+            'file' => ($file ?? ''),
+            'line' => ($line ?? '')
+        ];
+
+        if ($this->getTitle() == "" || empty($this->getTitle())) {
+            $this->setTitle("ModernPHPException: " . $message);
+        }
+
+        $this->setError($code);
+        $this->type = "error";
+        $this->main_file = $file;
+
+        $this->bench->end();
+        $this->render();
+    }
+
+    /**
+     * @param mixed $exception
+     * 
+     * @return self
+     */
+    public function exceptionHandler(mixed $exception): void
+    {
+        $this->info_error_exception = [
+            'message' => $exception->getMessage(),
+            'code' => $exception->getCode(),
+            'file' => $exception->getFile(),
+            'line' => $exception->getLine(),
+            'type_exception' => $this->getClassMame($exception),
+            'namespace_exception' => get_class($exception)
+        ];
+
+        if ($this->getTitle() == "" || empty($this->getTitle())) {
+            $this->setTitle("ModernPHPException: " . $exception->getMessage());
+        }
+
+        $this->trace = $exception->getTrace();
+        $this->main_file = $exception->getFile();
+        $this->type = "exception";
+
+        $this->bench->end();
+        $this->render();
+    }
+
+    /**
+     * @param string $message_production
+     * 
+     * @return void
+     */
+    public function productionModeMessage(string $message_production = ""): void
+    {
+        $this->message_production = $message_production;
+    }
+
+    /**
+     * @return void
+     */
+    private function productionMode(): void
+    {
+        if ($this->isCli() == true) {
+            $this->renderCli();
+        }
+
+        include_once 'View/templates/error-production.php';
         exit;
     }
 }

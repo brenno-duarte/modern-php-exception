@@ -14,18 +14,19 @@
         }
 
         h1 {
-            font-size: 60px;
+            font-size: 40px;
+            font-weight: 400;
         }
 
         p {
-            font-size: 25px;
+            font-size: 20px;
         }
 
         .alert {
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 300px;
+            height: 500px;
         }
 
         .content {
@@ -38,8 +39,13 @@
 <body>
     <div class="alert">
         <div class="content">
-            <h1>Internal Server Error</h1>
-            <p>Sorry, but there was an internal error processing your request. Try again later.</p>
+            <h1>Internal Server Error | <?= http_response_code() ?></h1>
+
+            <?php if ($this->message_production != "") : ?>
+                <p><?= $this->message_production ?></p>
+            <?php else : ?>
+                <p>Sorry, but there was an internal error processing your request. Try again later.</p>
+            <?php endif; ?>
         </div>
     </div>
 </body>

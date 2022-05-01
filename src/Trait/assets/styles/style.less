@@ -1,0 +1,208 @@
+html,
+body {
+    font-family     : 'Open Sans', sans-serif;
+    background-color: @color-4  !important;
+}
+
+h3 {
+    color: @color-3;
+}
+
+pre {
+    font-family: 'Open Sans', sans-serif;
+}
+
+.bench {
+    position: fixed;
+    bottom  : 5px;
+}
+
+.hidden {
+    display: none;
+}
+
+.message {
+    word-wrap: break-word;
+}
+
+.hljs {
+    display       : block;
+    overflow-x    : auto;
+    padding       : 0.5em;
+    background    : #F0F0F0;
+    font-family   : 'Ubuntu Mono', sans-serif;
+    letter-spacing: 0.5;
+
+    /* &-subst {
+        color: #444;
+    }
+
+    &-comment {
+        color: #888888;
+    } */
+
+    &-keyword,
+    &-attribute,
+    &-selector-tag,
+    &-meta-keyword,
+    &-doctag,
+    &-name {
+        font-weight: bold;
+    }
+
+    &-title,
+    &-section {
+        color      : #880000;
+        font-weight: bold;
+    }
+
+    /* &-type,
+    &-string,
+    &-number,
+    &-selector-id,
+    &-selector-class,
+    &-quote,
+    &-template-tag,
+    &-deletion {
+        color: #880000;
+    }
+
+    &-regexp,
+    &-symbol,
+    &-variable,
+    &-template-variable,
+    &-link,
+    &-selector-attr,
+    &-selector-pseudo {
+        color: #BC6060;
+    }
+
+    &-literal {
+        color: #78A960;
+    }
+
+    &-built_in,
+    &-bullet,
+    &-code,
+    &-addition {
+        color: #397300;
+    }
+
+    &-meta {
+        color: #1f7199;
+    }
+
+    &-meta-string {
+        color: #4d99bf;
+    } */
+
+    &-emphasis {
+        font-style: italic;
+    }
+
+    &-strong {
+        font-weight: bold;
+    }
+}
+
+/* From uiverse.io */
+.btn-custom {
+    font-size       : 12px;
+    text-transform  : uppercase;
+    text-decoration : none;
+    padding         : 0.8em 1.7em;
+    display         : inline-block;
+    border-radius   : 6em;
+    transition      : all .2s;
+    border          : none;
+    font-family     : inherit;
+    font-weight     : 500;
+    color           : @white  !important;
+    background-color: @green-2;
+    margin-left     : 10px;
+
+    &:hover {
+        transform : translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    &:active {
+        transform : translateY(-1px);
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    &:after {
+        content         : "";
+        display         : inline-block;
+        height          : 100%;
+        width           : 100%;
+        border-radius   : 100px;
+        position        : absolute;
+        top             : 0;
+        left            : 0;
+        z-index         : -1;
+        transition      : all .4s;
+        background-color: @green-2;
+    }
+
+    &:hover:after {
+        transform: scaleX(1.0) scaleY(1.2);
+        opacity  : 0;
+    }
+}
+
+.bg {
+    &-info-exc {
+        font-weight: bold;
+        color      : @color-1  !important;
+    }
+
+    &-main-info-exc {
+        background-color: @color-6;
+    }
+
+    &-submenu {
+        background-color: @color-1  !important;
+    }
+
+    &-custom {
+        background-color: @color-6;
+    }
+
+    &-custom-2 {
+        background-color: @green-1;
+    }
+}
+
+.submenu {
+    color      : @white  !important;
+    font-weight: 500;
+    cursor     : pointer;
+
+    &:hover {
+        background-color: @color-5;
+    }
+}
+
+/* Works on Firefox */
+
+* {
+    scrollbar-width: @scroll-color-1;
+    scrollbar-color: @scroll-color-2 @scroll-color-2;
+
+    /* Works on Chrome, Edge, and Safari */
+
+    &::-webkit-scrollbar {
+        width: 12px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: @scroll-color-1;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: @scroll-color-2;
+        border-radius   : 20px;
+        border          : 3px solid @scroll-color-1;
+    }
+}

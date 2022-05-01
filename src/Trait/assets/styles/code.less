@@ -1,0 +1,132 @@
+.label-trace {
+    color: @code-color-12;
+}
+
+.bg-trace {
+    background-color: @code-color-11  !important;
+}
+
+.code-exception {
+    height    : 435px;
+    overflow-y: scroll;
+}
+
+.text-empty {
+    color: @color-2;
+}
+
+.label {
+    color      : @color-7;
+    font-weight: 600;
+}
+
+.dark-trace {
+    background-color: @color-6  !important;
+
+    & div h5 {
+        color: @code-color-5  !important;
+    }
+}
+
+.bd-placeholder-img {
+    font-size          : 1.125rem;
+    text-anchor        : middle;
+    -webkit-user-select: none;
+    -moz-user-select   : none;
+    user-select        : none;
+}
+
+@media (min-width: 768px) {
+    .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+    }
+}
+
+.hljs {
+
+    /* for block of numbers */
+
+    &-ln-numbers {
+        -webkit-touch-callout: none;
+        -webkit-user-select  : none;
+        -khtml-user-select   : none;
+        -moz-user-select     : none;
+        -ms-user-select      : none;
+        user-select          : none;
+        text-align           : center;
+        color                : @code-color-1;
+        border-right         : 1px solid @code-color-1;
+        vertical-align       : top;
+        padding-right        : 5px !important;
+    }
+
+    /* for block of code */
+
+    &-ln-code {
+        padding-left: 10px !important;
+    }
+
+    & {
+        background: @code-color-2  !important;
+        color     : @code-color-5  !important;
+    }
+
+    &-ln &-ln-line {
+        white-space: pre;
+    }
+
+    .language-bash & &-string {
+        color: @code-color-3  !important;
+    }
+
+    &-ln-line {
+        color: @code-color-4  !important;
+    }
+
+    &-title,
+    &-ln-code {
+        color: @code-color-5  !important;
+    }
+
+    &-variable,
+    &-built_in {
+        color: @code-color-6  !important;
+    }
+
+    &-punctuation,
+    &-meta,
+    &-function {
+        color: @code-color-5  !important;
+    }
+
+    &-attribute,
+    &-code,
+    &-keyword {
+        color: @code-color-6  !important;
+    }
+
+    &-doctag,
+    &-params,
+    &-operator {
+        color: @code-color-7  !important;
+    }
+
+    &-string {
+        color: @code-color-8  !important;
+    }
+
+    &-number,
+    &-literal,
+    &-template-variable,
+    &-class {
+        color: @code-color-9  !important;
+    }
+
+    &-comment,
+    &-quote,
+    &-name,
+    &-attr,
+    &-tag {
+        color: @code-color-10  !important;
+    }
+}

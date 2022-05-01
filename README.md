@@ -1,8 +1,8 @@
 # Modern PHP Exception
 
-PHP errors in a modern way
+Display PHP errors and exceptions in a modern and intuitive way!
 
-<img src="https://res.cloudinary.com/bdlsltfmk/image/upload/v1620047557/exception_uzifw3.png">
+<img src="https://res.cloudinary.com/bdlsltfmk/image/upload/v1651412244/modern-php-exception-2_ftm2yq.png">
 
 ## Installing via Composer
 
@@ -67,27 +67,6 @@ $exc->start();
 
 ## Dark mode
 
-### Dark mode only in code
-
-To change only the code theme, use `useCodeDark`.
-
-```php
-#...
-$exc->useCodeDark();
-#...
-```
-
-Or, use an array in the class's constructor.
-
-```php
-$exc = new ModernPHPException([
-    'dark_mode' => 'code'
-]);
-$exc->start();
-```
-
-### Dark mode in every exception
-
 To change the whole theme, use `useDarkTheme`.
 
 ```php
@@ -110,24 +89,29 @@ $exc->start();
 When a project made in PHP is in production, it's not good to have technical errors. Therefore, you can display a screen for these cases.
 
 ```php
-$exc = new ModernPHPException();
-$exc->productionMode();
-```
-
-Or, use an array in the class's constructor.
-
-```php
 $exc = new ModernPHPException([
     'production_mode' => true
 ]);
 $exc->start();
 ```
 
-<img src="https://res.cloudinary.com/bdlsltfmk/image/upload/v1625058687/error_screen_k09avd.png">
+To change the default message that will be displayed, you can use the `productionModeMessage()` method:
+
+```php
+$exc = new ModernPHPException([
+    'production_mode' => true
+]);
+$exc->productionModeMessage("Server error");
+$exc->start();
+```
+
+<img src="https://res.cloudinary.com/bdlsltfmk/image/upload/v1651412180/production-mode_zajewg.png">
 
 ## Custom exception
 
-Sometimes we want to display an exception with a custom message. For that, you can use the `errorHandler` class to handle this exception.
+# Using try/catch
+
+To display an exception inside a try/catch block, use the `exceptionHandler()` method:
 
 ```php
 #...
@@ -141,11 +125,13 @@ function divide($x, $y) {
 };
 
 try {
-    echo divide(5.0)."<br/>";
+    echo divide(5,0);
 } catch (\Exception $e) {
-    $exc->errorHandler(500, "Caught Exception: " . $e->getMessage(), __FILE__, __LINE__);
+    $exc->exceptionHandler($e);
 }
 ``` 
+
+If necessary, you can also use the `errorHandler()` method.
 
 ## Test
 

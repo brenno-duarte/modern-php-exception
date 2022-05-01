@@ -4,18 +4,27 @@ namespace ModernPHPException;
 
 class Bench
 {
-    protected $start_time;
+    /**
+     * @var mixed
+     */
+    protected mixed $start_time;
 
-    protected $end_time;
+    /**
+     * @var mixed
+     */
+    protected mixed $end_time;
 
-    protected $memory_usage;
+    /**
+     * @var mixed
+     */
+    protected mixed $memory_usage;
 
     /**
      * Sets start microtime
      *
      * @return void
      */
-    public function start()
+    public function start(): void
     {
         $this->start_time = microtime(true);
     }
@@ -24,9 +33,9 @@ class Bench
      * Sets end microtime
      *
      * @return void
-     * @throws Exception
+     * @throws LogicException
      */
-    public function end()
+    public function end(): void
     {
         if (!$this->hasStarted()) {
             throw new \LogicException("You must call start()");
@@ -40,11 +49,12 @@ class Bench
      * Returns the elapsed time, readable or not
      *
      * @param bool $raw
-     * @param  string $format The format to display (printf format)
-     * @return float|string
-     * @throws Exception
+     * @param string $format The format to display (printf format)
+     * 
+     * @return mixed
+     * @throws LogicException
      */
-    public function getTime($raw = false, $format = null)
+    public function getTime(bool $raw = false, string $format = null): mixed
     {
         if (!$this->hasStarted()) {
             throw new \LogicException("You must call start()");
@@ -64,9 +74,10 @@ class Bench
      *
      * @param  boolean $readable Whether the result must be human readable
      * @param  string  $format   The format to display (printf format)
-     * @return string|float
+     * 
+     * @return mixed
      */
-    public function getMemoryUsage($raw = false, $format = null)
+    public function getMemoryUsage(bool $raw = false, string $format = null): mixed
     {
         return $raw ? $this->memory_usage : self::readableSize($this->memory_usage, $format);
     }
@@ -76,9 +87,10 @@ class Bench
      *
      * @param  boolean $readable Whether the result must be human readable
      * @param  string  $format   The format to display (printf format)
-     * @return string|float
+     * 
+     * @return mixed
      */
-    public function getMemoryPeak($raw = false, $format = null)
+    public function getMemoryPeak(bool $raw = false, string $format = null): mixed
     {
         $memory = memory_get_peak_usage(true);
 
@@ -92,9 +104,10 @@ class Bench
      * the callable.
      *
      * @param callable $callable
+     * 
      * @return mixed
      */
-    public function run(callable $callable)
+    public function run(callable $callable): mixed
     {
         $arguments = func_get_args();
         array_shift($arguments);
@@ -112,9 +125,10 @@ class Bench
      * @param   int    $size
      * @param   string $format   The format to display (printf format)
      * @param   int    $round
+     * 
      * @return  string
      */
-    public static function readableSize($size, $format = null, $round = 3)
+    public static function readableSize(int $size, string $format = null, int $round = 3): string
     {
         $mod = 1024;
 
@@ -138,11 +152,13 @@ class Bench
     /**
      * Returns a human readable elapsed time
      *
-     * @param  float $microtime
-     * @param  string  $format   The format to display (printf format)
+     * @param float $microtime
+     * @param string  $format   The format to display (printf format)
+     * @param int $round
+     * 
      * @return string
      */
-    public static function readableElapsedTime($microtime, $format = null, $round = 3)
+    public static function readableElapsedTime(float $microtime, string $format = null, int $round = 3): string
     {
         if (is_null($format)) {
             $format = '%.3f%s';
@@ -164,7 +180,7 @@ class Bench
     /**
      * @return null|string
      */
-    public function hasEnded()
+    public function hasEnded(): ?string
     {
         return isset($this->end_time);
     }
@@ -172,7 +188,7 @@ class Bench
     /**
      * @return null|string
      */
-    public function hasStarted()
+    public function hasStarted(): ?string
     {
         return isset($this->start_time);
     }

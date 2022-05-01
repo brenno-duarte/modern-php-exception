@@ -2,6 +2,8 @@
 
 namespace Test;
 
+use Test\CustomException;
+
 class UserTest
 {
     private $name;
@@ -16,8 +18,8 @@ class UserTest
         $this->name = $name;
     }
 
-    public static function staticCall(): UserClass
+    public static function staticCall()
     {
-        return __CLASS__;
+        throw new CustomException("Error Processing Request", 3);
     }
 }
