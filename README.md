@@ -79,7 +79,7 @@ Or, use an array in the class's constructor.
 
 ```php
 $exc = new ModernPHPException([
-    'dark_mode' => 'all'
+    'dark_mode' => true
 ]);
 $exc->start();
 ```
@@ -106,8 +106,6 @@ $exc->start();
 ```
 
 <img src="https://res.cloudinary.com/bdlsltfmk/image/upload/v1651412180/production-mode_zajewg.png">
-
-## Custom exception
 
 # Using try/catch
 
