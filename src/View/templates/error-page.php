@@ -44,11 +44,19 @@
         <nav class="navbar navbar-expand-lg navbar-light bg-custom-2 p-3">
             <div class="container-fluid">
                 <div>
-                    <h5 class="mb-3"><?= $this->solution->getTitle() ?>: <?= $this->solution->getDescription() ?></h5>
+                    <h5 class="mb-3">
+                        <?= $this->solution->getTitle() ?>
 
-                    <a target="_blank" class="btn-custom" href="<?= $this->solution->getDocs()['link'] ?>">
-                        <?= $this->solution->getDocs()['button'] ?>
-                    </a>
+                        <?php if (!empty($this->solution->getDescription()) || $this->solution->getDescription() != "") : ?>
+                            <small><?= ": " . $this->solution->getDescription() ?></small>
+                        <?php endif; ?>
+                    </h5>
+
+                    <?php if (!empty($this->solution->getDocs()['link']) || $this->solution->getDocs()['link'] != "") : ?>
+                        <a target="_blank" class="btn-custom" href="<?= $this->solution->getDocs()['link'] ?>">
+                            <?= $this->solution->getDocs()['button'] ?>
+                        </a>
+                    <?php endif; ?>
                 </div>
             </div>
         </nav>

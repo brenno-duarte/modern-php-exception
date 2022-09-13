@@ -131,6 +131,45 @@ try {
 
 If necessary, you can also use the `errorHandler()` method.
 
+# Creating a solution for an exception
+
+If you are creating a custom exception class, you can add a solution to resolve this exception.
+
+For that, use the static `getSolution` method implementing the `SolutionInterface` interface:
+
+```php
+<?php
+
+namespace Test;
+
+use ModernPHPException\Solution;
+use ModernPHPException\Interface\SolutionInterface;
+
+class CustomException extends \Exception implements SolutionInterface
+{
+    public function getSolution(): Solution
+    {
+        return Solution::createSolution('My Solution')
+            ->setDescription('description')
+            ->setDocs('https://google.com');
+    }
+
+    #...
+```
+
+**createSolution:** Name of solution to fix exception
+**setDescription:** Detailed description of exception solution
+**setDocs:** If a documentation exists, this method will display a button for a documentation. By default, the name of the button will be `Read More`, but you can change the name by changing the second parameter of the method
+
+You can test using a new class:
+
+```php
+public static function staticCall()
+{
+    throw new CustomException("Error Processing Request");
+}
+```
+
 ## Test
 
 If you want to test the component, use the `UserTest` class inside the `test/` folder or use the code below in your `index.php`.

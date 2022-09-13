@@ -1,5 +1,14 @@
 # Released Notes
 
+## v2.0.1 - (2022-09-13)
+
+### Fixed
+
+- Fixed solution template; button was not hidden
+- Fixed documentation
+
+------------------------------------------------
+
 ## v2.0.0 - (2022-05-01)
 
 ### Added
