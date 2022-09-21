@@ -1,5 +1,15 @@
 # Released Notes
 
+## v2.0.2 - (2022-09-21)
+
+### Fixed
+
+- Fixed `error-page` template
+- Fixed `ob_end_clean()`
+- Fixed word breank in trace
+
+------------------------------------------------
+
 ## v2.0.1 - (2022-09-13)
 
 ### Fixed

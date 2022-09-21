@@ -59,6 +59,10 @@ trait RenderTrait
      */
     private function render(): void
     {
+        if (ob_get_contents()) {
+            ob_end_clean();
+        }
+        
         if ($this->config['production_mode'] === true) {
             $this->productionMode();
         }
