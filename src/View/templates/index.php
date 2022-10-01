@@ -31,8 +31,8 @@
                                 </div>
                             </div>
                             <div>
-                                <span style="color: #ebebeb;">PHP: <?= phpversion() ?></span>
-                                <span style="color: #ebebeb;">v<?= ModernPHPException\ModernPHPException::VERSION ?></span>
+                                <span class="version-number">PHP: <?= phpversion() ?></span>
+                                <span class="btn-version version-number">v<?= ModernPHPException\ModernPHPException::VERSION ?></span>
                             </div>
                         </div>
                     </nav>
@@ -65,26 +65,7 @@
         <?= include_once 'bench-page.php'; ?>
     </main>
 
-    <script>
-        window.onload = function() {
-            for (var i = 0; i < 10; i++) {
-                show('<?= $main_error ?>')
-            }
-        };
-
-        function show(id) {
-            if (document.getElementById(id).style.display !== "none") {
-                document.getElementById(id).style.display = "none";
-                return;
-            }
-
-            Array.from(document.getElementsByClassName("hidden")).forEach(
-                section => (section.style.display = "none")
-            );
-
-            document.getElementById(id).style.display = "block";
-        }
-    </script>
+    <?= include_once 'javascript.php' ?>
 </body>
 
 </html>

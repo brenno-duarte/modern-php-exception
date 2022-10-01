@@ -3,9 +3,11 @@
 namespace ModernPHPException;
 
 use ModernPHPException\Solution;
-use ModernPHPException\Trait\RenderTrait;
-use ModernPHPException\Trait\HelpersTrait;
-use ModernPHPException\Trait\HandlerAssetsTrait;
+use ModernPHPException\{
+    Trait\RenderTrait,
+    Trait\HelpersTrait,
+    Trait\HandlerAssetsTrait
+};
 
 class ModernPHPException
 {
@@ -13,7 +15,7 @@ class ModernPHPException
     use HandlerAssetsTrait;
     use RenderTrait;
 
-    const VERSION = "2.0.0";
+    const VERSION = "2.1.0";
 
     /**
      * @var Bench
@@ -144,20 +146,20 @@ class ModernPHPException
     public function setError(int $code): self
     {
         $this->error_value = match ($code) {
-            E_PARSE => 'Fatal Error',
+            E_PARSE => 'Parse Error',
             E_ERROR => 'Fatal Error',
-            E_CORE_ERROR => 'Fatal Error',
-            E_COMPILE_ERROR => 'Fatal Error',
-            E_USER_ERROR => 'Fatal Error',
+            E_CORE_ERROR => 'Core Error',
+            E_COMPILE_ERROR => 'Compile Error',
+            E_USER_ERROR => 'User Error',
             E_WARNING => 'Warning',
-            E_USER_WARNING => 'Warning',
-            E_COMPILE_WARNING => 'Warning',
-            E_RECOVERABLE_ERROR => 'Warning',
+            E_USER_WARNING => 'User Warning',
+            E_COMPILE_WARNING => 'Compile Warning',
+            E_RECOVERABLE_ERROR => 'Recoverable Warning',
             E_NOTICE => 'Notice',
-            E_USER_NOTICE => 'Notice',
+            E_USER_NOTICE => 'User Notice',
             E_STRICT => 'Strict',
             E_DEPRECATED => 'Deprecated',
-            E_USER_DEPRECATED => 'Deprecated'
+            E_USER_DEPRECATED => 'User Deprecated'
         };
 
         return $this;

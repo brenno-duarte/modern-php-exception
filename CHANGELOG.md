@@ -1,5 +1,21 @@
 # Released Notes
 
+## v2.1.0 - (2022-10-01)
+
+### Added
+
+- Added exception script to cli
+- Added Solution in cli
+- Added new class in less files
+- Added Bootstrap CSS 5.2
+- Added exception in javascript console
+
+### Fixed
+
+- Fixed CSS in dark mode
+
+------------------------------------------------
+
 ## v2.0.2 - (2022-09-21)
 
 ### Fixed

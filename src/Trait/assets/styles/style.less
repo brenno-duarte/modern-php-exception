@@ -12,6 +12,10 @@ pre {
     font-family: 'Open Sans', sans-serif;
 }
 
+.bench-title {
+    color: @color-7;
+}
+
 .bench {
     position: fixed;
     bottom  : 5px;
@@ -33,14 +37,6 @@ pre {
     font-family   : 'Ubuntu Mono', sans-serif;
     letter-spacing: 0.5;
 
-    /* &-subst {
-        color: #444;
-    }
-
-    &-comment {
-        color: #888888;
-    } */
-
     &-keyword,
     &-attribute,
     &-selector-tag,
@@ -55,46 +51,6 @@ pre {
         color      : #880000;
         font-weight: bold;
     }
-
-    /* &-type,
-    &-string,
-    &-number,
-    &-selector-id,
-    &-selector-class,
-    &-quote,
-    &-template-tag,
-    &-deletion {
-        color: #880000;
-    }
-
-    &-regexp,
-    &-symbol,
-    &-variable,
-    &-template-variable,
-    &-link,
-    &-selector-attr,
-    &-selector-pseudo {
-        color: #BC6060;
-    }
-
-    &-literal {
-        color: #78A960;
-    }
-
-    &-built_in,
-    &-bullet,
-    &-code,
-    &-addition {
-        color: #397300;
-    }
-
-    &-meta {
-        color: #1f7199;
-    }
-
-    &-meta-string {
-        color: #4d99bf;
-    } */
 
     &-emphasis {
         font-style: italic;
@@ -149,6 +105,16 @@ pre {
         transform: scaleX(1.0) scaleY(1.2);
         opacity  : 0;
     }
+}
+
+.btn-version {
+    padding         : 0.5em 1.3em;
+    border-radius   : 6em;
+    border          : none;
+    font-weight     : 600;
+    color           : @color-7  !important;
+    background-color: @color-6;
+    margin-left: 10px;
 }
 
 .bg {
