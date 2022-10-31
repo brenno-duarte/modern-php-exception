@@ -26,8 +26,8 @@
                             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                                 <div class="navbar-nav">
                                     <a class="nav-link submenu" onclick="show('requestvariablesid')">Request Data</a>
-                                    <a class="nav-link submenu" data-bs-toggle="modal" data-bs-target="#server">Server Info</a>
-                                    <a class="nav-link submenu" data-bs-toggle="modal" data-bs-target="#extensions">Extensions</a>
+                                    <a class="nav-link submenu" onclick="show('servervariablesid')">Server Info</a>
+                                    <a class="nav-link submenu" onclick="show('extensionsvariablesid')">Extensions</a>
                                 </div>
                             </div>
                             <div>

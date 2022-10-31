@@ -55,8 +55,4 @@
 
         console.log.apply(console, arr);
     }
-
-    less = {
-        env: 'production'
-    };
 </script>

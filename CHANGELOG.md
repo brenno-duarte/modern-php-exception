@@ -1,5 +1,22 @@
 # Released Notes
 
+## v2.2.0 - (2022-10-31)
+
+### Added
+
+- Added new error display type
+
+### Changed
+
+- Changed HTML template in `index.php`
+
+### Fixed
+
+- Fixed CSS in templates
+- Fixed comments on class ans traits
+
+------------------------------------------------
+
 ## v2.1.0 - (2022-10-01)
 
 ### Added

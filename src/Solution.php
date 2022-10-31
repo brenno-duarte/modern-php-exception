@@ -50,6 +50,7 @@ class Solution
 
     /**
      * @param string $docs_link
+     * @param string $button_name
      * 
      * @return Solution
      */

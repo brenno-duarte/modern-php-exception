@@ -47,11 +47,11 @@ trait HandlerAssetsTrait
      */
     private function loadJs()
     {
-        $asset = '<script>'.file_get_contents('assets/js/highlight.pack.js', FILE_USE_INCLUDE_PATH);
+        $asset = '<script>' . file_get_contents('assets/js/highlight.pack.js', FILE_USE_INCLUDE_PATH);
         $asset .= file_get_contents('assets/js/highlightjs-line-numbers.js', FILE_USE_INCLUDE_PATH) . '</script>';
         $asset .= '<script>hljs.highlightAll(); hljs.initLineNumbersOnLoad();</script>';
         $asset .= '<script>' . file_get_contents('assets/js/bootstrap.bundle.min.js', FILE_USE_INCLUDE_PATH) . '</script>';
-     
+
         return $asset;
     }
 

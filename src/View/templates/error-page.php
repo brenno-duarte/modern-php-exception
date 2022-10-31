@@ -45,7 +45,7 @@
             <div class="container-fluid">
                 <div>
                     <h5 class="mb-3">
-                        <?= $this->solution->getTitle() ?>
+                        <strong><?= $this->solution->getTitle() ?></strong>
 
                         <?php if (!empty($this->solution->getDescription()) || $this->solution->getDescription() != "") : ?>
                             <small><?= ": " . $this->solution->getDescription() ?></small>

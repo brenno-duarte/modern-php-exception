@@ -46,6 +46,25 @@ $exc = new ModernPHPException([
 $exc->start();
 ```
 
+## Return in Text
+
+To return an exception in text, use the `setFromText()` method.
+
+```php
+$exc = new ModernPHPException();
+$exc->setFromText();
+$exc->start();
+```
+
+Or, use an array in the class's constructor.
+
+```php
+$exc = new ModernPHPException([
+    'type' => 'text'
+]);
+$exc->start();
+```
+
 ## Changing the title
 
 You can change the page title using `setTitle`.

@@ -15,7 +15,7 @@ class ModernPHPException
     use HandlerAssetsTrait;
     use RenderTrait;
 
-    const VERSION = "2.1.0";
+    const VERSION = "2.2.0";
 
     /**
      * @var Bench
@@ -94,6 +94,8 @@ class ModernPHPException
 
     /**
      * Construct
+     * 
+     * @param array $config
      */
     public function __construct(array $config = [])
     {
@@ -134,6 +136,16 @@ class ModernPHPException
     public function setFromJson(): ModernPHPException
     {
         $this->format = "json";
+
+        return $this;
+    }
+
+    /**
+     * @return ModernPHPException
+     */
+    public function setFromText(): ModernPHPException
+    {
+        $this->format = "text";
 
         return $this;
     }
