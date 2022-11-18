@@ -36,10 +36,13 @@
         </div>
     </nav>
 
-    <?php $exception = new $this->info_error_exception['namespace_exception'] ?>
+    <?php
+        $class_name = $this->info_error_exception['namespace_exception'];
+        $exception = new \ReflectionClass($class_name);
+    ?>
 
     <?php if (method_exists($exception, "getSolution")) : ?>
-        <?php $exception->getSolution() ?>
+        <?php $exception->getMethod('getSolution')->invoke($class_name); ?>
 
         <nav class="navbar navbar-expand-lg navbar-light bg-custom-2 p-3">
             <div class="container-fluid">

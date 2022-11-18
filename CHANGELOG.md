@@ -1,5 +1,13 @@
 # Released Notes
 
+## v2.2.1 - (2022-11-18)
+
+### Fixed
+
+- Fixed instance class in `error-page.php` with `ReflectionClass`
+
+------------------------------------------------------------------
+
 ## v2.2.0 - (2022-10-31)
 
 ### Added
