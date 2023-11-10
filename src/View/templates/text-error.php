@@ -94,6 +94,10 @@ $line = $this->getPathInfo($this->info_error_exception['line']);
             # <code><?= $trace['file'] ?></code>
         <?php endforeach ?>
     <?php endif; ?>
+
+    <script>
+        <?= $this->consoleJS() ?>
+    </script>
 </body>
 
 </html>

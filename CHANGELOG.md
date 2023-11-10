@@ -1,5 +1,20 @@
 # Released Notes
 
+## v2.2.2 - (2023-11-10)
+
+### Fixed
+
+- Fixed solution not appearing when called
+- Fixed javascript in text type
+- Fixed colors in dark mode
+- Fixed bug with `include_once` in `index.php`
+
+### Removed
+
+- Removed comments
+
+------------------------------------------------------------------
+
 ## v2.2.1 - (2022-11-18)
 
 ### Fixed

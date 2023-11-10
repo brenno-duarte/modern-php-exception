@@ -63,7 +63,7 @@ trait HandlerAssetsTrait
     private function loadCss(array $info)
     {
         if ($this->theme == "dark") {
-            $this->color_alert = "FF3030";
+            $this->color_alert = "C60000";
         }
 
         $asset = "<style> \n\n";

@@ -72,11 +72,10 @@ trait RenderTrait
 
         if ($this->format == "json" || $this->config['type'] === "json") {
             $this->renderJson();
-        } else if ($this->format == "text" || $this->config['type'] === "text") {
-            //$this->renderText();
-
-            include_once dirname(__DIR__) . '/View/templates/text-error.php';
-            exit;
+        }
+        
+        if ($this->format == "text" || $this->config['type'] === "text") {
+            $this->renderText();
         }
 
         if ($this->config['title'] !== "") {
@@ -124,29 +123,7 @@ trait RenderTrait
      */
     private function renderText(): void
     {
-        if (isset($this->info_error_exception['type_exception'])) {
-            echo "[" . $this->info_error_exception['type_exception'] . "] " . $this->info_error_exception['message'] . '<br>';
-            //$this->renderSolution();
-            
-            echo "File: " . $this->info_error_exception['file'] . '<br>';
-            echo "Line: " . $this->info_error_exception['line'] . '<br>';
-            //$this->getLines($this->info_error_exception['file'], $this->info_error_exception['line']);
-
-            /* if (!empty($this->trace)) {
-                echo PHP_EOL;
-                $this->warning(count($this->trace) . " other error(s)")->print()->break();
-            }
-
-            foreach ($this->trace as $trace) {
-                $this->info("Line: " . $trace['line'] . " | File: " . $trace['file'])->print()->break();
-            } */
-        } else {
-            echo "[" . $this->getError() . "] " . $this->info_error_exception['message'] . '<br>';
-            echo "File: " . $this->info_error_exception['file'] . '<br>';
-            echo "Line: " . $this->info_error_exception['line'] . '<br>';
-            //$this->getLines($this->info_error_exception['file'], $this->info_error_exception['line']);
-        }
-
+        include_once dirname(__DIR__) . '/View/templates/text-error.php';
         exit;
     }
 

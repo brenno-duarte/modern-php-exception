@@ -12,7 +12,7 @@
         "php-exception"
     ],
     "require": {
-        "php": "^8.0",
+        "php": "^8.2",
         "codedungeon/php-cli-colors": "1.*"
     },
     "autoload": {

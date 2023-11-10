@@ -11,7 +11,7 @@ class CustomException extends \Exception implements SolutionInterface
     {
         return Solution::createSolution('My Solution')
             ->setDescription('description')
-            ->setDocs('https://google.com');
+            ->setDocs('https://google.com', 'See more');
     }
 
     /**

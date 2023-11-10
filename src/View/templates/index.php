@@ -62,10 +62,10 @@
 
         <button class="bench btn-custom" data-bs-toggle="modal" data-bs-target="#bench">Bench</button>
 
-        <?= include_once 'bench-page.php'; ?>
+        <?php include_once 'bench-page.php'; ?>
     </main>
 
-    <?= include_once 'javascript.php' ?>
+    <?php include_once 'javascript.php' ?>
 </body>
 
 </html>

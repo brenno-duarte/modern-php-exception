@@ -15,7 +15,7 @@ class ModernPHPException
     use HandlerAssetsTrait;
     use RenderTrait;
 
-    const VERSION = "2.2.1";
+    const VERSION = "2.2.2";
 
     /**
      * @var Bench
@@ -83,36 +83,24 @@ class ModernPHPException
     private string $message_production = "";
 
     /**
-     * @var array
-     */
-    private array $config = [
-        "type" => "",
-        "title" => "",
-        "dark_mode" => "",
-        "production_mode" => ""
-    ];
-
-    /**
      * Construct
      * 
      * @param array $config
      */
-    public function __construct(array $config = [])
-    {
+    public function __construct(
+        private array $config = [
+            "type" => "",
+            "title" => "",
+            "dark_mode" => "",
+            "production_mode" => ""
+        ]
+    ) {
         http_response_code();
 
-        if (!empty($config)) {
-            foreach ($config as $key => $value) {
-                if (!isset($this->config[$key])) {
-                    throw new \Exception("Key '$key' not exists");
-                } else {
-                    $this->config['type'] = $config['type'] ?? "";
-                    $this->config['title'] = $config['title'] ?? "";
-                    $this->config['dark_mode'] = $config['dark_mode'] ?? "";
-                    $this->config['production_mode'] = $config['production_mode'] ?? "";
-                }
-            }
-        }
+        $this->config['type'] = $config['type'] ?? "";
+        $this->config['title'] = $config['title'] ?? "";
+        $this->config['dark_mode'] = $config['dark_mode'] ?? "";
+        $this->config['production_mode'] = $config['production_mode'] ?? "";
 
         $this->bench = new Bench();
         $this->solution = new Solution();
@@ -280,6 +268,12 @@ class ModernPHPException
 
         if ($this->getTitle() == "" || empty($this->getTitle())) {
             $this->setTitle("ModernPHPException: " . $exception->getMessage());
+        }
+
+        $class_name = new $this->info_error_exception['namespace_exception'];
+
+        if (method_exists($exception, "getSolution")) {
+            $class_name->getSolution();
         }
 
         $this->trace = $exception->getTrace();
