@@ -2,7 +2,13 @@
 
 Display PHP errors and exceptions in a modern and intuitive way!
 
-<img src="https://res.cloudinary.com/bdlsltfmk/image/upload/v1651412244/modern-php-exception-2_ftm2yq.png">
+<img src="https://res.cloudinary.com/bdlsltfmk/image/upload/v1704731088/index_yknhye.png">
+
+## Requirements
+
+* PHP >= 8.3
+* ext-mbstring
+* ext-pdo
 
 ## Installing via Composer
 
@@ -27,128 +33,66 @@ From there, all errors and exceptions that are triggered will be displayed throu
 
 You can change the return, title and theme settings in the class constructor as shown in the items below.
 
-## Return in JSON
+## YAML configuration
 
-To return an exception in JSON, use the `setFromJson()` method.
+You can customize the exception title, enable dark mode and also enable production mode. Use the example file `config.example.yaml` or create a new one.
 
 ```php
-$exc = new ModernPHPException();
-$exc->setFromJson();
+$config = __DIR__ . '/config.example.yaml';
+
+$exc = new ModernPHPException($config);
 $exc->start();
 ```
 
-Or, use an array in the class's constructor.
+**Changing the page title**
 
-```php
-$exc = new ModernPHPException([
-    'type' => 'json'
-]);
-$exc->start();
+```yaml
+title: My title
 ```
 
-## Return in Text
+**Enabling dark mode**
 
-To return an exception in text, use the `setFromText()` method.
-
-```php
-$exc = new ModernPHPException();
-$exc->setFromText();
-$exc->start();
+```yaml
+# Default: false
+dark_mode: true
 ```
 
-Or, use an array in the class's constructor.
+**Enabling production mode**
 
-```php
-$exc = new ModernPHPException([
-    'type' => 'text'
-]);
-$exc->start();
+```yaml
+# Default: false
+production_mode: true
 ```
 
-## Changing the title
+To change the message, change the `error_message` variable:
 
-You can change the page title using `setTitle`.
-
-```php
-# ...
-$exc->setTitle("My title");
-# ...
-```
-
-Or, use an array in the class's constructor.
-
-```php
-$exc = new ModernPHPException([
-    'title' => 'My title'
-]);
-$exc->start();
-```
-
-## Dark mode
-
-To change the whole theme, use `useDarkTheme`.
-
-```php
-#...
-$exc->useDarkTheme();
-#...
-```
-
-Or, use an array in the class's constructor.
-
-```php
-$exc = new ModernPHPException([
-    'dark_mode' => true
-]);
-$exc->start();
-```
-
-# Production mode
-
-When a project made in PHP is in production, it's not good to have technical errors. Therefore, you can display a screen for these cases.
-
-```php
-$exc = new ModernPHPException([
-    'production_mode' => true
-]);
-$exc->start();
-```
-
-To change the default message that will be displayed, you can use the `productionModeMessage()` method:
-
-```php
-$exc = new ModernPHPException([
-    'production_mode' => true
-]);
-$exc->productionModeMessage("Server error");
-$exc->start();
+```yaml
+production_mode: true
+error_message: Something wrong!
 ```
 
 <img src="https://res.cloudinary.com/bdlsltfmk/image/upload/v1651412180/production-mode_zajewg.png">
 
-# Using try/catch
+**Load CSS files if there is no internet connection**
 
-To display an exception inside a try/catch block, use the `exceptionHandler()` method:
+```yaml
+# Use `false` only if you have no internet connection
+enable_cdn_assets: false
+```
+
+## Enable occurrences
+
+If you want to have a history of all exceptions and errors that your application displays, you can enable the occurrences using the `enableOccurrences` method:
 
 ```php
-#...
+$config = __DIR__ . '/config.example.yaml';
 
-function divide($x, $y) {
-    if ($y == 0) {
-        throw new \Exception('is a division by zero.');
-    }
-    $result = $x / $y;
-    return $result;
-};
+$exc = new ModernPHPException($config);
+$exc->enableOccurrences(); // <- Before `start` method
+$exc->start();
+```
 
-try {
-    echo divide(5,0);
-} catch (\Exception $e) {
-    $exc->exceptionHandler($e);
-}
-``` 
-
-If necessary, you can also use the `errorHandler()` method.
+<img src="https://res.cloudinary.com/bdlsltfmk/image/upload/v1704730870/occurrences_nvdmbe.png">
 
 # Creating a solution for an exception
 
@@ -210,6 +154,8 @@ $exc->start();
 
 $user = new UserTest();
 $user->secondCall();
+
+$a = new FakeClass();
 ```
 
 ## License

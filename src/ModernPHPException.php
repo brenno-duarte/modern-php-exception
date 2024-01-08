@@ -2,7 +2,7 @@
 
 namespace ModernPHPException;
 
-use ModernPHPException\Solution;
+use Symfony\Component\Yaml\Yaml;
 use ModernPHPException\{
     Trait\RenderTrait,
     Trait\HelpersTrait,
@@ -15,7 +15,7 @@ class ModernPHPException
     use HandlerAssetsTrait;
     use RenderTrait;
 
-    const VERSION = "2.2.2";
+    public const VERSION = "3.0.0";
 
     /**
      * @var Bench
@@ -83,28 +83,69 @@ class ModernPHPException
     private string $message_production = "";
 
     /**
+     * @var bool
+     */
+    protected bool $is_occurrence_enabled = false;
+
+    /**
+     * @var array
+     */
+    private array $config = [
+        'title' => '',
+        'dark_mode' => false,
+        'production_mode' => false,
+        'error_message' => '',
+        'enable_cdn_assets' => true
+    ];
+
+    /**
+     * @var string
+     */
+    protected static string $path_to_config_file = "";
+
+    /**
      * Construct
      * 
-     * @param array $config
+     * @param null|string $config_file
      */
     public function __construct(
-        private array $config = [
-            "type" => "",
-            "title" => "",
-            "dark_mode" => "",
-            "production_mode" => ""
-        ]
+        private ?string $config_file = ""
     ) {
         http_response_code();
 
-        $this->config['type'] = $config['type'] ?? "";
-        $this->config['title'] = $config['title'] ?? "";
-        $this->config['dark_mode'] = $config['dark_mode'] ?? "";
-        $this->config['production_mode'] = $config['production_mode'] ?? "";
-
+        $this->setConfigFile($config_file);
         $this->bench = new Bench();
         $this->solution = new Solution();
         $this->bench->start();
+    }
+
+    /**
+     * @param string $config_file
+     * 
+     * @return void
+     */
+    private function setConfigFile(string $config_file): void
+    {
+        if (file_exists($config_file)) {
+            $config = Yaml::parseFile($config_file);
+            self::$path_to_config_file = $config_file;
+        }
+
+        if (isset($config)) {
+            $this->config['title'] = $config['title'] ?? "";
+            $this->message_production = $config['error_message'] ?? "";
+            $this->config['dark_mode'] = filter_var($config['dark_mode'], FILTER_VALIDATE_BOOLEAN);
+            $this->config['production_mode'] = filter_var($config['production_mode'], FILTER_VALIDATE_BOOLEAN);
+            $this->config['enable_cdn_assets'] = filter_var($config['enable_cdn_assets'], FILTER_VALIDATE_BOOLEAN);
+        }
+    }
+
+    /**
+     * @return string
+     */
+    public static function getConfigFile(): string
+    {
+        return self::$path_to_config_file;
     }
 
     /**
@@ -112,28 +153,8 @@ class ModernPHPException
      */
     public function start(): ModernPHPException
     {
-        set_exception_handler([$this, 'exceptionHandler']);
         set_error_handler([$this, 'errorHandler']);
-
-        return $this;
-    }
-
-    /**
-     * @return ModernPHPException
-     */
-    public function setFromJson(): ModernPHPException
-    {
-        $this->format = "json";
-
-        return $this;
-    }
-
-    /**
-     * @return ModernPHPException
-     */
-    public function setFromText(): ModernPHPException
-    {
-        $this->format = "text";
+        set_exception_handler([$this, 'exceptionHandler']);
 
         return $this;
     }
@@ -178,7 +199,7 @@ class ModernPHPException
      *
      * @return string
      */
-    public function getFile(): string
+    protected function getFile(): string
     {
         return $this->file;
     }
@@ -190,7 +211,7 @@ class ModernPHPException
      *
      * @return self
      */
-    public function setFile(string $file): self
+    protected function setFile(string $file): self
     {
         $this->file = $file;
 
@@ -202,7 +223,7 @@ class ModernPHPException
      *
      * @return  string
      */
-    public function getTitle()
+    protected function getTitle()
     {
         return $this->title;
     }
@@ -214,7 +235,7 @@ class ModernPHPException
      *
      * @return  self
      */
-    public function setTitle(string $title)
+    protected function setTitle(string $title)
     {
         $this->title = $title;
 
@@ -262,7 +283,7 @@ class ModernPHPException
             'code' => $exception->getCode(),
             'file' => $exception->getFile(),
             'line' => $exception->getLine(),
-            'type_exception' => $this->getClassMame($exception),
+            'type_exception' => $this->getClassName($exception),
             'namespace_exception' => get_class($exception)
         ];
 
@@ -270,7 +291,7 @@ class ModernPHPException
             $this->setTitle("ModernPHPException: " . $exception->getMessage());
         }
 
-        $class_name = new $this->info_error_exception['namespace_exception'];
+        $class_name = new $this->info_error_exception['namespace_exception']();
 
         if (method_exists($exception, "getSolution")) {
             $class_name->getSolution();
@@ -285,13 +306,12 @@ class ModernPHPException
     }
 
     /**
-     * @param string $message_production
-     * 
-     * @return void
+     * @return ModernPHPException
      */
-    public function productionModeMessage(string $message_production = ""): void
+    public function enableOccurrences(): ModernPHPException
     {
-        $this->message_production = $message_production;
+        $this->is_occurrence_enabled = true;
+        return $this;
     }
 
     /**
@@ -301,6 +321,10 @@ class ModernPHPException
     {
         if ($this->isCli() == true) {
             $this->renderCli();
+        }
+
+        if ($this->is_occurrence_enabled == true) {
+            $this->registerOccurrence();
         }
 
         include_once 'View/templates/error-production.php';

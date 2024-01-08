@@ -33,7 +33,7 @@ class Solution
     {
         self::$solution_title = $title;
 
-        return new static;
+        return new static();
     }
 
     /**

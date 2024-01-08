@@ -72,7 +72,7 @@ class Bench
     /**
      * Returns the memory usage at the end checkpoint
      *
-     * @param  boolean $readable Whether the result must be human readable
+     * @param  bool    $readable Whether the result must be human readable
      * @param  string  $format   The format to display (printf format)
      * 
      * @return mixed
@@ -85,12 +85,12 @@ class Bench
     /**
      * Returns the memory peak, readable or not
      *
-     * @param  boolean $readable Whether the result must be human readable
+     * @param  bool    $readable Whether the result must be human readable
      * @param  string  $format   The format to display (printf format)
      * 
      * @return mixed
      */
-    public function getMemoryPeak(bool $raw = false, string $format = null): mixed
+    public function getMemoryPeak(bool $raw = false, ?string $format = null): mixed
     {
         $memory = memory_get_peak_usage(true);
 
@@ -128,7 +128,7 @@ class Bench
      * 
      * @return  string
      */
-    public static function readableSize(int $size, string $format = null, int $round = 3): string
+    public static function readableSize(int $size, ?string $format = null, int $round = 3): string
     {
         $mod = 1024;
 
@@ -158,7 +158,7 @@ class Bench
      * 
      * @return string
      */
-    public static function readableElapsedTime(float $microtime, string $format = null, int $round = 3): string
+    public static function readableElapsedTime(float $microtime, ?string $format = null, int $round = 3): string
     {
         if (is_null($format)) {
             $format = '%.3f%s';

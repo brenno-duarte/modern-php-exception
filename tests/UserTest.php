@@ -20,6 +20,6 @@ class UserTest
 
     public static function staticCall()
     {
-        throw new CustomException("Error Processing Request", 3);
+        throw new CustomException("Error Processing Request");
     }
 }

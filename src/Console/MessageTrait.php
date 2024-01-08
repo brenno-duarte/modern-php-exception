@@ -210,10 +210,10 @@ trait MessageTrait
     {
         if ($this->colorIsSupported() || $this->are256ColorsSupported()) {
             self::$color_reset = Color::RESET;
-            self::$color_success = Color::green();
+            self::$color_success = Color::light_green();
             self::$color_info = Color::cyan();
-            self::$color_warning = Color::yellow();
-            self::$color_error = Color::bg_red();
+            self::$color_warning = Color::light_yellow();
+            self::$color_error = Color::bg_light_red();
             self::$color_line = Color::white();
         }
 
@@ -228,9 +228,12 @@ trait MessageTrait
         if (DIRECTORY_SEPARATOR === '\\') {
             if (function_exists('sapi_windows_vt100_support') && @sapi_windows_vt100_support(STDOUT)) {
                 return true;
-            } elseif (getenv('ANSICON') !== false || getenv('ConEmuANSI') === 'ON') {
+            }
+            
+            if (getenv('ANSICON') !== false || getenv('ConEmuANSI') === 'ON') {
                 return true;
             }
+
             return false;
         } else {
             return function_exists('posix_isatty') && @posix_isatty(STDOUT);
@@ -244,8 +247,8 @@ trait MessageTrait
     {
         if (DIRECTORY_SEPARATOR === '\\') {
             return function_exists('sapi_windows_vt100_support') && @sapi_windows_vt100_support(STDOUT);
-        } else {
-            return str_starts_with(getenv('TERM'), '256color');
         }
+        
+        return str_starts_with(getenv('TERM'), '256color');
     }
 }

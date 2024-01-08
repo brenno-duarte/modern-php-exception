@@ -67,16 +67,31 @@ trait HelpersTrait
     }
 
     /**
-     * @param mixed $classname
+     * @param object $classname
      * 
      * @return string
      */
-    private function getClassMame($classname): string
+    private function getClassName(object $classname): string
     {
         $class = get_class($classname);
         $class = explode("\\", $class);
-        $class = end($class);
 
-        return $class;
+        return end($class);
     }
+
+    /**
+     * @return string
+     */
+    private static function getUri(): string
+    {
+        $http = "https://";
+        $ssl = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443;
+
+        if ($ssl == false) {
+            $http = "http://";
+        }
+
+        return $http . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+    }
+
 }

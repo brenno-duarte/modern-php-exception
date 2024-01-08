@@ -1,51 +1,54 @@
-<?php if ($this->type == 'error') : ?>
+<ul class="list-group list-group-numbered">
+    <div class="accordion accordion-flush">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-headingOne">
+                <div class="accordion-button collapsed bg-light main-error txt-dark-theme">
+                    Main Error
+                </div>
+            </h2>
+        </div>
+    </div>
 
-    <section>
-        <a href="#" onclick="show('<?= $this->getPathInfo($this->info_error_exception['file']) ?>')" class="list-group-item list-group-item-action dark-trace" aria-current="true">
-            <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">
-                    <?= pathinfo($this->info_error_exception['file'])['basename'] ?>: <span class="badge bg-trace"><?= $this->info_error_exception['line'] ?></span>
-                </h5>
+    <li class="border-0 list-group-item d-flex justify-content-between align-items-start">
+        <a class="text-secondary" href="#" style="text-decoration: none; cursor: pointer;" onclick="show('<?= $this->getPathInfo($this->info_error_exception['file']) ?>')">
+            <div class="ms-2 me-auto">
+                <div class="fw-bold txt-dark-theme"><?= pathinfo($this->info_error_exception['file'])['basename'] ?></div>
+
+                <small class="text-primary txt-error-file"><?= (!empty($this->info_error_exception['namespace_exception'])) ? $this->info_error_exception['namespace_exception'] : $this->info_error_exception['file'] ?></small>
             </div>
-
-            <p class="mb-1 label-trace"><?= $this->info_error_exception['file'] ?></p>
-        </a>
-    </section>
-
-<?php elseif ($this->type == 'exception') : ?>
-
-    <section>
-        <a href="#" onclick="show('<?= $this->getPathInfo($this->info_error_exception['file']) ?>')" class="list-group-item list-group-item-action dark-trace" aria-current="true">
-            <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">
-                    <?= pathinfo($this->info_error_exception['file'])['basename'] ?>: <span class="badge bg-trace"><?= $this->info_error_exception['line'] ?></span>
-                </h5>
-            </div>
-
-            <p class="mb-1 label-trace"><?= $this->info_error_exception['file'] ?></p>
         </a>
 
+        <span class="badge bg-danger rounded-pill error-color">
+            <?= $this->info_error_exception['line'] ?>
+        </span>
+    </li>
+
+    <?php if ($this->type === 'exception') : ?>
         <?php if (!empty($this->trace)) : ?>
 
-            <div class="accordion accordion-flush" id="accordionFlushExample">
+            <div class="accordion accordion-flush" id="accordion-trace">
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="flush-headingOne">
-                        <button class="accordion-button collapsed bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                        <button class="txt-dark-theme accordion-button collapsed bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
                             <?= count($this->trace) ?> other error(s)
                         </button>
                     </h2>
-                    <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                    <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordion-trace">
 
                         <?php foreach ($this->trace as $trace) : ?>
-                            <a href="#" onclick="show('<?= $this->getPathInfo($trace['file']) ?>')" class="list-group-item list-group-item-action dark-trace" aria-current="true">
-                                <div class="d-flex w-100 justify-content-between">
-                                    <h5 class="mb-1">
-                                        <?= pathinfo($trace['file'])['basename'] ?>: <span class="badge bg-trace"><?= $trace['line'] ?></span>
-                                    </h5>
-                                </div>
+                            <li class="list-group-item d-flex justify-content-between align-items-start">
+                                <a class="text-secondary" href="#" style="text-decoration: none;" onclick="show('<?= $this->getPathInfo($trace['file']) ?>')">
+                                    <div class="ms-2 me-auto">
+                                        <div class="fw-bold txt-dark-theme"><?= pathinfo($trace['file'])['basename'] ?></div>
 
-                                <p class="mb-1 label-trace"><?= $trace['file'] ?></p>
-                            </a>
+                                        <small class="text-primary txt-error-file"><?= $trace['file'] ?></small>
+                                    </div>
+                                </a>
+
+                                <span class="badge bg-danger rounded-pill error-color">
+                                    <?= $trace['line'] ?>
+                                </span>
+                            </li>
                         <?php endforeach; ?>
 
                     </div>
@@ -53,6 +56,5 @@
             </div>
 
         <?php endif; ?>
-
-    </section>
-<?php endif; ?>
+    <?php endif; ?>
+</ul>

@@ -1,24 +1,55 @@
 html,
 body {
-    font-family     : 'Open Sans', sans-serif;
-    background-color: @color-4  !important;
-}
-
-h3 {
-    color: @color-3;
+    font-family: @default-font;
+    background-color: @color-4 !important;
 }
 
 pre {
-    font-family: 'Open Sans', sans-serif;
+    font-family: @default-font;
+}
+
+.version-number {
+    color: @color-7;
+}
+
+.txt-dark-theme {
+    color: @color-7 !important;
+}
+
+.txt-dark-theme-2 {
+    color: @color-2 !important;
+}
+
+.txt-error-file {
+    color: @color-5 !important;
+}
+
+.card {
+    border: 0px;
+}
+
+.error-color {
+    background-color: @color-3 !important;
+}
+
+.occurrence-msg {
+    color: @color-3;
+}
+
+.font-error {
+    font-size: 20px !important;
+}
+
+.main-error::after {
+    display: none;
+}
+
+.accordion-button::after {
+    color: @color-7 !important;
 }
 
 .bench-title {
     color: @color-7;
-}
-
-.bench {
-    position: fixed;
-    bottom  : 5px;
 }
 
 .hidden {
@@ -29,12 +60,40 @@ pre {
     word-wrap: break-word;
 }
 
+.submenu {
+    font-size: 14px;
+    color: @color-7;
+    font-weight: 500;
+    cursor: pointer;
+
+    &:hover {
+        color: @color-3;
+    }
+}
+
+.list-group-item::before {
+    display: none;
+}
+
+.list-group-item:active {
+    background-color: @color-2 !important;
+}
+
+.modal-header,
+.modal-body,
+.modal-footer,
+.list-group-item,
+.accordion-button {
+    border: 0;
+    background-color: @color-6 !important;
+}
+
 .hljs {
-    display       : block;
-    overflow-x    : auto;
-    padding       : 0.5em;
-    background    : #F0F0F0;
-    font-family   : 'Ubuntu Mono', sans-serif;
+    display: block;
+    overflow-x: auto;
+    padding: 0.5em;
+    background: #F0F0F0;
+    font-family: @default-font;
     letter-spacing: 0.5;
 
     &-keyword,
@@ -48,7 +107,7 @@ pre {
 
     &-title,
     &-section {
-        color      : #880000;
+        color: #880000;
         font-weight: bold;
     }
 
@@ -61,57 +120,59 @@ pre {
     }
 }
 
-.btn-custom {
-    font-size       : 12px;
-    text-transform  : uppercase;
-    text-decoration : none;
-    padding         : 0.8em 1.7em;
-    display         : inline-block;
-    border-radius   : 6em;
-    transition      : all .2s;
-    border          : none;
-    font-family     : inherit;
-    font-weight     : 500;
-    color           : @white  !important;
-    background-color: @green-2;
-    margin-left     : 10px;
+.btn {
+    font-size: 12px;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 0.8em 1.7em;
+    display: inline-block;
+    border-radius: 6em;
+    transition: all .2s;
+    border: none;
+    font-family: inherit;
+    font-weight: 500;
+    margin-left: 10px;
+
+    &-solution {
+        color: @white !important;
+        background-color: @green-2 !important;
+    }
 
     &:hover {
-        transform : translateY(-3px);
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     }
 
-    &:active {
+    /* &:active {
         transform : translateY(-1px);
         box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-    }
+    } */
 
     &:after {
-        content         : "";
-        display         : inline-block;
-        height          : 100%;
-        width           : 100%;
-        border-radius   : 100px;
-        position        : absolute;
-        top             : 0;
-        left            : 0;
-        z-index         : -1;
-        transition      : all .4s;
+        content: "";
+        display: inline-block;
+        height: 100%;
+        width: 100%;
+        border-radius: 100px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        transition: all .4s;
         background-color: @green-2;
     }
 
-    &:hover:after {
+    /* &:hover:after {
         transform: scaleX(1.0) scaleY(1.2);
         opacity  : 0;
-    }
+    } */
 }
 
 .btn-version {
-    padding         : 0.5em 1.3em;
-    border-radius   : 6em;
-    border          : none;
-    font-weight     : 600;
-    color           : @color-7  !important;
+    padding: 0.5em 1.3em;
+    border-radius: 6em;
+    border: none;
+    font-weight: 600;
+    color: @color-7 !important;
     background-color: @color-6;
     margin-left: 10px;
 }
@@ -119,33 +180,23 @@ pre {
 .bg {
     &-info-exc {
         font-weight: bold;
-        color      : @color-1  !important;
+        color: @color-5 !important;
     }
 
     &-main-info-exc {
-        background-color: @color-6;
+        background-color: @color-6 !important;
     }
 
     &-submenu {
-        background-color: @color-1  !important;
+        background-color: @color-1 !important;
     }
 
     &-custom {
         background-color: @color-6;
     }
 
-    &-custom-2 {
+    &-solution {
         background-color: @green-1;
-    }
-}
-
-.submenu {
-    color      : @white  !important;
-    font-weight: 500;
-    cursor     : pointer;
-
-    &:hover {
-        background-color: @color-5;
     }
 }
 
@@ -167,7 +218,24 @@ pre {
 
     &::-webkit-scrollbar-thumb {
         background-color: @scroll-color-2;
-        border-radius   : 20px;
-        border          : 3px solid @scroll-color-1;
+        border-radius: 20px;
+        border: 3px solid @scroll-color-1;
     }
+}
+
+.accordion-button:not(.collapsed) {
+    border: hidden !important;
+}
+
+.accordion-button:link,
+.accordion-button:visited,
+.accordion-button:hover,
+.accordion-button:active {
+    text-decoration: none !important;
+    border: hidden !important;
+    border-radius: 0% !important;
+}
+
+.accordion-button:focus {
+    border: hidden !important;
 }
