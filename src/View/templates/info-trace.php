@@ -14,7 +14,7 @@
             <div class="ms-2 me-auto">
                 <div class="fw-bold txt-dark-theme"><?= pathinfo($this->info_error_exception['file'])['basename'] ?></div>
 
-                <small class="text-primary txt-error-file"><?= (!empty($this->info_error_exception['namespace_exception'])) ? $this->info_error_exception['namespace_exception'] : $this->info_error_exception['file'] ?></small>
+                <small class="text-primary txt-error-file text-break"><?= (!empty($this->info_error_exception['namespace_exception'])) ? $this->info_error_exception['namespace_exception'] : $this->info_error_exception['file'] ?></small>
             </div>
         </a>
 
@@ -41,7 +41,7 @@
                                     <div class="ms-2 me-auto">
                                         <div class="fw-bold txt-dark-theme"><?= pathinfo($trace['file'])['basename'] ?></div>
 
-                                        <small class="text-primary txt-error-file"><?= $trace['file'] ?></small>
+                                        <small class="text-primary txt-error-file text-break"><?= $trace['file'] ?></small>
                                     </div>
                                 </a>
 

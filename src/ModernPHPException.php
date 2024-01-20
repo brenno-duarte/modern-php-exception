@@ -15,7 +15,7 @@ class ModernPHPException
     use HandlerAssetsTrait;
     use RenderTrait;
 
-    public const VERSION = "3.0.0";
+    public const VERSION = "3.0.1";
 
     /**
      * @var Bench
@@ -291,13 +291,14 @@ class ModernPHPException
             $this->setTitle("ModernPHPException: " . $exception->getMessage());
         }
 
-        $class_name = new $this->info_error_exception['namespace_exception']();
+        $reflection_class = new \ReflectionClass($this->info_error_exception['namespace_exception']);
+        $class_name = $reflection_class->newInstanceWithoutConstructor();
 
         if (method_exists($exception, "getSolution")) {
             $class_name->getSolution();
         }
 
-        $this->trace = $exception->getTrace();
+        $this->trace = $this->filterTrace($exception->getTrace());
         $this->main_file = $exception->getFile();
         $this->type = "exception";
 

@@ -1,5 +1,15 @@
 # Released Notes
 
+## v3.0.1 - (2024-01-20)
+
+### Fixed
+
+- Fixed namespace class not found on `namespace_exception` key
+- Fixed wrong exception trace with `filterTrace` method
+- Fixed trace text not break line in `info-trace` view
+
+--------------------------------------------------------------------------
+
 ## v3.0.0 - (2024-01-08)
 
 ### Added

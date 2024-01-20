@@ -97,6 +97,24 @@ trait RenderTrait
     }
 
     /**
+     * Unset trace without 'file' and 'line' keys
+     *
+     * @param array $trace
+     * 
+     * @return array
+     */
+    private function filterTrace(array $trace): array
+    {
+        foreach ($trace as $key => $value) {
+            if (!array_key_exists('file', $value) && !array_key_exists('line', $value)) {
+                unset($trace[$key]);
+            }
+        }
+
+        return $trace;
+    }
+
+    /**
      * Load all resources
      * 
      * @return array
