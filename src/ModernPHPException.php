@@ -15,7 +15,7 @@ class ModernPHPException
     use HandlerAssetsTrait;
     use RenderTrait;
 
-    public const VERSION = "3.0.1";
+    public const VERSION = "3.0.2";
 
     /**
      * @var Bench
@@ -132,8 +132,8 @@ class ModernPHPException
         }
 
         if (isset($config)) {
-            $this->config['title'] = $config['title'] ?? "";
             $this->message_production = $config['error_message'] ?? "";
+            $this->config['title'] = $config['title'] ?? "";
             $this->config['dark_mode'] = filter_var($config['dark_mode'], FILTER_VALIDATE_BOOLEAN);
             $this->config['production_mode'] = filter_var($config['production_mode'], FILTER_VALIDATE_BOOLEAN);
             $this->config['enable_cdn_assets'] = filter_var($config['enable_cdn_assets'], FILTER_VALIDATE_BOOLEAN);
@@ -141,14 +141,8 @@ class ModernPHPException
     }
 
     /**
-     * @return string
-     */
-    public static function getConfigFile(): string
-    {
-        return self::$path_to_config_file;
-    }
-
-    /**
+     * Start all custom erros and exceptions on PHP application
+     * 
      * @return ModernPHPException
      */
     public function start(): ModernPHPException
@@ -313,22 +307,5 @@ class ModernPHPException
     {
         $this->is_occurrence_enabled = true;
         return $this;
-    }
-
-    /**
-     * @return void
-     */
-    private function productionMode(): void
-    {
-        if ($this->isCli() == true) {
-            $this->renderCli();
-        }
-
-        if ($this->is_occurrence_enabled == true) {
-            $this->registerOccurrence();
-        }
-
-        include_once 'View/templates/error-production.php';
-        exit;
     }
 }

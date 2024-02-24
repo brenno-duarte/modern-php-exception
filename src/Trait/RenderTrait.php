@@ -4,9 +4,8 @@ namespace ModernPHPException\Trait;
 
 use ModernPHPException\Console\MessageTrait;
 use ModernPHPException\Occurrences;
-use ModernPHPException\Resources\{CpuUsage, HtmlTag, MemoryUsage};
 use ModernPHPException\Solution;
-use function Termwind\{render};
+use ModernPHPException\Resources\{CpuUsage, HtmlTag, MemoryUsage};
 
 trait RenderTrait
 {
@@ -72,9 +71,9 @@ trait RenderTrait
     /**
      * Render full template with all resources
      * 
-     * @return void
+     * @return never
      */
-    private function render(): void
+    private function render(): never
     {
         if (ob_get_contents()) {
             ob_end_clean();
@@ -86,10 +85,12 @@ trait RenderTrait
 
         $this->renderCli();
 
+        // Don't erase `$resources` variable
         $resources = $this->loadResources();
         $main_error = basename($this->main_file, '.php');
         $main_error = strtolower($main_error);
 
+        // Don't erase `$assets` variable
         $assets = $this->loadAssets($this->info_error_exception);
 
         include_once dirname(__DIR__) . '/View/templates/index.php';
@@ -150,8 +151,6 @@ trait RenderTrait
      */
     private function renderJson(): void
     {
-        echo "<title>" . $this->getTitle() . "</title>";
-
         if ($this->type == "error") {
             echo json_encode([$this->getError() => $this->info_error_exception], JSON_UNESCAPED_UNICODE);
         } elseif ($this->type == "exception") {
@@ -164,17 +163,6 @@ trait RenderTrait
                 echo json_encode([$this->info_error_exception['type_exception'] => $this->info_error_exception], JSON_UNESCAPED_UNICODE);
             }
         }
-
-        exit;
-    }
-
-    /**
-     * @return void
-     */
-    private function renderText(): void
-    {
-        include_once dirname(__DIR__) . '/View/templates/text-error.php';
-        exit;
     }
 
     /**
@@ -199,16 +187,7 @@ trait RenderTrait
             $this->warning($this->info_error_exception['file'])->print();
             echo " : ";
             $this->warning($this->info_error_exception['line'])->print()->break(true);
-
-            $res = $this->getLines($this->info_error_exception['file'], $this->info_error_exception['line']);
-            $line = $this->info_error_exception['line'];
-            $start_line = (int)$this->info_error_exception['line'] - 2;
-
-            /* $code = '<code class="text-white" line="' . $line . '" start-line="' . $start_line . '">';
-            $code .= $res;
-            $code .= '</code>'; */
-
-            render('<code class="text-white" line="' . $line . '" start-line="' . $start_line . '">' . $res . '</code>');
+            $this->getLines($this->info_error_exception['file'], $this->info_error_exception['line']);
 
             if (!empty($this->trace)) {
                 echo PHP_EOL;
@@ -231,9 +210,9 @@ trait RenderTrait
      * @param string $context
      * @param int $line
      * 
-     * @return string
+     * @return self
      */
-    private function getLines(string $context, int $line): string
+    private function getLines(string $context, int $line): self
     {
         for ($i = 0; $i < 4; $i++) {
             $lines_up[] = $line + $i;
@@ -284,13 +263,18 @@ trait RenderTrait
         }
 
         $fp = null;
-        $render = '';
 
-        foreach ($result as $value) {
-            $render .= $value;
+        foreach ($result as $key => $value) {
+            if ($key == $line) {
+                $this->errorLine(" -> " . $key . "| " . $value)->print()->break();
+            } else {
+                $this->gray("   " . $key . "| ")->print();
+                $this->info($value)->print()->break();
+            }
         }
 
-        return $render;
+        echo PHP_EOL;
+        return $this;
     }
 
     /**
@@ -315,5 +299,26 @@ trait RenderTrait
                 }
             }
         }
+    }
+
+    /**
+     * Render error on console JS
+     * 
+     * @return void
+     */
+    public function consoleJS(): void
+    {
+        if ($this->type == "error") {
+            echo "console.error('[" . $this->getError() . "] " . $this->info_error_exception['message'] . "')" . PHP_EOL;
+        } elseif ($this->type == "exception") {
+            echo "console.error('[" . $this->info_error_exception['type_exception'] . "] " . $this->info_error_exception['message'] . "')" . PHP_EOL;
+        }
+
+        echo 'var user = {
+            File:"' . addslashes($this->info_error_exception['file']) . '",
+            Line:' . $this->info_error_exception['line'] . '
+        }
+        
+        console.table(user)';
     }
 }

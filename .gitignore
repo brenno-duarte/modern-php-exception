@@ -1,3 +1,5 @@
 vendor/
 composer.lock
 indexTest.php
+debug.php
+functions.php

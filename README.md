@@ -137,7 +137,7 @@ public static function staticCall()
 
 ## Test
 
-If you want to test the component, use the `UserTest` class inside the `test/` folder or use the code below in your `index.php`.
+If you want to test the component, use the code below in your `index.php`.
 
 ```php
 <?php
@@ -145,15 +145,11 @@ If you want to test the component, use the `UserTest` class inside the `test/` f
 require 'vendor/autoload.php';
 
 use ModernPHPException\ModernPHPException;
-use Test\UserTest;
 
 $exc = new ModernPHPException();
 $exc->start();
 
-#throw new Exception("Error Test", 1);
-
-$user = new UserTest();
-$user->secondCall();
+throw new Exception("Error Test", 1);
 
 $a = new FakeClass();
 ```

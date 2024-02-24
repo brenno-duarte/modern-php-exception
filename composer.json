@@ -16,11 +16,9 @@
         "ext-mbstring": "*",
         "ext-pdo": "*",
         "codedungeon/php-cli-colors": "1.*",
-        "nunomaduro/termwind": "^1.15",
         "symfony/yaml": "^7.0"
     },
     "require-dev": {
-        "nunomaduro/phpinsights": "^2.11",
         "symfony/var-dumper": "^7.0"
     },
     "autoload": {

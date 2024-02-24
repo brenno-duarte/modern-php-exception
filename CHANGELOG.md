@@ -1,5 +1,18 @@
 # Released Notes
 
+## v3.0.2 - (2024-02-24)
+
+### Fixed
+
+- Fixed scrollbar style
+- Fixed view when output code on CLI mode
+
+### Removed
+
+- Removed `nunomaduro/termwind` and `nunomaduro/phpinsights` packages
+
+--------------------------------------------------------------------------
+
 ## v3.0.1 - (2024-01-20)
 
 ### Fixed

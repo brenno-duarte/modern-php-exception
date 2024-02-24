@@ -39,7 +39,17 @@ trait MessageTrait
     /**
      * @var mixed|null
      */
+    protected static mixed $color_error_line = null;
+
+    /**
+     * @var mixed|null
+     */
     protected static mixed $color_line = null;
+
+    /**
+     * @var mixed|null
+     */
+    protected static mixed $color_gray = null;
 
     /**
      * Get the value of message
@@ -154,6 +164,27 @@ trait MessageTrait
      * 
      * @return self
      */
+    public function errorLine(string $message, bool $space = false): self
+    {
+        $this->generateColors();
+
+        self::$message = $message;
+
+        if ($space == true) {
+            self::$message = "  " . self::$color_error_line . self::$message . self::$color_reset;
+        } else {
+            self::$message = self::$color_error_line . self::$message . self::$color_reset;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param string $message
+     * @param bool $space
+     * 
+     * @return self
+     */
     public function line(string $message, bool $space = false): self
     {
         $this->generateColors();
@@ -164,6 +195,27 @@ trait MessageTrait
             self::$message = "  " . self::$color_line . self::$message . self::$color_reset;
         } else {
             self::$message = self::$color_line . self::$message . self::$color_reset;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param string $message
+     * @param bool $space
+     * 
+     * @return self
+     */
+    public function gray(string $message, bool $space = false): self
+    {
+        $this->generateColors();
+
+        self::$message = $message;
+
+        if ($space == true) {
+            self::$message = "  " . self::$color_gray . self::$message . self::$color_reset;
+        } else {
+            self::$message = self::$color_gray . self::$message . self::$color_reset;
         }
 
         return $this;
@@ -214,7 +266,9 @@ trait MessageTrait
             self::$color_info = Color::cyan();
             self::$color_warning = Color::light_yellow();
             self::$color_error = Color::bg_light_red();
+            self::$color_error_line = Color::light_red();
             self::$color_line = Color::white();
+            self::$color_gray = Color::gray();
         }
 
         return $this;
@@ -229,7 +283,7 @@ trait MessageTrait
             if (function_exists('sapi_windows_vt100_support') && @sapi_windows_vt100_support(STDOUT)) {
                 return true;
             }
-            
+
             if (getenv('ANSICON') !== false || getenv('ConEmuANSI') === 'ON') {
                 return true;
             }
@@ -248,7 +302,7 @@ trait MessageTrait
         if (DIRECTORY_SEPARATOR === '\\') {
             return function_exists('sapi_windows_vt100_support') && @sapi_windows_vt100_support(STDOUT);
         }
-        
+
         return str_starts_with(getenv('TERM'), '256color');
     }
 }

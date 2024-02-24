@@ -19,12 +19,14 @@
                         <span class="txt-dark-theme">Memory usage by PHP</span>
                         <span class="badge error-color bg-primary rounded-pill"><?= $this->bench->getMemoryUsage() ?></span>
                     </li>
-                    <?php if (!is_null($resources['cpu_usage'])) : ?>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span class="txt-dark-theme">CPU usage</span>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span class="txt-dark-theme">CPU usage</span>
+                        <?php if (!is_null($resources['cpu_usage'])) : ?>
                             <span class="badge error-color bg-primary rounded-pill"><?= $resources['cpu_usage'] ?>%</span>
-                        </li>
-                    <?php endif; ?>
+                        <?php else : ?>
+                            <span class="badge error-color bg-primary rounded-pill">Not estimateable (missing rights at Linux or Windows)</span>
+                        <?php endif; ?>
+                    </li>
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         <span class="txt-dark-theme">Memory usage by system</span>
                         <span class="badge error-color bg-primary rounded-pill"><?= $resources['memory_usage'] ?></span>
