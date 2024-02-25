@@ -92,6 +92,17 @@ $exc->enableOccurrences(); // <- Before `start` method
 $exc->start();
 ```
 
+Don't forget to configure the database in the `config.example.yaml` file.
+
+```yaml
+# Database for Occurrences
+db_drive: mysql
+db_host: localhost
+db_name: database_name
+db_user: root
+db_pass: pass
+```
+
 <img src="https://res.cloudinary.com/bdlsltfmk/image/upload/v1704730870/occurrences_nvdmbe.png">
 
 # Creating a solution for an exception
@@ -133,6 +144,66 @@ public static function staticCall()
 {
     throw new CustomException("Error Processing Request");
 }
+```
+
+## Functions
+
+Modern PHP Exceptions has some functions to help you debug your code. The available functions are:
+
+- An easy function to pull all details of the debug backtrace.
+
+```php
+get_debug_backtrace()
+```
+
+- Function to returns the value of `var_dump()` instead of outputting it.
+
+```php
+echo var_dump_buffer()
+```
+
+- PHP function to replace var_dump(), print_r() based on the XDebug style.
+
+```php
+var_dump_debug()
+```
+
+- Dump PHP value and die script
+
+```php
+dump_die()
+```
+
+- View a PHP Closure's Source
+
+```php
+closure_dump()
+```
+
+## Logger
+
+If you want to record a log to a file, you can use the `Debug` class. To record a log, use the `log` method.
+
+```php
+use ModernPHPException\Debug;
+
+Debug::log($message, $log_file);
+```
+
+You can register the file and line on which this method is being called.
+
+```php
+use ModernPHPException\Debug;
+
+Debug::log($message, $log_file, __FILE, __LINE__);
+```
+
+And to retrieve the logs that were recorded in a file, use the `get` method.
+
+```php
+use ModernPHPException\Debug;
+
+Debug::get($log_file);
 ```
 
 ## Test

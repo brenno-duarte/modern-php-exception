@@ -1,5 +1,22 @@
 # Released Notes
 
+## v3.1.0 - (2024-02-25)
+
+### Added
+
+- Added functions to debug PHP code
+- Added debug class for logger
+
+### Fixed
+
+- Fixed select occurrences SQL
+
+### Removed
+
+- Removed `symfony/var-dumper` component
+
+--------------------------------------------------------------------------
+
 ## v3.0.2 - (2024-02-24)
 
 ### Fixed

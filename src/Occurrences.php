@@ -149,7 +149,7 @@ abstract class Occurrences
     {
         self::getConnection();
 
-        $sql = "SELECT * FROM " . self::$table_name . " ORDER BY id DESC";
+        $sql = "SELECT * FROM " . self::$table_name . " ORDER BY last_occurrence DESC";
 
         try {
             $stmt = self::$connection->query($sql);

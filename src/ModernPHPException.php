@@ -15,7 +15,7 @@ class ModernPHPException
     use HandlerAssetsTrait;
     use RenderTrait;
 
-    public const VERSION = "3.0.2";
+    public const VERSION = "3.1.0";
 
     /**
      * @var Bench
