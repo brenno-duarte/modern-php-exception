@@ -79,11 +79,21 @@ trait RenderTrait
             ob_end_clean();
         }
 
+        $this->renderCli();
+
+        if (
+            isset($_SERVER['REQUEST_METHOD']) &&
+            $_SERVER['REQUEST_METHOD'] != 'GET' ||
+            isset($_SERVER['CONTENT_TYPE']) &&
+            $_SERVER['CONTENT_TYPE'] == 'application/json'
+        ) {
+
+            $this->renderJson();
+        }
+
         if ($this->config['production_mode'] === true) {
             $this->productionMode();
         }
-
-        $this->renderCli();
 
         // Don't erase `$resources` variable
         $resources = $this->loadResources();
@@ -147,32 +157,34 @@ trait RenderTrait
     }
 
     /**
-     * @return void
+     * Render JSON exception/error if request method isn't GET
+     * 
+     * @return never
      */
-    private function renderJson(): void
+    private function renderJson(): never
     {
         if ($this->type == "error") {
             echo json_encode([$this->getError() => $this->info_error_exception], JSON_UNESCAPED_UNICODE);
-        } elseif ($this->type == "exception") {
-            if (!empty($this->trace)) {
-                echo json_encode([
-                    $this->info_error_exception['type_exception'] => $this->info_error_exception,
-                    "error" => $this->trace
-                ], JSON_UNESCAPED_UNICODE);
-            } else {
-                echo json_encode([$this->info_error_exception['type_exception'] => $this->info_error_exception], JSON_UNESCAPED_UNICODE);
-            }
         }
+
+        if ($this->type == "exception") {
+            echo json_encode(
+                [$this->info_error_exception['type_exception'] => $this->info_error_exception],
+                JSON_UNESCAPED_UNICODE
+            );
+        }
+
+        exit;
     }
 
     /**
+     * Render exception/error in CLI
+     * 
      * @return void
      */
     private function renderCli(): void
     {
-        $verify = $this->isCli();
-
-        if ($verify == true) {
+        if ($this->isCli() === true) {
             echo PHP_EOL;
 
             if (isset($this->info_error_exception['type_exception'])) {
@@ -182,7 +194,7 @@ trait RenderTrait
             }
 
             $this->line(" : " . $this->info_error_exception['message'])->print()->break(true);
-            $this->renderSolution();
+            $this->renderSolutionCli();
             echo "at ";
             $this->warning($this->info_error_exception['file'])->print();
             echo " : ";
@@ -278,9 +290,11 @@ trait RenderTrait
     }
 
     /**
+     * Render solution in CLI
+     * 
      * @return void
      */
-    private function renderSolution(): void
+    private function renderSolutionCli(): void
     {
         if (isset($this->info_error_exception['type_exception'])) {
             $exception = new $this->info_error_exception['namespace_exception']();
