@@ -323,9 +323,11 @@ trait RenderTrait
     public function consoleJS(): void
     {
         if ($this->type == "error") {
-            echo "console.error('[" . $this->getError() . "] " . $this->info_error_exception['message'] . "')" . PHP_EOL;
+            $message = str_replace(["'", '"'], "", $this->info_error_exception['message']);
+            echo "console.error('[" . $this->getError() . "] " . $message . "')" . PHP_EOL;
         } elseif ($this->type == "exception") {
-            echo "console.error('[" . $this->info_error_exception['type_exception'] . "] " . $this->info_error_exception['message'] . "')" . PHP_EOL;
+            $message = str_replace(["'", '"'], "", $this->info_error_exception['message']);
+            echo "console.error('[" . $this->info_error_exception['type_exception'] . "] " . $message . "')" . PHP_EOL;
         }
 
         echo 'var user = {

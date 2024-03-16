@@ -1,5 +1,14 @@
 # Released Notes
 
+## v3.1.2 - (2024-03-16)
+
+### Fixed
+
+- Fixed exception on JavaScript
+- Fixed version on `composer.json`
+
+--------------------------------------------------------------------------
+
 ## v3.1.1 - (2024-03-11)
 
 ### Fixed
