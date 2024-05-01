@@ -1,5 +1,26 @@
 # Released Notes
 
+## v3.2.0 - (2024-05-01)
+
+### Added
+
+- Added logs in `shutdown` method
+
+### Changed
+
+- Changed `var_dump_debug` and `dump_die` to accept multiple variables
+
+### Fixed
+
+- Fixed special chars in `errorHandler`
+
+### Removed
+
+- Removed `codedungeon/php-cli-colors` and `ghostff/dump7` packages
+- Removed `MessageTrait` trait
+
+--------------------------------------------------------------------------
+
 ## v3.1.2 - (2024-03-16)
 
 ### Fixed

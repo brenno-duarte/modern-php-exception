@@ -1,7 +1,8 @@
 <?php
 
-use Dump as GlobalDump;
-use ModernPHPException\Resources\Dump;
+use ModernPHPException\Console\CliMessage;
+use ModernPHPException\Resources\BrowserDump;
+use ModernPHPException\Resources\CliDump;
 
 /**
  * An easy function to pull all details of the debug backtrace
@@ -45,13 +46,20 @@ function var_dump_buffer(mixed $value): string|false
  * 
  * @return void
  */
-function var_dump_debug(mixed $value): void
+function var_dump_debug(...$values): void
 {
-    if (isCli() == true) {
-        new GlobalDump($value);
-    } else {
-        $result = call_user_func(array(new Dump(), 'dump'), $value);
-        echo $result;
+    foreach ($values as $value) {
+        if (isCli() == true) {
+            CliDump::set('string', ['0000FF', 'light_blue']);
+            new CliDump($value);
+
+            if (!CliMessage::colorIsSupported() || !CliMessage::are256ColorsSupported()) {
+                CliDump::safe($value);
+            }
+        } else {
+            $dump = new BrowserDump();
+            echo $dump->dump($value);
+        }
     }
 }
 
@@ -62,9 +70,9 @@ function var_dump_debug(mixed $value): void
  * 
  * @return void
  */
-function dump_die(mixed $value): void
+function dump_die(...$values): void
 {
-    var_dump_debug($value);
+    var_dump_debug($values);
     exit;
 }
 

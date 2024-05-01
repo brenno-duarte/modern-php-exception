@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ModernPHPException\Resources;
 
-class Dump
+class BrowserDump
 {
     const SEP_OBJECT = '___';
 
@@ -44,7 +46,7 @@ class Dump
      *
      * @var int
      */
-    private $maxDepth = 3;
+    private int $maxDepth = 3;
 
     /**
      * Controls the maximum string length that is shown when
@@ -52,7 +54,7 @@ class Dump
      *
      * @var int
      */
-    private $maxData = 512;
+    private int $maxData = 512;
 
     /**
      * Controls the amount of array children and object's
@@ -60,21 +62,21 @@ class Dump
      *
      * @var int
      */
-    private $maxChildren = 128;
+    private int $maxChildren = 128;
 
     /**
      * The font family.
      *
      * @var string
      */
-    private $fontFamily = 'Monospace';
+    private string $fontFamily = 'Monospace';
 
     /**
      * Variable to control the recurse depth.
      *
      * @var int
      */
-    private $recurseDepth = 0;
+    private int $recurseDepth = 0;
 
     /**
      * Variable to detect the recurse.
@@ -82,11 +84,7 @@ class Dump
      *
      * @var array
      */
-    private $recurseDetection = array();
-
-    public function __construct()
-    {
-    }
+    private array $recurseDetection = [];
 
     /**
      * Dump variable into formatted XHTML string.
@@ -96,7 +94,7 @@ class Dump
      *
      * @return string - Formatted XHTML
      */
-    public function dump($var, $or = true)
+    public function dump(mixed $var, bool $or = true)
     {
         $result = '';
 
@@ -288,12 +286,14 @@ class Dump
                 $result .= $this->writeRow('<i>'.self::DISPLAY_MAX_CHILDREN.'</i>');
                 break;
             }
-            if (substr($key, 0, 3) === self::SEP_OBJECT) {
+
+            if (substr((string)$key, 0, 3) === self::SEP_OBJECT) {
                 $expKey = explode(self::SEP_OBJECT, $key);
                 $result .= $this->writeRow('<i>'.$expKey[1].'</i> \''.$expKey[2].'\' => '.$this->dump($value, false));
             } else {
                 $result .= $this->writeRow((is_numeric($key) ? $key : '\''.$key.'\'').' => '.$this->dump($value, false));
             }
+            
             $children++;
         }
 

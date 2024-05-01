@@ -30,6 +30,9 @@
                                     <a class="nav-link submenu text-uppercase" data-bs-toggle="modal" data-bs-target="#bench">
                                         <i class="bi bi-speedometer"></i> Benchmark
                                     </a>
+                                    <a class="nav-link submenu text-uppercase" onclick="show('logsid')">
+                                        <i class="bi bi-file-text"></i> Logs
+                                    </a>
                                     <a class="nav-link submenu text-uppercase <?= ($this->is_occurrence_enabled === true) ? "" : "disabled" ?>" data-bs-toggle="modal" data-bs-target="#occurrencesid">
                                         <i class="bi bi-clipboard-data"></i> Occurrences
                                     </a>
@@ -62,6 +65,7 @@
                         include_once 'code-error-exception.php';
                         include_once 'info-server.php';
                         include_once 'info-request.php';
+                        include_once 'info-logs.php';
 
                         ?>
                     </div>

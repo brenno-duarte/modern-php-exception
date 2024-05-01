@@ -1,4 +1,7 @@
 vendor/
 composer.lock
 indexTest.php
+debug.php
 debug-test.php
+tests.php
+ModernPHPExceptionLogs.log

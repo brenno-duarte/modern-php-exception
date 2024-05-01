@@ -2,7 +2,7 @@
     "name": "brenno-duarte/modern-php-exception",
     "description": "PHP errors in a modern way",
     "license": "MIT",
-    "version": "3.1.2",
+    "version": "3.2.0",
     "keywords": [
         "exception",
         "throwable",
@@ -16,9 +16,7 @@
         "php": "^8.3",
         "ext-mbstring": "*",
         "ext-pdo": "*",
-        "codedungeon/php-cli-colors": "1.*",
-        "symfony/yaml": "^7.0",
-        "ghostff/dump7": "^2.0"
+        "symfony/yaml": "^7.0"
     },
     "autoload": {
         "psr-4": {

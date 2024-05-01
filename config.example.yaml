@@ -8,6 +8,10 @@ error_message:
 # Use `false` only if you have no internet connection
 enable_cdn_assets: true
 
+# Enable logs register
+enable_logs: false
+dir_logs: 
+
 # Database for Occurrences
 db_drive: mysql
 db_host: localhost

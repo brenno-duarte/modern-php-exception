@@ -15,7 +15,7 @@ class ModernPHPException
     use HandlerAssetsTrait;
     use RenderTrait;
 
-    public const VERSION = "3.1.2";
+    public const VERSION = "3.2.0";
 
     /**
      * @var Bench
@@ -104,6 +104,11 @@ class ModernPHPException
     protected static string $path_to_config_file = "";
 
     /**
+     * @var array
+     */
+    private static array $config_yaml = [];
+
+    /**
      * Construct
      * 
      * @param null|string $config_file
@@ -127,16 +132,16 @@ class ModernPHPException
     private function setConfigFile(string $config_file): void
     {
         if (file_exists($config_file)) {
-            $config = Yaml::parseFile($config_file);
+            self::$config_yaml = Yaml::parseFile($config_file);
             self::$path_to_config_file = $config_file;
         }
 
-        if (isset($config)) {
-            $this->message_production = $config['error_message'] ?? "";
-            $this->config['title'] = $config['title'] ?? "";
-            $this->config['dark_mode'] = filter_var($config['dark_mode'], FILTER_VALIDATE_BOOLEAN);
-            $this->config['production_mode'] = filter_var($config['production_mode'], FILTER_VALIDATE_BOOLEAN);
-            $this->config['enable_cdn_assets'] = filter_var($config['enable_cdn_assets'], FILTER_VALIDATE_BOOLEAN);
+        if (isset(self::$config_yaml)) {
+            $this->message_production = self::$config_yaml['error_message'] ?? "";
+            $this->config['title'] = self::$config_yaml['title'] ?? "";
+            $this->config['dark_mode'] = filter_var(self::$config_yaml['dark_mode'], FILTER_VALIDATE_BOOLEAN);
+            $this->config['production_mode'] = filter_var(self::$config_yaml['production_mode'], FILTER_VALIDATE_BOOLEAN);
+            $this->config['enable_cdn_assets'] = filter_var(self::$config_yaml['enable_cdn_assets'], FILTER_VALIDATE_BOOLEAN);
         }
     }
 
@@ -149,8 +154,32 @@ class ModernPHPException
     {
         set_error_handler([$this, 'errorHandler']);
         set_exception_handler([$this, 'exceptionHandler']);
+        register_shutdown_function([$this, 'shutdown']);
 
         return $this;
+    }
+
+    /**
+     * @return void
+     */
+    private function shutdown(): void
+    {
+        if (isset(self::$config_yaml)) {
+            if (isset(self::$config_yaml['enable_logs']) && self::$config_yaml['enable_logs'] == true) {
+                if (isset(self::$config_yaml['dir_logs']) && self::$config_yaml['dir_logs'] != "") {
+                    Debug::dirLogger(self::$config_yaml['dir_logs']);
+                }
+
+                if (!empty($this->info_error_exception)) {
+                    Debug::log(
+                        $this->info_error_exception['message'],
+                        'ModernPHPExceptionLogs',
+                        $this->info_error_exception['file'],
+                        $this->info_error_exception['line']
+                    );
+                }
+            }
+        }
     }
 
     /**
@@ -246,6 +275,8 @@ class ModernPHPException
      */
     public function errorHandler(int $code, string $message, string $file, int $line): void
     {
+        $message = htmlspecialchars($message);
+
         $this->info_error_exception = [
             'message' => ($message ?? ''),
             'code' => ($code ?? ''),

@@ -80,6 +80,15 @@ error_message: Something wrong!
 enable_cdn_assets: false
 ```
 
+**Enabling Log file**
+
+```yaml
+enable_logs: false
+
+# Default: sys_get_temp_dir() . "/ModernPHPExceptionLogs/ModernPHPExceptionLogs.log"
+dir_logs: C:\wamp64\www\modern-php-exception\
+```
+
 ## Enable occurrences
 
 If you want to have a history of all exceptions and errors that your application displays, you can enable the occurrences using the `enableOccurrences` method:
@@ -168,7 +177,32 @@ echo var_dump_buffer()
 var_dump_debug()
 ```
 
-- Dump PHP value and die script
+In terminal, you can simple hide or show some object attribute using a Doc block flag:
+
+|                               |                                                   |
+|-------------------------------|---------------------------------------------------|
+| `@dumpignore-inheritance`     | Hides inherited class properties.                 |
+| `@dumpignore-inherited-class` | Hides the class name from inherited properties.   |
+| `@dumpignore-private`         | Show all properties except the **private** ones.  |
+| `@dumpignore-protected`       | Show all properties except the **protected** ones.|
+| `@dumpignore-public`          | Show all properties except the **public** ones.   |
+| `@dumpignore`                 | Hide the property the Doc comment belongs to.     |
+
+```php
+/**
+* @dumpignore-inheritance
+* @dumpignore-inherited-class
+* @dumpignore-private
+* @dumpignore-public
+* @dumpignore-public
+*/
+Class Foo extends Bar {
+    /** @dumpignore */
+    private ?BigObject $foo = null;
+}
+```
+
+- Dump PHP value and die script. This function use `var_dump_debug`.
 
 ```php
 dump_die()

@@ -2,14 +2,13 @@
 
 namespace ModernPHPException\Trait;
 
-use ModernPHPException\Console\MessageTrait;
+use ModernPHPException\Console\CliMessage;
 use ModernPHPException\Occurrences;
 use ModernPHPException\Solution;
 use ModernPHPException\Resources\{CpuUsage, HtmlTag, MemoryUsage};
 
 trait RenderTrait
 {
-    use MessageTrait;
     use HelpersTrait;
     use HandlerAssetsTrait;
 
@@ -188,29 +187,29 @@ trait RenderTrait
             echo PHP_EOL;
 
             if (isset($this->info_error_exception['type_exception'])) {
-                $this->error($this->info_error_exception['type_exception'])->print();
+                CliMessage::error($this->info_error_exception['type_exception'])->print();
             } else {
-                $this->error($this->getError())->print();
+                CliMessage::error($this->getError())->print();
             }
 
-            $this->line(" : " . $this->info_error_exception['message'])->print()->break(true);
+            CliMessage::line(" : " . $this->info_error_exception['message'])->print()->break(true);
             $this->renderSolutionCli();
             echo "at ";
-            $this->warning($this->info_error_exception['file'])->print();
+            CliMessage::warning($this->info_error_exception['file'])->print();
             echo " : ";
-            $this->warning($this->info_error_exception['line'])->print()->break(true);
+            CliMessage::warning($this->info_error_exception['line'])->print()->break(true);
             $this->getLines($this->info_error_exception['file'], $this->info_error_exception['line']);
 
             if (!empty($this->trace)) {
                 echo PHP_EOL;
-                $this->warning("Exception Trace")->print()->break(true);
+                CliMessage::warning("Exception Trace")->print()->break(true);
             }
 
             foreach ($this->trace as $key => $trace) {
                 echo $key . "   ";
-                $this->info($trace['file'])->print();
+                CliMessage::info($trace['file'])->print();
                 echo " : ";
-                $this->info($trace['line'])->print()->break();
+                CliMessage::info($trace['line'])->print()->break();
             }
 
             echo PHP_EOL;
@@ -278,10 +277,10 @@ trait RenderTrait
 
         foreach ($result as $key => $value) {
             if ($key == $line) {
-                $this->errorLine(" -> " . $key . "| " . $value)->print()->break();
+                CliMessage::errorLine("↪︎   " . $key . "| " . $value)->print()->break();
             } else {
                 $this->gray("   " . $key . "| ")->print();
-                $this->info($value)->print()->break();
+                CliMessage::info($value)->print()->break();
             }
         }
 
