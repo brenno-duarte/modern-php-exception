@@ -279,7 +279,7 @@ trait RenderTrait
             if ($key == $line) {
                 CliMessage::errorLine("↪︎   " . $key . "| " . $value)->print()->break();
             } else {
-                $this->gray("   " . $key . "| ")->print();
+                CliMessage::lineNumbers("   " . $key . "| ")->print();
                 CliMessage::info($value)->print()->break();
             }
         }

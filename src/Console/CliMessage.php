@@ -120,6 +120,21 @@ class CliMessage
     }
 
     /**
+     * Create a warning message
+     *
+     * @param mixed $message
+     * @param bool $space
+     * 
+     * @return static 
+     */
+    public static function lineNumbers(mixed $message, bool $space = false): static
+    {
+        self::generateColors();
+        self::$message = self::prepareMessage($message, self::$color_gray, $space);
+        return new static;
+    }
+
+    /**
      * Create a error message
      *
      * @param mixed $message
@@ -232,7 +247,7 @@ class CliMessage
         if (self::colorIsSupported() || self::are256ColorsSupported()) {
             self::$color_reset = "\e[0m";
             self::$color_success = "\033[92m";
-            self::$color_info = "\033[96m";
+            self::$color_info = "\033[38;5;39m";
             self::$color_warning = "\033[93m";
             self::$color_error = "\033[41m";
             self::$color_error_line = "\033[1;31m";

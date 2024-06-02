@@ -15,7 +15,7 @@ class ModernPHPException
     use HandlerAssetsTrait;
     use RenderTrait;
 
-    public const VERSION = "3.2.0";
+    public const VERSION = "3.2.1";
 
     /**
      * @var Bench
@@ -136,7 +136,7 @@ class ModernPHPException
             self::$path_to_config_file = $config_file;
         }
 
-        if (isset(self::$config_yaml)) {
+        if (!empty(self::$config_yaml)) {
             $this->message_production = self::$config_yaml['error_message'] ?? "";
             $this->config['title'] = self::$config_yaml['title'] ?? "";
             $this->config['dark_mode'] = filter_var(self::$config_yaml['dark_mode'], FILTER_VALIDATE_BOOLEAN);

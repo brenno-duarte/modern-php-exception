@@ -1,5 +1,15 @@
 # Released Notes
 
+## v3.2.1 - (2024-06-01)
+
+### Fixed
+
+- Fixed numbers line colors
+- Fixed when configuration file not exists
+- Fixed functions if exists
+
+--------------------------------------------------------------------------
+
 ## v3.2.0 - (2024-05-01)
 
 ### Added
