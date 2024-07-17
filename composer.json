@@ -2,7 +2,6 @@
     "name": "brenno-duarte/modern-php-exception",
     "description": "PHP errors in a modern way",
     "license": "MIT",
-    "version": "3.2.1",
     "keywords": [
         "exception",
         "throwable",
