@@ -9,21 +9,10 @@ trait HelpersTrait
      */
     private function isCli(): bool
     {
-        if (defined('STDIN')) {
-            return true;
-        }
-
-        if (php_sapi_name() === "cli") {
-            return true;
-        }
-
-        if (PHP_SAPI === 'cli') {
-            return true;
-        }
-
-        if (stristr(PHP_SAPI, 'cgi') and getenv('TERM')) {
-            return true;
-        }
+        if (defined('STDIN')) return true;
+        if (php_sapi_name() === "cli") return true;
+        if (PHP_SAPI === 'cli') return true;
+        if (stristr(PHP_SAPI, 'cgi') and getenv('TERM')) return true;
 
         if (
             empty($_SERVER['REMOTE_ADDR']) and
@@ -87,10 +76,7 @@ trait HelpersTrait
         $http = "https://";
         $ssl = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443;
 
-        if ($ssl == false) {
-            $http = "http://";
-        }
-
+        if ($ssl == false) $http = "http://";
         return $http . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
     }
 

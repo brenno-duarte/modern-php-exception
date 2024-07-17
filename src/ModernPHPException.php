@@ -3,10 +3,10 @@
 namespace ModernPHPException;
 
 use Symfony\Component\Yaml\Yaml;
-use ModernPHPException\{
-    Trait\RenderTrait,
-    Trait\HelpersTrait,
-    Trait\HandlerAssetsTrait
+use ModernPHPException\Trait\{
+    RenderTrait,
+    HelpersTrait,
+    HandlerAssetsTrait
 };
 
 class ModernPHPException
@@ -15,7 +15,7 @@ class ModernPHPException
     use HandlerAssetsTrait;
     use RenderTrait;
 
-    public const VERSION = "3.2.1";
+    public const VERSION = "3.3.0";
 
     /**
      * @var Bench
@@ -88,6 +88,26 @@ class ModernPHPException
     protected bool $is_occurrence_enabled = false;
 
     /**
+     * @var string
+     */
+    protected static string $path_to_config_file = "";
+
+    /**
+     * @var array
+     */
+    private static array $config_yaml = [];
+
+    /**
+     * @var int
+     */
+    private int $error_code;
+
+    /**
+     * @var array
+     */
+    private array $ignore_errors = [];
+
+    /**
      * @var array
      */
     private array $config = [
@@ -97,16 +117,6 @@ class ModernPHPException
         'error_message' => '',
         'enable_cdn_assets' => true
     ];
-
-    /**
-     * @var string
-     */
-    protected static string $path_to_config_file = "";
-
-    /**
-     * @var array
-     */
-    private static array $config_yaml = [];
 
     /**
      * Construct
@@ -125,24 +135,24 @@ class ModernPHPException
     }
 
     /**
-     * @param string $config_file
-     * 
-     * @return void
+     * @return string
      */
-    private function setConfigFile(string $config_file): void
+    public static function getConfigFile(): string
     {
-        if (file_exists($config_file)) {
-            self::$config_yaml = Yaml::parseFile($config_file);
-            self::$path_to_config_file = $config_file;
-        }
+        return self::$path_to_config_file;
+    }
 
-        if (!empty(self::$config_yaml)) {
-            $this->message_production = self::$config_yaml['error_message'] ?? "";
-            $this->config['title'] = self::$config_yaml['title'] ?? "";
-            $this->config['dark_mode'] = filter_var(self::$config_yaml['dark_mode'], FILTER_VALIDATE_BOOLEAN);
-            $this->config['production_mode'] = filter_var(self::$config_yaml['production_mode'], FILTER_VALIDATE_BOOLEAN);
-            $this->config['enable_cdn_assets'] = filter_var(self::$config_yaml['enable_cdn_assets'], FILTER_VALIDATE_BOOLEAN);
-        }
+    /**
+     * Ignore some errors
+     *
+     * @param array $errors
+     * 
+     * @return ModernPHPException
+     */
+    public function ignoreErrors(array $errors): ModernPHPException
+    {
+        $this->ignore_errors = $errors;
+        return $this;
     }
 
     /**
@@ -160,6 +170,29 @@ class ModernPHPException
     }
 
     /**
+     * @param string $config_file
+     * 
+     * @return void
+     */
+    private function setConfigFile(string $config_file): void
+    {
+        if (file_exists($config_file)) {
+            self::$config_yaml = Yaml::parseFile($config_file);
+            self::$path_to_config_file = $config_file;
+        }
+
+        if (!empty(self::$config_yaml)) {
+            $this->message_production = self::$config_yaml["error_message"] ?? "";
+            $this->config["title"] = self::$config_yaml["title"] ?? "";
+            $this->config["dark_mode"] = filter_var(self::$config_yaml["dark_mode"], FILTER_VALIDATE_BOOLEAN);
+            $this->config["production_mode"] = filter_var(self::$config_yaml["production_mode"], FILTER_VALIDATE_BOOLEAN);
+            $this->config["enable_cdn_assets"] = filter_var(self::$config_yaml["enable_cdn_assets"], FILTER_VALIDATE_BOOLEAN);
+        }
+    }
+
+    /**
+     * Executed after script execution finishes or exit() is called
+     * 
      * @return void
      */
     private function shutdown(): void
@@ -183,12 +216,15 @@ class ModernPHPException
     }
 
     /**
+     * Set the error value
+     * 
      * @param int $code
      * 
-     * @return self
+     * @return ModernPHPException
      */
-    public function setError(int $code): self
+    public function setError(int $code): ModernPHPException
     {
+        $this->error_code = $code;
         $this->error_value = match ($code) {
             E_PARSE => 'Parse Error',
             E_ERROR => 'Fatal Error',
@@ -210,6 +246,8 @@ class ModernPHPException
     }
 
     /**
+     * Get the error value
+     * 
      * @return string
      */
     public function getError(): string
@@ -232,21 +270,20 @@ class ModernPHPException
      *
      * @param string  $file
      *
-     * @return self
+     * @return ModernPHPException
      */
-    protected function setFile(string $file): self
+    protected function setFile(string $file): ModernPHPException
     {
         $this->file = $file;
-
         return $this;
     }
 
     /**
      * Get the value of title
      *
-     * @return  string
+     * @return string
      */
-    protected function getTitle()
+    protected function getTitle(): string
     {
         return $this->title;
     }
@@ -254,14 +291,13 @@ class ModernPHPException
     /**
      * Set the value of title
      *
-     * @param  string  $title
+     * @param string $title
      *
-     * @return  self
+     * @return ModernPHPException
      */
-    protected function setTitle(string $title)
+    protected function setTitle(string $title): ModernPHPException
     {
         $this->title = $title;
-
         return $this;
     }
 
@@ -291,9 +327,13 @@ class ModernPHPException
         $this->setError($code);
         $this->type = "error";
         $this->main_file = $file;
-
         $this->bench->end();
-        $this->render();
+
+        if (!empty($this->ignore_errors)) {
+            if (!is_int(array_search($this->error_code, $this->ignore_errors, true))) $this->render();
+        } else {
+            $this->render();
+        }
     }
 
     /**
@@ -319,14 +359,11 @@ class ModernPHPException
         $reflection_class = new \ReflectionClass($this->info_error_exception['namespace_exception']);
         $class_name = $reflection_class->newInstanceWithoutConstructor();
 
-        if (method_exists($exception, "getSolution")) {
-            $class_name->getSolution();
-        }
+        if (method_exists($exception, "getSolution")) $class_name->getSolution();
 
         $this->trace = $this->filterTrace($exception->getTrace());
         $this->main_file = $exception->getFile();
         $this->type = "exception";
-
         $this->bench->end();
         $this->render();
     }

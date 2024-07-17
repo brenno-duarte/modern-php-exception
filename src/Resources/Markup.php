@@ -51,7 +51,6 @@ class Markup implements ArrayAccess
         $this->content = array();
         $this->autoclosed = in_array($this->tag, $this->autocloseTagsList);
         $this->text = '';
-        return $this;
     }
 
     /**
@@ -284,7 +283,7 @@ class Markup implements ArrayAccess
     }
 
     /**
-     * @return static return parent or null
+     * @return mixed return parent or null
      */
     public function remove()
     {

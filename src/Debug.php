@@ -12,10 +12,7 @@ class Debug
     public static function dirLogger(string $dir_log): void
     {
         self::$log_folder = $dir_log;
-
-        if (!is_dir(self::$log_folder)) {
-            mkdir(self::$log_folder);
-        }
+        if (!is_dir(self::$log_folder)) mkdir(self::$log_folder);
     }
 
     /**
@@ -36,13 +33,8 @@ class Debug
 
         $message = "[" . date('Y-m-d H:i:s') . "] " . $message;
 
-        if (!is_null($file)) {
-            $message .= " [" . $file . "]";
-        }
-
-        if (!is_null($line)) {
-            $message .= " (" . $line . ")";
-        }
+        if (!is_null($file)) $message .= " [" . $file . "]";
+        if (!is_null($line)) $message .= " (" . $line . ")";
 
         if (!is_dir(self::$log_folder)) {
             throw new \Exception("Directory " . self::$log_folder . " not exists");

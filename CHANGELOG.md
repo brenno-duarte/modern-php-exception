@@ -1,5 +1,17 @@
 # Released Notes
 
+## v3.3.0 - (2024-07-17)
+
+### Added
+
+- Added `ignoreErrors` method
+
+### Fixed
+
+- Fixed error in occurrences
+
+--------------------------------------------------------------------------
+
 ## v3.2.1 - (2024-06-01)
 
 ### Fixed

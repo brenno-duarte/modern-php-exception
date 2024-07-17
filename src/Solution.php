@@ -32,7 +32,6 @@ class Solution
     public static function createSolution(string $title): Solution
     {
         self::$solution_title = $title;
-
         return new static();
     }
 
@@ -44,7 +43,6 @@ class Solution
     public function setDescription(string $description): Solution
     {
         self::$solution_description = $description;
-
         return $this;
     }
 

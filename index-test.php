@@ -5,10 +5,11 @@ require 'vendor/autoload.php';
 use Test\UserTest;
 use ModernPHPException\ModernPHPException;
 
-//$config = __DIR__ . '/config.example.yaml';
-$config = "";
+$config = __DIR__ . '/config.example.yaml';
+//$config = "";
 $exc = new ModernPHPException($config);
 #$exc->enableOccurrences();
+$exc->ignoreErrors([E_USER_DEPRECATED, E_WARNING]);
 $exc->start();
 
 #http_response_code(404);
@@ -17,8 +18,9 @@ $exc->start();
 
 //throw new Exception("Error Processing Request");
 
-/* trigger_error("Test", E_USER_WARNING);
-echo "After trigger_error"; */
+//error_reporting(E_ALL & ~E_USER_DEPRECATED);
+trigger_error("Test", E_USER_DEPRECATED);
+echo "After trigger_error";
 
 //UserTest::staticCall();
 
@@ -47,8 +49,8 @@ try {
 
 var_dump_debug($a, true); */
 
-//echo $a;
+echo $a;
 
 //$a = new FakeClass(); //FATAL ERROR
 
-(new UserTest())->triggerTest();
+//(new UserTest())->triggerTest();

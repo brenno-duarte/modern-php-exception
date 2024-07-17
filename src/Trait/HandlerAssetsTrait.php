@@ -25,16 +25,15 @@ trait HandlerAssetsTrait
     public function useDarkTheme(): self
     {
         $this->theme = "dark";
-
         return $this;
     }
 
     /**
      * @param array $line
      * 
-     * @return self
+     * @return string
      */
-    private function loadAssets(array $info)
+    private function loadAssets(array $info): string
     {
         if (!is_bool($this->config['enable_cdn_assets'])) {
             throw new \Exception("'true' or 'false' must be the options in the variable 'enable_cdn_assets'");

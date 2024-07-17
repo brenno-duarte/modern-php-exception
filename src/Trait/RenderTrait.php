@@ -244,8 +244,6 @@ trait RenderTrait
             $is_resource = true;
         } else if (is_file($context)) {
             $fp = fopen($context, 'r');
-        } else {
-            return false;
         }
 
         $i = 0;

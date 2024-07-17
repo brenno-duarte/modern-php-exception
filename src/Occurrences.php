@@ -4,15 +4,17 @@ namespace ModernPHPException;
 
 use ModernPHPException\Database\Connection;
 use ModernPHPException\Trait\HelpersTrait;
+use PDO;
+use PDOException;
 
 abstract class Occurrences
 {
     use HelpersTrait;
 
     /**
-     * @var \PDO
+     * @var PDO
      */
-    private static \PDO $connection;
+    private static PDO $connection;
     
     /**
      * @var string
@@ -51,8 +53,8 @@ abstract class Occurrences
         try {
             $stmt = self::$connection->prepare($sql);
             return $stmt->execute();
-        } catch (\PDOException $e) {
-            throw new \PDOException($e->getMessage());
+        } catch (PDOException $e) {
+            throw new PDOException($e->getMessage());
         }
     }
 
@@ -103,20 +105,20 @@ abstract class Occurrences
             $stmt = self::$connection->prepare($sql);
 
             if (empty($numb_occurrences)) {
-                $stmt->bindParam(':type_error', $type_error, \PDO::PARAM_STR);
-                $stmt->bindParam(':url_occurrence', $url_occurrence, \PDO::PARAM_STR);
-                $stmt->bindParam(':file_occurrence', $file_occurrence, \PDO::PARAM_STR);
-                $stmt->bindParam(':line_occurrence', $line_occurrence, \PDO::PARAM_INT);
-                $stmt->bindParam(':times_occurrence', $times_occurrence, \PDO::PARAM_INT);
-                $stmt->bindParam(':first_occurrence', $first_occurrence, \PDO::PARAM_STR);
-                $stmt->bindParam(':last_occurrence', $last_occurrence, \PDO::PARAM_STR);
+                $stmt->bindParam(':type_error', $type_error, PDO::PARAM_STR);
+                $stmt->bindParam(':url_occurrence', $url_occurrence, PDO::PARAM_STR);
+                $stmt->bindParam(':file_occurrence', $file_occurrence, PDO::PARAM_STR);
+                $stmt->bindParam(':line_occurrence', $line_occurrence, PDO::PARAM_INT);
+                $stmt->bindParam(':times_occurrence', $times_occurrence, PDO::PARAM_INT);
+                $stmt->bindParam(':first_occurrence', $first_occurrence, PDO::PARAM_STR);
+                $stmt->bindParam(':last_occurrence', $last_occurrence, PDO::PARAM_STR);
             }
 
-            $stmt->bindParam(':description_error', $description_error, \PDO::PARAM_STR);
-            $stmt->bindParam(':is_production', $is_production, \PDO::PARAM_BOOL);
+            $stmt->bindParam(':description_error', $description_error, PDO::PARAM_STR);
+            $stmt->bindParam(':is_production', $is_production, PDO::PARAM_BOOL);
             return $stmt->execute();
-        } catch (\PDOException $e) {
-            throw new \PDOException($e->getMessage());
+        } catch (PDOException $e) {
+            throw new PDOException($e->getMessage());
         }
     }
 
@@ -136,8 +138,8 @@ abstract class Occurrences
             $stmt = self::$connection->query($sql);
             $stmt->execute();
             return $stmt->fetch();
-        } catch (\PDOException $e) {
-            throw new \PDOException($e->getMessage());
+        } catch (PDOException $e) {
+            throw new PDOException($e->getMessage());
         }
     }
 
@@ -155,8 +157,8 @@ abstract class Occurrences
             $stmt = self::$connection->query($sql);
             $stmt->execute();
             return $stmt->fetchAll();
-        } catch (\PDOException $e) {
-            throw new \PDOException($e->getMessage());
+        } catch (PDOException $e) {
+            throw new PDOException($e->getMessage());
         }
     }
 

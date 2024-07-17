@@ -1,8 +1,7 @@
 <?php
 
 use ModernPHPException\Console\CliMessage;
-use ModernPHPException\Resources\BrowserDump;
-use ModernPHPException\Resources\CliDump;
+use ModernPHPException\Resources\{BrowserDump, CliDump};
 
 if (!function_exists('get_debug_backtrace')) {
     /**
