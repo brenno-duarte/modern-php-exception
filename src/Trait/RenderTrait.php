@@ -3,8 +3,7 @@
 namespace ModernPHPException\Trait;
 
 use ModernPHPException\Console\CliMessage;
-use ModernPHPException\Occurrences;
-use ModernPHPException\Solution;
+use ModernPHPException\{Occurrences, Solution};
 use ModernPHPException\Resources\{CpuUsage, HtmlTag, MemoryUsage};
 
 trait RenderTrait
@@ -74,10 +73,7 @@ trait RenderTrait
      */
     private function render(): never
     {
-        if (ob_get_contents()) {
-            ob_end_clean();
-        }
-
+        if (ob_get_contents()) ob_end_clean();
         $this->renderCli();
 
         if (
@@ -90,9 +86,7 @@ trait RenderTrait
             $this->renderJson();
         }
 
-        if ($this->config['production_mode'] === true) {
-            $this->productionMode();
-        }
+        if ($this->config['production_mode'] === true) $this->productionMode();
 
         // Don't erase `$resources` variable
         $resources = $this->loadResources();
@@ -116,9 +110,7 @@ trait RenderTrait
     private function filterTrace(array $trace): array
     {
         foreach ($trace as $key => $value) {
-            if (!array_key_exists('file', $value) && !array_key_exists('line', $value)) {
-                unset($trace[$key]);
-            }
+            if (!array_key_exists('file', $value) && !array_key_exists('line', $value)) unset($trace[$key]);
         }
 
         return $trace;
@@ -131,13 +123,8 @@ trait RenderTrait
      */
     private function loadResources(): array
     {
-        if ($this->config['title'] !== "") {
-            $this->title = $this->config['title'];
-        }
-
-        if ($this->config['dark_mode'] === true) {
-            $this->useDarkTheme();
-        }
+        if ($this->config['title'] !== "") $this->title = $this->config['title'];
+        if ($this->config['dark_mode'] === true) $this->useDarkTheme();
 
         $list_occurrences = null;
         $cpu_usage = CpuUsage::getServerLoad();
@@ -298,15 +285,14 @@ trait RenderTrait
 
             if (method_exists($exception, "getSolution")) {
                 $exception->getSolution();
-
                 $solution = new Solution();
 
                 if (!empty($this->solution->getDescription()) || $this->solution->getDescription() != "") {
-                    $this->success($solution->getTitle())->print();
+                    CliMessage::success($solution->getTitle())->print();
                     echo " : ";
-                    $this->success($solution->getDescription())->print()->break(true);
+                    CliMessage::success($solution->getDescription())->print()->break(true);
                 } else {
-                    $this->success($solution->getTitle())->print()->break(true);
+                    CliMessage::success($solution->getTitle())->print()->break(true);
                 }
             }
         }
