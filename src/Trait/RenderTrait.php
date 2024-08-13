@@ -281,7 +281,8 @@ trait RenderTrait
     private function renderSolutionCli(): void
     {
         if (isset($this->info_error_exception['type_exception'])) {
-            $exception = new $this->info_error_exception['namespace_exception']();
+            $reflection = new \ReflectionClass($this->info_error_exception['namespace_exception']);
+            $exception = $reflection->newInstanceWithoutConstructor();
 
             if (method_exists($exception, "getSolution")) {
                 $exception->getSolution();

@@ -1,5 +1,13 @@
 # Released Notes
 
+## v3.3.2 - (2024-08-13)
+
+### Fixed
+
+- Fixed instance without construct in solution
+
+--------------------------------------------------------------------------
+
 ## v3.3.1 - (2024-08-03)
 
 ### Fixed
