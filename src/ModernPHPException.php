@@ -9,7 +9,7 @@ class ModernPHPException
 {
     use HelpersTrait, HandlerAssetsTrait, RenderTrait;
 
-    public const VERSION = "3.3.2";
+    public const VERSION = "3.3.3";
 
     /**
      * @var Bench

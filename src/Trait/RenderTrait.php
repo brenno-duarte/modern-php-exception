@@ -288,12 +288,15 @@ trait RenderTrait
                 $exception->getSolution();
                 $solution = new Solution();
 
+                CliMessage::success("  " . $solution->getTitle())->print();
+
                 if (!empty($this->solution->getDescription()) || $this->solution->getDescription() != "") {
-                    CliMessage::success($solution->getTitle())->print();
                     echo " : ";
                     CliMessage::success($solution->getDescription())->print()->break(true);
-                } else {
-                    CliMessage::success($solution->getTitle())->print()->break(true);
+                }
+
+                if (!empty($this->solution->getDocs()) || $this->solution->getDocs() != "") {
+                    CliMessage::info("  See more in: " . $solution->getDocs()["link"])->print()->break(true);
                 }
             }
         }
