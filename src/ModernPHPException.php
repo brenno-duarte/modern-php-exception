@@ -9,7 +9,7 @@ class ModernPHPException
 {
     use HelpersTrait, HandlerAssetsTrait, RenderTrait;
 
-    public const VERSION = "3.3.3";
+    public const VERSION = "3.3.4";
 
     /**
      * @var Bench
@@ -121,7 +121,6 @@ class ModernPHPException
         private ?string $config_file = ""
     ) {
         http_response_code();
-
         $this->setConfigFile($config_file);
         $this->bench = new Bench();
         $this->solution = new Solution();
@@ -159,11 +158,12 @@ class ModernPHPException
         set_error_handler([$this, 'errorHandler']);
         set_exception_handler([$this, 'exceptionHandler']);
         register_shutdown_function([$this, 'shutdown']);
-
         return $this;
     }
 
     /**
+     * Set configuration for Modern PHP Exception
+     * 
      * @param string $config_file
      * 
      * @return void
@@ -296,6 +296,8 @@ class ModernPHPException
     }
 
     /**
+     * Add an error to Modern PHP Exception's custom handler
+     * 
      * @param int $code
      * @param string $message
      * @param string $file
@@ -331,14 +333,18 @@ class ModernPHPException
     }
 
     /**
+     * Add an exception to Modern PHP Exception's custom handler
+     * 
      * @param mixed $exception
      * 
      * @return self
      */
     public function exceptionHandler(mixed $exception): void
     {
+        $message = htmlspecialchars($exception->getMessage());
+
         $this->info_error_exception = [
-            'message' => $exception->getMessage(),
+            'message' => $message,
             'code' => $exception->getCode(),
             'file' => $exception->getFile(),
             'line' => $exception->getLine(),
@@ -347,12 +353,11 @@ class ModernPHPException
         ];
 
         if ($this->getTitle() == "" || empty($this->getTitle())) {
-            $this->setTitle("ModernPHPException: " . $exception->getMessage());
+            $this->setTitle("ModernPHPException: " . $message);
         }
 
         $reflection_class = new \ReflectionClass($this->info_error_exception['namespace_exception']);
         $class_name = $reflection_class->newInstanceWithoutConstructor();
-
         if (method_exists($exception, "getSolution")) $class_name->getSolution();
 
         $this->trace = $this->filterTrace($exception->getTrace());
@@ -363,6 +368,8 @@ class ModernPHPException
     }
 
     /**
+     * Save in database a history of all exceptions and errors that your application displays
+     * 
      * @return ModernPHPException
      */
     public function enableOccurrences(): ModernPHPException

@@ -1,5 +1,16 @@
 # Released Notes
 
+## v3.3.4 - (2024-09-05)
+
+### Fixed
+
+- Fixed XSS in message's exception
+- Fixed `clearstatcache` function in `info-logs.php` view
+- Fixed comments in classes
+- Fixed exceptions
+
+--------------------------------------------------------------------------
+
 ## v3.3.3 - (2024-08-24)
 
 ### Fixed

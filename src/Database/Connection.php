@@ -2,9 +2,10 @@
 
 namespace ModernPHPException\Database;
 
+use Symfony\Component\Yaml\Yaml;
+use ModernPHPException\Exception\ConnectionException;
 use ModernPHPException\ModernPHPException;
 use ModernPHPException\Trait\RenderTrait;
-use Symfony\Component\Yaml\Yaml;
 
 abstract class Connection
 {
@@ -40,13 +41,9 @@ abstract class Connection
      */
     private static array $config_file;
 
-    private function __construct()
-    {
-    }
+    private function __construct() {}
 
-    private function __clone()
-    {
-    }
+    private function __clone() {}
 
     /**
      * @return array
@@ -72,7 +69,6 @@ abstract class Connection
     public static function getInstance(): \PDO
     {
         $db_config = self::getConfigFile();
-
         self::getConnection($db_config['db_drive']);
 
         if (!isset(self::$pdo)) {
@@ -98,19 +94,12 @@ abstract class Connection
      */
     private static function verifyExtensions(string $drive): void
     {
-        if ($drive == "mysql" && !extension_loaded('pdo_mysql')) {
-            ConnectionException::driveNotFound($drive);
-        }
-
-        if ($drive == "sqlite" && !extension_loaded('pdo_sqlite')) {
-            ConnectionException::driveNotFound($drive);
-        }
-
-        if ($drive == "pgsql" && !extension_loaded('pdo_pgsql')) {
-            ConnectionException::driveNotFound($drive);
-        }
-
-        if ($drive == "oci" && !extension_loaded('pdo_oci')) {
+        if (
+            $drive == "mysql" && !extension_loaded('pdo_mysql') ||
+            $drive == "sqlite" && !extension_loaded('pdo_sqlite') ||
+            $drive == "pgsql" && !extension_loaded('pdo_pgsql') ||
+            $drive == "oci" && !extension_loaded('pdo_oci')
+        ) {
             ConnectionException::driveNotFound($drive);
         }
     }

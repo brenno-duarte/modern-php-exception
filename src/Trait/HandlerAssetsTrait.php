@@ -2,6 +2,8 @@
 
 namespace ModernPHPException\Trait;
 
+use AssetException;
+
 trait HandlerAssetsTrait
 {
     /**
@@ -35,13 +37,11 @@ trait HandlerAssetsTrait
      */
     private function loadAssets(array $info): string
     {
-        if (!is_bool($this->config['enable_cdn_assets'])) {
-            throw new \Exception("'true' or 'false' must be the options in the variable 'enable_cdn_assets'");
-        }
+        if (!is_bool($this->config['enable_cdn_assets']))
+            throw new AssetException("`true` or `false` must be the options in the variable `enable_cdn_assets`");
 
         $asset = $this->loadCss($info);
         $asset .= $this->loadJs();
-
         return $asset;
     }
 
@@ -74,9 +74,7 @@ trait HandlerAssetsTrait
      */
     private function loadCss(array $info): string
     {
-        if ($this->theme == "dark") {
-            $this->color_alert = "C60000";
-        }
+        if ($this->theme == "dark") $this->color_alert = "C60000";
 
         if ($this->config['enable_cdn_assets'] == false) {
             $asset = "<style>\n";
@@ -105,7 +103,6 @@ trait HandlerAssetsTrait
         }
 
         $asset .= '</style>';
-
         return $asset;
     }
 }

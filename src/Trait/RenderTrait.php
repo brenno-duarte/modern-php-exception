@@ -12,6 +12,7 @@ trait RenderTrait
     use HandlerAssetsTrait;
 
     /**
+     * Render a fatal error
      * @param \Throwable $e
      * @param string $message
      * 
@@ -205,6 +206,8 @@ trait RenderTrait
     }
 
     /**
+     * Creates PHP code in CLI mode
+     * 
      * @param string $context
      * @param int $line
      * 

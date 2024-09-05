@@ -64,7 +64,6 @@ trait HelpersTrait
     {
         $class = get_class($classname);
         $class = explode("\\", $class);
-
         return end($class);
     }
 
@@ -75,7 +74,6 @@ trait HelpersTrait
     {
         $http = "https://";
         $ssl = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443;
-
         if ($ssl == false) $http = "http://";
         return $http . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
     }

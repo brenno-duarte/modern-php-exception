@@ -7,7 +7,7 @@
     <?php
         $i = 0;
         $file = sys_get_temp_dir() . DIRECTORY_SEPARATOR . "ModernPHPExceptionLogs" . DIRECTORY_SEPARATOR . "ModernPHPExceptionLogs.log";
-        clearstatcache($file, true);
+        clearstatcache(true, $file);
 
         if (isset(self::$config_yaml['dir_logs']) && self::$config_yaml['dir_logs'] != "") {
             $file = self::$config_yaml['dir_logs'] . DIRECTORY_SEPARATOR . "ModernPHPExceptionLogs.log";

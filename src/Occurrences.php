@@ -3,9 +3,9 @@
 namespace ModernPHPException;
 
 use ModernPHPException\Database\Connection;
+use ModernPHPException\Exception\OccurrencesException;
 use ModernPHPException\Trait\HelpersTrait;
 use PDO;
-use PDOException;
 
 abstract class Occurrences
 {
@@ -30,8 +30,10 @@ abstract class Occurrences
     }
 
     /**
+     * Create table in database for occurrences
+     * 
      * @return bool
-     * @throws PDOException
+     * @throws OccurrencesException
      */
     private static function createOcurrenceTableInDb(): bool
     {
@@ -53,24 +55,13 @@ abstract class Occurrences
         try {
             $stmt = self::$connection->prepare($sql);
             return $stmt->execute();
-        } catch (PDOException $e) {
-            throw new PDOException($e->getMessage());
+        } catch (\Exception $e) {
+            throw new OccurrencesException($e->getMessage());
         }
     }
 
     /**
-     * @param string $type_error
-     * @param string $description_error
-     * @param string $url_occurrence
-     * @param string $file_occurrence
-     * @param int $line_occurrence
-     * @param int $times_occurrence
-     * @param string $first_occurrence
-     * @param string $last_occurrence
-     * @param bool $is_production
-     * 
-     * @return bool
-     * @throws PDOException
+     * Register an occcurrence in database
      */
     private static function registerOccurrence(
         string $type_error,
@@ -117,52 +108,56 @@ abstract class Occurrences
             $stmt->bindParam(':description_error', $description_error, PDO::PARAM_STR);
             $stmt->bindParam(':is_production', $is_production, PDO::PARAM_BOOL);
             return $stmt->execute();
-        } catch (PDOException $e) {
-            throw new PDOException($e->getMessage());
+        } catch (\Exception $e) {
+            throw new OccurrencesException($e->getMessage());
         }
     }
 
     /**
+     * Checks if exists an occurrence
+     * 
      * @param string $description_error
      * 
      * @return mixed
-     * @throws PDOException
+     * @throws OccurrencesException
      */
     private static function verifyOccurrence(string $description_error): mixed
     {
         self::getConnection();
-
         $sql = "SELECT * FROM " . self::$table_name . " WHERE description_error = '" . $description_error . "'";
 
         try {
             $stmt = self::$connection->query($sql);
             $stmt->execute();
             return $stmt->fetch();
-        } catch (PDOException $e) {
-            throw new PDOException($e->getMessage());
+        } catch (\Exception $e) {
+            throw new OccurrencesException($e->getMessage());
         }
     }
 
     /**
+     * List all occurrences
+     * 
      * @return mixed
-     * @throws PDOException
+     * @throws OccurrencesException
      */
     public static function listOccurrences(): mixed
     {
         self::getConnection();
-
         $sql = "SELECT * FROM " . self::$table_name . " ORDER BY last_occurrence DESC";
 
         try {
             $stmt = self::$connection->query($sql);
             $stmt->execute();
             return $stmt->fetchAll();
-        } catch (PDOException $e) {
-            throw new PDOException($e->getMessage());
+        } catch (\Exception $e) {
+            throw new OccurrencesException($e->getMessage());
         }
     }
 
     /**
+     * Enable occurrences
+     * 
      * @param array $info_error_exception
      * @param string $type_error
      * @param bool $is_production

@@ -1,8 +1,6 @@
 <?php
 
-namespace ModernPHPException\Database;
-
-use ModernPHPException\Resources\HtmlTag;
+namespace ModernPHPException\Exception;
 
 class ConnectionException extends \Exception
 {

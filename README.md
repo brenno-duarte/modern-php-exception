@@ -140,11 +140,9 @@ class CustomException extends \Exception implements SolutionInterface
     #...
 ```
 
-``createSolution:`` Name of solution to fix exception
-
-``setDescription:`` Detailed description of exception solution
-
-``setDocs:`` If a documentation exists, this method will display a button for a documentation. By default, the name of the button will be `Read More`, but you can change the name by changing the second parameter of the method
+- `createSolution:` Name of solution to fix exception
+- `setDescription:` Detailed description of exception solution
+- `setDocs:` If a documentation exists, this method will display a button for a documentation. By default, the name of the button will be `Read More`, but you can change the name by changing the second parameter of the method
 
 You can test using a new class:
 
