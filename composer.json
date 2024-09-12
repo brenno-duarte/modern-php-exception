@@ -1,6 +1,6 @@
 {
     "name": "brenno-duarte/modern-php-exception",
-    "description": "PHP errors in a modern way",
+    "description": "Display PHP errors and exceptions in a modern and intuitive way",
     "license": "MIT",
     "keywords": [
         "exception",
@@ -28,11 +28,6 @@
     "autoload-dev": {
         "psr-4": {
             "Test\\": "tests/"
-        }
-    },
-    "config": {
-        "allow-plugins": {
-            "dealerdirect/phpcodesniffer-composer-installer": true
         }
     }
 }

@@ -40,7 +40,7 @@ class CliDump
      * @var bool
      */
     private static bool $safe = false;
-    
+
     /**
      * @var array
      */
@@ -200,17 +200,13 @@ class CliDump
      */
     private function isPosix(): bool
     {
-        if (self::$safe) {
-            return false;
-        }
+        if (self::$safe) return false;
 
         // disable posix errors about unknown resource types
         if (function_exists('posix_isatty')) {
-            set_error_handler(function () {
-            });
+            set_error_handler(function () {});
             $isPosix = posix_isatty(STDIN);
             restore_error_handler();
-
             return $isPosix;
         }
 
@@ -225,13 +221,10 @@ class CliDump
      *
      * @return string
      */
-    private function format(string $string, string $format = null): string
+    private function format(string $string, ?string $format = null): string
     {
         // format only for POSIX
-        if (!$format || !$this->isPosix) {
-            return $string;
-        }
-
+        if (!$format || !$this->isPosix) return $string;
         $formats = $format ? explode('|', $format) : [];
 
         $code = array_filter([
@@ -241,7 +234,6 @@ class CliDump
         ]);
 
         $code = implode(';', $code);
-
         return "\033[{$code}m{$string}\033[0m";
     }
 
@@ -299,9 +291,8 @@ class CliDump
      */
     private function color($value, string $name): string
     {
-        if ($this->isCli) {
+        if ($this->isCli)
             return $this->format($value, $this->colors[$name][1]);
-        }
 
         if ($name == 'type') {
             return "<small style=\"color:#{$this->colors[$name][0]}\">{$value}</small>";
@@ -390,7 +381,7 @@ class CliDump
         $this->indent += $this->pad_size;
         $break_line   = $this->breakLine();
         $indent       = $this->indent($this->indent);
-        
+
         foreach ($array as $key => $arr) {
             if (is_array($arr)) {
                 $tmp .= "{$break_line}{$indent}{$this->arrayIndex((string)$key)} {$this->color('(size=' . count($arr) . ')', 'size')}";
@@ -405,9 +396,7 @@ class CliDump
 
         if ($tmp != '') {
             $tmp .= $break_line;
-            if ($obj_call) {
-                $tmp .= $this->indent($this->indent);
-            }
+            if ($obj_call) $tmp .= $this->indent($this->indent);
         }
 
         return $tmp;
@@ -425,11 +414,8 @@ class CliDump
         ob_start();
         debug_zval_dump($object);
 
-        if (preg_match('/object\(.*?\)#(\d+)\s+\(/', ob_get_clean(), $match)) {
-            return $match[1];
-        }
-
-        return '';
+        return (preg_match('/object\(.*?\)#(\d+)\s+\(/', ob_get_clean(), $match)) ?
+            $match[1] : "";
     }
 
     /**
@@ -441,9 +427,7 @@ class CliDump
      */
     private function formatObject($object): string
     {
-        if ($this->aboveNestLevel()) {
-            return $this->color('...', 'recursion');
-        }
+        if ($this->aboveNestLevel()) return $this->color('...', 'recursion');
 
         $reflection = new \ReflectionObject($object);
         $class_name = $reflection->getName();
@@ -464,10 +448,7 @@ class CliDump
                 $inherited[$prop_name]  = $tmp_class_name == $class_name ? null : $tmp_class_name;
             }
 
-            if (str_contains($comments, '@dumpignore-inheritance')) {
-                break;
-            }
-
+            if (str_contains($comments, '@dumpignore-inheritance')) break;
             $reflection = $reflection->getParentClass();
         }
 
@@ -487,9 +468,8 @@ class CliDump
 
         foreach ($properties as $name => $prop) {
             $prop_comment = $prop->getDocComment();
-            if ($prop_comment && (str_contains($prop_comment, '@dumpignore'))) {
+            if ($prop_comment && (str_contains($prop_comment, '@dumpignore')))
                 continue;
-            }
 
             $from = '';
             if (!$hide_in_class && isset($inherited[$name])) {
@@ -499,27 +479,18 @@ class CliDump
             }
 
             if ($prop->isPrivate()) {
-                if ($hide_private) {
-                    continue;
-                }
-
+                if ($hide_private) continue;
                 $tmp .= "{$line_break}{$indent}{$private_color}{$string_pad_2} {$property_color} ";
             } elseif ($prop->isProtected()) {
-                if ($hide_protected) {
-                    continue;
-                }
-
+                if ($hide_protected) continue;
                 $tmp .= "{$line_break}{$indent}{$protected_color} {$property_color} ";
             } elseif ($prop->isPublic()) {
-                if ($hide_public) {
-                    continue;
-                }
-
+                if ($hide_public) continue;
                 $tmp .= "{$line_break}{$indent}{$public_color}{$string_pad_3} {$property_color} ";
             }
 
             $prop->setAccessible(true);
-            
+
             if (version_compare(PHP_VERSION, '7.4.0') >= 0) {
                 $value = $prop->isInitialized($object) ? $this->getValue($prop, $object, $class_name) : $this->type(
                     'uninitialized'
@@ -531,10 +502,7 @@ class CliDump
             $tmp .= "{$from} {$this->color("'{$prop->getName()}'", 'property_name')} {$arrow_color} {$value}";
         }
 
-        if ($tmp != '') {
-            $tmp .= $this->breakLine();
-        }
-
+        if ($tmp != '') $tmp .= $this->breakLine();
         $this->indent -= $this->pad_size;
         $tmp          .= ($tmp != '') ? $this->indent($this->indent) : '';
 
@@ -561,11 +529,9 @@ class CliDump
         $value = $property->getValue($object);
         # Prevent infinite loop caused by nested object property. e.g. when an object property is pointing to the same
         # object.
-        if (is_object($value) && $value instanceof $object && $value == $object) {
-            return "{$this->type($class_name)} {$this->color('::self', 'keyword')}";
-        }
-
-        return $this->evaluate([$value], true, true);
+        return (is_object($value) && $value instanceof $object && $value == $object) ?
+            "{$this->type($class_name)} {$this->color('::self', 'keyword')}" :
+            $this->evaluate([$value], true, true);
     }
 
     /**

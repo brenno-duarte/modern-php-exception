@@ -57,9 +57,8 @@ if (!function_exists('var_dump_debug')) {
                 CliDump::set('string', ['0000FF', 'light_blue']);
                 new CliDump($value);
 
-                if (!CliMessage::colorIsSupported() || !CliMessage::are256ColorsSupported()) {
+                if (!CliMessage::colorIsSupported() || !CliMessage::are256ColorsSupported())
                     CliDump::safe($value);
-                }
             } else {
                 $dump = new BrowserDump();
                 echo $dump->dump($value);
@@ -106,15 +105,11 @@ if (!function_exists('closure_dump')) {
                 $s .= getClass($p)->name . ' ';
             }
 
-            if ($p->isPassedByReference()) {
-                $s .= '&';
-            }
-
+            if ($p->isPassedByReference()) $s .= '&';
             $s .= '$' . $p->name;
 
-            if ($p->isOptional()) {
+            if ($p->isOptional())
                 $s .= ' = ' . var_export($p->getDefaultValue(), TRUE);
-            }
 
             $params[] = $s;
         }
@@ -140,16 +135,10 @@ if (!function_exists('getClass')) {
     function getClass(\ReflectionParameter $parameter): ?\ReflectionClass
     {
         $type = $parameter->getType();
-
-        if (!$type || $type->isBuiltin()) {
-            return null;
-        }
+        if (!$type || $type->isBuiltin()) return null;
 
         // This line triggers autoloader!
-        if (!class_exists($type->getName())) {
-            return null;
-        }
-
+        if (!class_exists($type->getName())) return null;
         return new \ReflectionClass($type->getName());
     }
 }
@@ -157,26 +146,15 @@ if (!function_exists('getClass')) {
 if (!function_exists('isCli')) {
     function isCli(): bool
     {
-        if (defined('STDIN')) {
-            return true;
-        }
-
-        if (php_sapi_name() === "cli") {
-            return true;
-        }
-
-        if (PHP_SAPI === 'cli') {
-            return true;
-        }
-
-        if (stristr(PHP_SAPI, 'cgi') and getenv('TERM')) {
-            return true;
-        }
+        if (defined('STDIN')) return true;
+        if (php_sapi_name() === "cli") return true;
+        if (PHP_SAPI === 'cli') return true;
+        if (stristr(PHP_SAPI, 'cgi') and getenv('TERM')) return true;
 
         if (
             empty($_SERVER['REMOTE_ADDR']) and
             !isset($_SERVER['HTTP_USER_AGENT']) and
-            count($_SERVER['argv']) > 0
+            count ((array)$_SERVER["argv"])
         ) {
             return true;
         }

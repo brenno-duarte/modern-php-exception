@@ -40,7 +40,6 @@ class Bench
     public function end(): void
     {
         if (!$this->hasStarted()) throw new LogicException("You must call start()");
-
         $this->end_time = microtime(true);
         $this->memory_usage = memory_get_usage(true);
     }
@@ -49,12 +48,12 @@ class Bench
      * Returns the elapsed time, readable or not
      *
      * @param bool $raw
-     * @param string $format The format to display (printf format)
+     * @param null|string $format The format to display (printf format)
      * 
      * @return mixed
      * @throws LogicException
      */
-    public function getTime(bool $raw = false, string $format = null): mixed
+    public function getTime(bool $raw = false, ?string $format = null): mixed
     {
         if (!$this->hasStarted()) throw new LogicException("You must call start()");
         if (!$this->hasEnded()) throw new LogicException("You must call end()");
@@ -66,12 +65,12 @@ class Bench
     /**
      * Returns the memory usage at the end checkpoint
      *
-     * @param  bool    $readable Whether the result must be human readable
-     * @param  string  $format   The format to display (printf format)
+     * @param  bool         $readable Whether the result must be human readable
+     * @param  null|string  $format   The format to display (printf format)
      * 
      * @return mixed
      */
-    public function getMemoryUsage(bool $raw = false, string $format = null): mixed
+    public function getMemoryUsage(bool $raw = false, ?string $format = null): mixed
     {
         return $raw ? $this->memory_usage : self::readableSize($this->memory_usage, $format);
     }
@@ -79,8 +78,8 @@ class Bench
     /**
      * Returns the memory peak, readable or not
      *
-     * @param  bool    $readable Whether the result must be human readable
-     * @param  string  $format   The format to display (printf format)
+     * @param  bool         $readable Whether the result must be human readable
+     * @param  null|string  $format   The format to display (printf format)
      * 
      * @return mixed
      */
@@ -104,11 +103,9 @@ class Bench
     {
         $arguments = func_get_args();
         array_shift($arguments);
-
         $this->start();
         $result = call_user_func_array($callable, $arguments);
         $this->end();
-
         return $result;
     }
 
@@ -116,7 +113,7 @@ class Bench
      * Returns a human readable memory size
      *
      * @param   int    $size
-     * @param   string $format   The format to display (printf format)
+     * @param   null|string $format   The format to display (printf format)
      * @param   int    $round
      * 
      * @return  string
@@ -139,7 +136,7 @@ class Bench
      * Returns a human readable elapsed time
      *
      * @param float $microtime
-     * @param string  $format   The format to display (printf format)
+     * @param null|string  $format   The format to display (printf format)
      * @param int $round
      * 
      * @return string
@@ -154,7 +151,6 @@ class Bench
         } else {
             $unit = 'ms';
             $time = round($microtime * 1000);
-
             $format = preg_replace('/(%.[\d]+f)/', '%d', $format);
         }
 

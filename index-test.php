@@ -9,7 +9,7 @@ $config = __DIR__ . '/config.example.yaml';
 //$config = "";
 $exc = new ModernPHPException($config);
 //$exc->enableOccurrences();
-$exc->ignoreErrors([E_USER_DEPRECATED, E_WARNING]);
+//$exc->ignoreErrors([E_USER_DEPRECATED, E_WARNING]);
 $exc->start();
 
 #http_response_code(404);
@@ -17,8 +17,8 @@ $exc->start();
 
 //throw new Exception("<script>alert('test from JS')</script>");
 
-trigger_error("Test trigger", E_USER_DEPRECATED);
-echo "After trigger function";
+/* trigger_error("Test trigger", E_USER_DEPRECATED);
+echo "After trigger function"; */
 
 //UserTest::staticCall();
 
@@ -36,7 +36,6 @@ try {
     $exc->exceptionHandler($e);
     //echo $e->getMessage();
 } */
-
 
 /* $a = (new UserTest())->secondCall();
 var_dump_debug($a, true); */
