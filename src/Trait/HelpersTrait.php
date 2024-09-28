@@ -4,9 +4,6 @@ namespace ModernPHPException\Trait;
 
 trait HelpersTrait
 {
-    /**
-     * @return bool
-     */
     private function isCli(): bool
     {
         if (defined('STDIN')) return true;
@@ -17,7 +14,7 @@ trait HelpersTrait
         if (
             empty($_SERVER['REMOTE_ADDR']) and
             !isset($_SERVER['HTTP_USER_AGENT']) and
-            count($_SERVER['argv']) > 0
+            count((array)$_SERVER['argv']) > 0
         ) {
             return true;
         }
@@ -25,41 +22,21 @@ trait HelpersTrait
         return false;
     }
 
-    /**
-     * @param string $path
-     * 
-     * @return string
-     */
     public function getPathInfo(string $path): string
     {
         return strtolower(pathinfo($path)['filename']);
     }
 
-    /**
-     * @param string $value
-     * 
-     * @return string
-     */
     private function replaceString(string $value): string
     {
         return str_replace(['#', '{', '}', '(', ')', '.'], '', $value);
     }
 
-    /**
-     * @param string $value
-     * 
-     * @return string
-     */
     private function replaceUrl(string $value): string
     {
         return str_replace(' ', '+', $value);
     }
 
-    /**
-     * @param object $classname
-     * 
-     * @return string
-     */
     private function getClassName(object $classname): string
     {
         $class = get_class($classname);
@@ -67,9 +44,6 @@ trait HelpersTrait
         return end($class);
     }
 
-    /**
-     * @return string
-     */
     private static function getUri(): string
     {
         $http = "https://";
@@ -78,4 +52,8 @@ trait HelpersTrait
         return $http . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
     }
 
+    public function htmlSpecialCharsIgnoreCli(string $string): string
+    {
+        return (!$this->isCli()) ? htmlspecialchars($string) : $string;
+    }
 }

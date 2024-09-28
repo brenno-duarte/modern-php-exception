@@ -102,6 +102,17 @@ trait RenderTrait
     }
 
     /**
+     * Enable production mode
+     *
+     * @return void
+     */
+    private function productionMode(): void
+    {
+        include_once dirname(__DIR__) . '/View/templates/error-production.php';
+        exit;
+    }
+
+    /**
      * Unset trace without 'file' and 'line' keys
      *
      * @param array $trace
@@ -151,7 +162,10 @@ trait RenderTrait
     private function renderJson(): never
     {
         if ($this->type == "error") {
-            echo json_encode([$this->getError() => $this->info_error_exception], JSON_UNESCAPED_UNICODE);
+            echo json_encode(
+                [$this->getError() => $this->info_error_exception],
+                JSON_UNESCAPED_UNICODE
+            );
         }
 
         if ($this->type == "exception") {
@@ -174,11 +188,9 @@ trait RenderTrait
         if ($this->isCli() === true) {
             echo PHP_EOL;
 
-            if (isset($this->info_error_exception['type_exception'])) {
-                CliMessage::error($this->info_error_exception['type_exception'])->print();
-            } else {
+            (isset($this->info_error_exception['type_exception'])) ?
+                CliMessage::error($this->info_error_exception['type_exception'])->print() :
                 CliMessage::error($this->getError())->print();
-            }
 
             CliMessage::line(" : " . $this->info_error_exception['message'])->print()->break(true);
             $this->renderSolutionCli();

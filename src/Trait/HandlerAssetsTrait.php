@@ -51,13 +51,13 @@ trait HandlerAssetsTrait
     private function loadJs(): string
     {
         if ($this->config['enable_cdn_assets'] == false) {
-            $asset = '<script>' . file_get_contents('assets/js/highlight.pack.js', FILE_USE_INCLUDE_PATH);
+            $asset = '<script>' . file_get_contents('assets/js/highlight.min.js', FILE_USE_INCLUDE_PATH);
             $asset .= file_get_contents('assets/js/highlightjs-line-numbers.js', FILE_USE_INCLUDE_PATH) . '</script>';
             $asset .= '<script>hljs.highlightAll(); hljs.initLineNumbersOnLoad();</script>';
             $asset .= '<script>' . file_get_contents('assets/js/bootstrap.bundle.min.js', FILE_USE_INCLUDE_PATH) . '</script>';
             $asset .= '<script>' . file_get_contents('assets/js/less.js', FILE_USE_INCLUDE_PATH) . '</script>';
         } elseif ($this->config['enable_cdn_assets'] == true) {
-            $asset = '<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>';
+            $asset = '<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js"></script>';
             $asset .= '<script src="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>';
             $asset .= '<script>hljs.highlightAll();hljs.initLineNumbersOnLoad();</script>';
             $asset .= '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>';

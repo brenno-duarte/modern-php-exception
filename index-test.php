@@ -12,7 +12,7 @@ $exc = new ModernPHPException($config);
 //$exc->ignoreErrors([E_USER_DEPRECATED, E_WARNING]);
 $exc->start();
 
-#http_response_code(404);
+//http_response_code(404);
 #echo '<pre>';
 
 //throw new Exception("<script>alert('test from JS')</script>");
@@ -20,7 +20,7 @@ $exc->start();
 /* trigger_error("Test trigger", E_USER_DEPRECATED);
 echo "After trigger function"; */
 
-//UserTest::staticCall();
+UserTest::staticCall();
 
 /* function dividir($x, $y) {
     if ($y == 0) {

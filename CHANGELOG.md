@@ -1,5 +1,23 @@
 # Released Notes
 
+## v3.3.6 - (2024-09-28)
+
+### Added
+
+- Added favicon in view
+
+### Fixed
+
+- Fixed special chars in CLI mode and JSON. Only in HTML
+- Fixed `productionMode` method. Removed previously in 3.0.0
+- Fixed code in production mode
+
+### Changed
+
+- Upgrade highlight js component to version 11.10
+
+--------------------------------------------------------------------------
+
 ## v3.3.5 - (2024-09-12)
 
 ### Fixed

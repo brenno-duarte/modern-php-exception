@@ -9,7 +9,7 @@ class ModernPHPException
 {
     use HelpersTrait, HandlerAssetsTrait, RenderTrait;
 
-    public const VERSION = "3.3.5";
+    public const VERSION = "3.3.6";
 
     /**
      * @var Bench
@@ -316,9 +316,8 @@ class ModernPHPException
             'line' => ($line ?? '')
         ];
 
-        if ($this->getTitle() == "" || empty($this->getTitle())) {
+        if ($this->getTitle() == "" || empty($this->getTitle()))
             $this->setTitle("ModernPHPException: " . $message);
-        }
 
         $this->setError($code);
         $this->type = "error";
@@ -341,7 +340,7 @@ class ModernPHPException
      */
     public function exceptionHandler(mixed $exception): void
     {
-        $message = htmlspecialchars($exception->getMessage());
+        $message = $this->htmlSpecialCharsIgnoreCli($exception->getMessage());
 
         $this->info_error_exception = [
             'message' => $message,
@@ -352,9 +351,8 @@ class ModernPHPException
             'namespace_exception' => get_class($exception)
         ];
 
-        if ($this->getTitle() == "" || empty($this->getTitle())) {
+        if ($this->getTitle() == "" || empty($this->getTitle()))
             $this->setTitle("ModernPHPException: " . $message);
-        }
 
         $reflection_class = new \ReflectionClass($this->info_error_exception['namespace_exception']);
         $class_name = $reflection_class->newInstanceWithoutConstructor();

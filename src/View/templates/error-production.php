@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://cdn1.iconfinder.com/data/icons/ui-colored-3-of-3/100/UI_3_-38-512.png">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap" rel="stylesheet">
     <link rel="shortcut icon" href="" type="image/x-icon">
     <title>Server Error</title>
@@ -40,7 +41,7 @@
 <body>
     <div class="alert">
         <div class="content">
-            <h1>Internal Server Error | <?= http_response_code() ?></h1>
+            <h1>Internal Server Error <?= (http_response_code() != 200) ? "|" . http_response_code() : "" ?></h1>
 
             <?php if ($this->message_production != "") : ?>
                 <p><?= $this->message_production ?></p>
