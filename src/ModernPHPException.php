@@ -9,7 +9,7 @@ class ModernPHPException
 {
     use HelpersTrait, HandlerAssetsTrait, RenderTrait;
 
-    public const VERSION = "3.3.6";
+    public const VERSION = "3.3.7";
 
     /**
      * @var Bench
@@ -178,9 +178,21 @@ class ModernPHPException
         if (!empty(self::$config_yaml)) {
             $this->message_production = self::$config_yaml["error_message"] ?? "";
             $this->config["title"] = self::$config_yaml["title"] ?? "";
-            $this->config["dark_mode"] = filter_var(self::$config_yaml["dark_mode"], FILTER_VALIDATE_BOOLEAN);
-            $this->config["production_mode"] = filter_var(self::$config_yaml["production_mode"], FILTER_VALIDATE_BOOLEAN);
-            $this->config["enable_cdn_assets"] = filter_var(self::$config_yaml["enable_cdn_assets"], FILTER_VALIDATE_BOOLEAN);
+
+            $this->config["dark_mode"] = filter_var(
+                self::$config_yaml["dark_mode"],
+                FILTER_VALIDATE_BOOLEAN
+            );
+
+            $this->config["production_mode"] = filter_var(
+                self::$config_yaml["production_mode"],
+                FILTER_VALIDATE_BOOLEAN
+            );
+
+            $this->config["enable_cdn_assets"] = filter_var(
+                self::$config_yaml["enable_cdn_assets"],
+                FILTER_VALIDATE_BOOLEAN
+            );
         }
     }
 
@@ -193,6 +205,7 @@ class ModernPHPException
     {
         if (isset(self::$config_yaml)) {
             if (isset(self::$config_yaml['enable_logs']) && self::$config_yaml['enable_logs'] == true) {
+
                 if (isset(self::$config_yaml['dir_logs']) && self::$config_yaml['dir_logs'] != "") {
                     Debug::dirLogger(self::$config_yaml['dir_logs']);
                 }
@@ -231,7 +244,6 @@ class ModernPHPException
             E_RECOVERABLE_ERROR => 'Recoverable Warning',
             E_NOTICE => 'Notice',
             E_USER_NOTICE => 'User Notice',
-            E_STRICT => 'Strict',
             E_DEPRECATED => 'Deprecated',
             E_USER_DEPRECATED => 'User Deprecated'
         };
@@ -325,7 +337,11 @@ class ModernPHPException
         $this->bench->end();
 
         if (!empty($this->ignore_errors)) {
-            if (!is_int(array_search($this->error_code, $this->ignore_errors, true))) $this->render();
+            if (!is_int(array_search(
+                $this->error_code,
+                $this->ignore_errors,
+                true
+            ))) $this->render();
         } else {
             $this->render();
         }
@@ -354,7 +370,10 @@ class ModernPHPException
         if ($this->getTitle() == "" || empty($this->getTitle()))
             $this->setTitle("ModernPHPException: " . $message);
 
-        $reflection_class = new \ReflectionClass($this->info_error_exception['namespace_exception']);
+        $reflection_class = new \ReflectionClass(
+            $this->info_error_exception['namespace_exception']
+        );
+        
         $class_name = $reflection_class->newInstanceWithoutConstructor();
         if (method_exists($exception, "getSolution")) $class_name->getSolution();
 

@@ -39,9 +39,16 @@ trait RenderTrait
         $style = HtmlTag::createElement('style')->text($css);
 
         $container = HtmlTag::createElement('body');
-        $container->addElement('p')->set('class', 'title')->text('Modern PHP Exception: Fatal Error');
+        $container->addElement('p')
+            ->set('class', 'title')
+            ->text('Modern PHP Exception: Fatal Error');
+
         $container->addElement('h4')->text($e->getMessage());
-        $container->addElement('span')->set('class', 'solution')->text('Solution: ');
+
+        $container->addElement('span')
+            ->set('class', 'solution')
+            ->text('Solution: ');
+
         $container->addElement('span')->text($message);
 
         echo $title . PHP_EOL;
@@ -61,10 +68,15 @@ trait RenderTrait
         if ($this->type == 'error') {
             $type_error = $this->getError() . "-Error";
         } elseif ($this->type == 'exception') {
-            $type_error = $this->info_error_exception['type_exception'] . "-" . $this->info_error_exception['namespace_exception'];
+            $type_error = $this->info_error_exception['type_exception'] . "-" .
+                $this->info_error_exception['namespace_exception'];
         }
 
-        Occurrences::enable($this->info_error_exception, $type_error, $this->config['production_mode']);
+        Occurrences::enable(
+            $this->info_error_exception,
+            $type_error,
+            $this->config['production_mode']
+        );
     }
 
     /**
@@ -122,7 +134,10 @@ trait RenderTrait
     private function filterTrace(array $trace): array
     {
         foreach ($trace as $key => $value) {
-            if (!array_key_exists('file', $value) && !array_key_exists('line', $value)) unset($trace[$key]);
+            if (
+                !array_key_exists('file', $value) &&
+                !array_key_exists('line', $value)
+            ) unset($trace[$key]);
         }
 
         return $trace;
@@ -192,12 +207,16 @@ trait RenderTrait
                 CliMessage::error($this->info_error_exception['type_exception'])->print() :
                 CliMessage::error($this->getError())->print();
 
-            CliMessage::line(" : " . $this->info_error_exception['message'])->print()->break(true);
+            CliMessage::line(" : " . $this->info_error_exception['message'])
+                ->print()->break(true);
+
             $this->renderSolutionCli();
+
             echo "at ";
             CliMessage::warning($this->info_error_exception['file'])->print();
             echo " : ";
             CliMessage::warning($this->info_error_exception['line'])->print()->break(true);
+
             $this->getLines($this->info_error_exception['file'], $this->info_error_exception['line']);
 
             if (!empty($this->trace)) {
@@ -296,7 +315,10 @@ trait RenderTrait
     private function renderSolutionCli(): void
     {
         if (isset($this->info_error_exception['type_exception'])) {
-            $reflection = new \ReflectionClass($this->info_error_exception['namespace_exception']);
+            $reflection = new \ReflectionClass(
+                $this->info_error_exception['namespace_exception']
+            );
+
             $exception = $reflection->newInstanceWithoutConstructor();
 
             if (method_exists($exception, "getSolution")) {
@@ -311,7 +333,8 @@ trait RenderTrait
                 }
 
                 if (!empty($this->solution->getDocs()) || $this->solution->getDocs() != "") {
-                    CliMessage::info("  See more in: " . $solution->getDocs()["link"])->print()->break(true);
+                    CliMessage::info("  See more in: " . $solution->getDocs()["link"])
+                        ->print()->break(true);
                 }
             }
         }
@@ -325,11 +348,22 @@ trait RenderTrait
     public function consoleJS(): void
     {
         if ($this->type == "error") {
-            $message = str_replace(["'", '"'], "", $this->info_error_exception['message']);
+            $message = str_replace(
+                ["'", '"'],
+                "",
+                $this->info_error_exception['message']
+            );
+
             echo "console.error('[" . $this->getError() . "] " . $message . "')" . PHP_EOL;
         } elseif ($this->type == "exception") {
-            $message = str_replace(["'", '"'], "", $this->info_error_exception['message']);
-            echo "console.error('[" . $this->info_error_exception['type_exception'] . "] " . $message . "')" . PHP_EOL;
+            $message = str_replace(
+                ["'", '"'],
+                "",
+                $this->info_error_exception['message']
+            );
+
+            echo "console.error('[" . $this->info_error_exception['type_exception'] .
+                "] " . $message . "')" . PHP_EOL;
         }
 
         echo 'var user = {

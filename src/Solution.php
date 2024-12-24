@@ -52,7 +52,8 @@ class Solution
 
     /**
      * If a documentation exists, this method will display a button for a documentation.
-     * By default, the name of the button will be `Read More`, but you can change the name by changing the second parameter of the method
+     * By default, the name of the button will be `Read More`, but you can change the name 
+     * by changing the second parameter of the method
      * 
      * @param string $docs_link
      * @param string $button_name

@@ -85,7 +85,12 @@ class CliMessage
     public static function success(mixed $message, bool $space = false): static
     {
         self::generateColors();
-        self::$message = self::prepareMessage($message, self::$color_success, $space);
+        self::$message = self::prepareMessage(
+            $message,
+            self::$color_success,
+            $space
+        );
+
         return new static;
     }
 
@@ -100,7 +105,12 @@ class CliMessage
     public static function info(mixed $message, bool $space = false): static
     {
         self::generateColors();
-        self::$message = self::prepareMessage($message, self::$color_info, $space);
+        self::$message = self::prepareMessage(
+            $message,
+            self::$color_info,
+            $space
+        );
+
         return new static;
     }
 
@@ -115,7 +125,12 @@ class CliMessage
     public static function warning(mixed $message, bool $space = false): static
     {
         self::generateColors();
-        self::$message = self::prepareMessage($message, self::$color_warning, $space);
+        self::$message = self::prepareMessage(
+            $message,
+            self::$color_warning,
+            $space
+        );
+
         return new static;
     }
 
@@ -130,7 +145,12 @@ class CliMessage
     public static function lineNumbers(mixed $message, bool $space = false): static
     {
         self::generateColors();
-        self::$message = self::prepareMessage($message, self::$color_gray, $space);
+        self::$message = self::prepareMessage(
+            $message,
+            self::$color_gray,
+            $space
+        );
+
         return new static;
     }
 
@@ -145,7 +165,12 @@ class CliMessage
     public static function error(mixed $message, bool $space = false): static
     {
         self::generateColors();
-        self::$message = self::prepareMessage($message, self::$color_error, $space);
+        self::$message = self::prepareMessage(
+            $message,
+            self::$color_error,
+            $space
+        );
+
         return new static;
     }
 
@@ -160,7 +185,12 @@ class CliMessage
     public static function errorLine(mixed $message, bool $space = false): static
     {
         self::generateColors();
-        self::$message = self::prepareMessage($message, self::$color_error_line, $space);
+        self::$message = self::prepareMessage(
+            $message,
+            self::$color_error_line,
+            $space
+        );
+
         return new static;
     }
 
@@ -175,7 +205,12 @@ class CliMessage
     public static function line(mixed $message, bool $space = false): static
     {
         self::generateColors();
-        self::$message = self::prepareMessage($message, self::$color_line, $space);
+        self::$message = self::prepareMessage(
+            $message,
+            self::$color_line,
+            $space
+        );
+
         return new static;
     }
 
@@ -191,12 +226,9 @@ class CliMessage
     private static function prepareMessage(mixed $message, mixed $color, bool $space = false): string
     {
         $space_line = "";
-
-        if ($space == true) {
-            $space_line = "  ";
-        }
-
+        if ($space == true) $space_line = "  ";
         $message = $space_line . $color . $message . self::$color_reset;
+
         return $message;
     }
 
@@ -262,11 +294,15 @@ class CliMessage
     public static function colorIsSupported(): bool
     {
         if (DIRECTORY_SEPARATOR === '\\') {
-            if (function_exists('sapi_windows_vt100_support') && @sapi_windows_vt100_support(STDOUT)) {
+            if (
+                function_exists('sapi_windows_vt100_support') &&
+                @sapi_windows_vt100_support(STDOUT)
+            ) {
                 return true;
             } elseif (getenv('ANSICON') !== false || getenv('ConEmuANSI') === 'ON') {
                 return true;
             }
+
             return false;
         } else {
             return function_exists('posix_isatty') && @posix_isatty(STDOUT);
@@ -279,7 +315,8 @@ class CliMessage
     public static function are256ColorsSupported(): bool
     {
         if (DIRECTORY_SEPARATOR === '\\') {
-            return function_exists('sapi_windows_vt100_support') && @sapi_windows_vt100_support(STDOUT);
+            return function_exists('sapi_windows_vt100_support') &&
+                @sapi_windows_vt100_support(STDOUT);
         } else {
             return str_starts_with(getenv('TERM'), '256color');
         }

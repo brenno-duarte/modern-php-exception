@@ -82,7 +82,6 @@ class Markup implements ArrayAccess
 
     /**
      * Alias for getParent()
-     * @return Markup
      */
     public function __invoke()
     {
