@@ -1,5 +1,24 @@
 # Released Notes
 
+## v3.4.0 - (2025-03-30)
+
+### Added
+
+- Added support for highlighting message in CLI and HTML mode
+- Added colors in `get_debug_backtrace` function
+- Added no cache in HTML mode
+
+### Changed
+
+- Changed `isCli` method in ``HelpersTrait` to public and static
+- Changed colors in trace in CLI
+
+### Removed
+
+- Removed `isCli` function
+
+--------------------------------------------------------------------------
+
 ## v3.3.7 - (2024-12-24)
 
 ### Removed

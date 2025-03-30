@@ -4,7 +4,7 @@ namespace ModernPHPException\Trait;
 
 trait HelpersTrait
 {
-    private function isCli(): bool
+    public static function isCli(): bool
     {
         if (defined('STDIN')) return true;
         if (php_sapi_name() === "cli") return true;
@@ -54,6 +54,6 @@ trait HelpersTrait
 
     public function htmlSpecialCharsIgnoreCli(string $string): string
     {
-        return (!$this->isCli()) ? htmlspecialchars($string) : $string;
+        return (!self::isCli()) ? htmlspecialchars($string) : $string;
     }
 }

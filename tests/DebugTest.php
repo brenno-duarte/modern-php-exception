@@ -16,13 +16,11 @@ class DebugTestClass
     public $pubArrayEmpty = array();
     public $pubObject;
     public $pubObject2;
-    public $pubRes;
 
     public function __construct()
     {
         $this->pubObject = new DateTime();
         $this->pubObject2 = new Exception();
-        $this->pubRes = mysqli_connect();
     }
 }
 
@@ -37,17 +35,19 @@ $array_keys = array('key1' => 'aString', 'key2' => $longstr, 'key3' => 10, 'key4
 $array_empty = array();
 $class = new DebugTestClass();
 $obj = new DateTime();
-$res = mysqli_connect();
 
-dump($null);
-dump($str);
-dump($longstr);
-dump($bool);
-dump($int);
-dump($float);
-dump($array);
-dump($array_keys);
-dump($array_empty);
-dump($class);
-dump($obj);
-dump($res);
+/* dump_die($null);
+var_dump_debug($str);
+var_dump_debug($longstr);
+var_dump_debug($bool);
+var_dump_debug($int);
+var_dump_debug($float);
+var_dump_debug($array);
+var_dump_debug($array_keys);
+var_dump_debug($array_empty);
+var_dump_debug($class);
+var_dump_debug($obj); */
+
+/* echo closure_dump(function () {
+   return "Closure test!"; 
+}); */

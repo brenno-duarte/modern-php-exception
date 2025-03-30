@@ -15,7 +15,7 @@
         "php": "^8.3",
         "ext-mbstring": "*",
         "ext-pdo": "*",
-        "symfony/yaml": "^7.0"
+        "symfony/yaml": "^7.2"
     },
     "autoload": {
         "psr-4": {

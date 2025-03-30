@@ -31,6 +31,17 @@ $exc->start();
 
 From there, all errors and exceptions that are triggered will be displayed through the ModernPHPException component.
 
+If you want to highlight a part of the message during an exception, you can use `{` and `}`.
+
+```php
+use ModernPHPException\ModernPHPException;
+
+$exc = new ModernPHPException();
+$exc->start();
+
+throw new CustomException("Highlighting {this part}");
+```
+
 You can change the return, title and theme settings in the class constructor as shown in the items below.
 
 ## YAML configuration
@@ -160,19 +171,19 @@ Modern PHP Exceptions has some functions to help you debug your code. The availa
 - An easy function to pull all details of the debug backtrace.
 
 ```php
-get_debug_backtrace()
+get_debug_backtrace();
 ```
 
 - Function to returns the value of `var_dump()` instead of outputting it.
 
 ```php
-echo var_dump_buffer()
+echo var_dump_buffer();
 ```
 
 - PHP function to replace var_dump(), print_r() based on the XDebug style.
 
 ```php
-var_dump_debug()
+var_dump_debug();
 ```
 
 In terminal, you can simple hide or show some object attribute using a Doc block flag:
@@ -200,16 +211,16 @@ Class Foo extends Bar {
 }
 ```
 
-- Dump PHP value and die script. This function use `var_dump_debug`.
+- Dump PHP value and die script.
 
 ```php
-dump_die()
+dump_die();
 ```
 
 - View a PHP Closure's Source
 
 ```php
-closure_dump()
+echo closure_dump();
 ```
 
 ## Logger

@@ -61,9 +61,9 @@ class CliMessage
 
     /**
      * Print a single message on CLI
-     * 
+     *
      * @param string $message
-     * 
+     *
      * @return self
      */
     public function printMessage(mixed $message): self
@@ -76,11 +76,11 @@ class CliMessage
 
     /**
      * Create a success message
-     * 
+     *
      * @param mixed $message
      * @param bool $space
-     * 
-     * @return static 
+     *
+     * @return static
      */
     public static function success(mixed $message, bool $space = false): static
     {
@@ -99,8 +99,8 @@ class CliMessage
      *
      * @param mixed $message
      * @param bool $space
-     * 
-     * @return static 
+     *
+     * @return static
      */
     public static function info(mixed $message, bool $space = false): static
     {
@@ -119,8 +119,8 @@ class CliMessage
      *
      * @param mixed $message
      * @param bool $space
-     * 
-     * @return static 
+     *
+     * @return static
      */
     public static function warning(mixed $message, bool $space = false): static
     {
@@ -139,8 +139,8 @@ class CliMessage
      *
      * @param mixed $message
      * @param bool $space
-     * 
-     * @return static 
+     *
+     * @return static
      */
     public static function lineNumbers(mixed $message, bool $space = false): static
     {
@@ -159,8 +159,8 @@ class CliMessage
      *
      * @param mixed $message
      * @param bool $space
-     * 
-     * @return static 
+     *
+     * @return static
      */
     public static function error(mixed $message, bool $space = false): static
     {
@@ -179,8 +179,8 @@ class CliMessage
      *
      * @param mixed $message
      * @param bool $space
-     * 
-     * @return static 
+     *
+     * @return static
      */
     public static function errorLine(mixed $message, bool $space = false): static
     {
@@ -196,11 +196,11 @@ class CliMessage
 
     /**
      * Create a normal message
-     * 
+     *
      * @param mixed $message
      * @param bool $space
-     * 
-     * @return static 
+     *
+     * @return static
      */
     public static function line(mixed $message, bool $space = false): static
     {
@@ -220,21 +220,30 @@ class CliMessage
      * @param mixed $message
      * @param mixed $color
      * @param bool $space
-     * 
+     *
      * @return string
      */
     private static function prepareMessage(mixed $message, mixed $color, bool $space = false): string
     {
-        $space_line = "";
-        if ($space == true) $space_line = "  ";
-        $message = $space_line . $color . $message . self::$color_reset;
+        $space_line = '';
 
-        return $message;
+        if ($space == true) $space_line = '  ';
+
+        if (self::colorIsSupported() || self::are256ColorsSupported()) {
+            if (
+                str_contains($message, '{') && 
+                str_contains($message, '}')
+            ) {
+                $message = str_replace(['{', '}'], ["\e[4m", "\e[24m"], $message);
+            }
+        }
+
+        return $space_line . $color . $message . self::$color_reset;
     }
 
     /**
      * Write message on CLI
-     * 
+     *
      * @return self
      */
     public function print(): self
@@ -245,9 +254,9 @@ class CliMessage
 
     /**
      * Break a line
-     * 
+     *
      * @param bool $repeat Break another line
-     * 
+     *
      * @return self
      */
     public function break(bool $repeat = false): self
@@ -263,7 +272,7 @@ class CliMessage
 
     /**
      * Call `exit()` function
-     * 
+     *
      * @return never
      */
     public function exit(): never
@@ -278,17 +287,19 @@ class CliMessage
     {
         if (self::colorIsSupported() || self::are256ColorsSupported()) {
             self::$color_reset = "\e[0m";
-            self::$color_success = "\033[92m";
-            self::$color_info = "\033[38;5;39m";
-            self::$color_warning = "\033[93m";
-            self::$color_error = "\033[41m";
-            self::$color_error_line = "\033[1;31m";
-            self::$color_line = "\033[97m";
-            self::$color_gray = "\033[0;90m";
+            self::$color_success = "\e[92m";
+            self::$color_info = "\e[38;5;39m";
+            self::$color_warning = "\e[93m";
+            self::$color_error = "\e[41m";
+            self::$color_error_line = "\e[1;31m";
+            self::$color_line = "\e[97m";
+            self::$color_gray = "\e[0;90m";
         }
     }
 
     /**
+     * Check if colors are supported in terminal
+     *
      * @return bool
      */
     public static function colorIsSupported(): bool
@@ -310,6 +321,8 @@ class CliMessage
     }
 
     /**
+     * Check if colors are supported in terminal
+     *
      * @return bool
      */
     public static function are256ColorsSupported(): bool

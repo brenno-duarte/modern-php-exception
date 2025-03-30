@@ -9,7 +9,7 @@ class ModernPHPException
 {
     use HelpersTrait, HandlerAssetsTrait, RenderTrait;
 
-    public const VERSION = "3.3.7";
+    public const VERSION = "3.4.0";
 
     /**
      * @var Bench
@@ -291,6 +291,15 @@ class ModernPHPException
      */
     protected function getTitle(): string
     {
+        if (!self::isCli()) {
+            if (
+                str_contains($this->title, '{') && 
+                str_contains($this->title, '}')
+            ) {
+                $this->title = str_replace(['{', '}'], '', $this->title);
+            }
+        }
+
         return $this->title;
     }
 

@@ -19,7 +19,22 @@
                         </div>
                     </div>
 
-                    <p class="card-text fw-semibold txt-dark-theme"><?= $this->info_error_exception['message'] ?? "" ?></p>
+                    <p class="card-text fw-semibold txt-dark-theme">
+                        <?php 
+
+                        $message = $this->info_error_exception['message'] ?? "";
+                        
+                        if (
+                            str_contains($message, '{') && 
+                            str_contains($message, '}')
+                        ) {
+                            $message = str_replace(['{', '}'], ['<i>', '</i>'], $message);
+                        }
+
+                        echo $message;
+
+                        ?>
+                    </p>
                 </div>
             </div>
         </div>

@@ -31,7 +31,8 @@ UserTest::staticCall();
 };
 
 try {
-    echo dividir(5,0);
+    echo dividir(5,3);
+    echo get_debug_backtrace();
 } catch (\Exception $e) {
     $exc->exceptionHandler($e);
     //echo $e->getMessage();

@@ -200,7 +200,7 @@ trait RenderTrait
      */
     private function renderCli(): void
     {
-        if ($this->isCli() === true) {
+        if (self::isCli() === true) {
             echo PHP_EOL;
 
             (isset($this->info_error_exception['type_exception'])) ?
@@ -296,10 +296,10 @@ trait RenderTrait
 
         foreach ($result as $key => $value) {
             if ($key == $line) {
-                CliMessage::errorLine("↪︎   " . $key . "| " . $value)->print()->break();
+                CliMessage::error("↪︎   " . $key . "| " . $value)->print()->break();
             } else {
                 CliMessage::lineNumbers("   " . $key . "| ")->print();
-                CliMessage::info($value)->print()->break();
+                echo "\e[2m" . $value . "\e[22m" . PHP_EOL;
             }
         }
 

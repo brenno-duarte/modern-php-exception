@@ -1,6 +1,7 @@
 <?php
 
 use ModernPHPException\Console\CliMessage;
+use ModernPHPException\ModernPHPException;
 use ModernPHPException\Resources\{BrowserDump, CliDump};
 
 if (!function_exists('get_debug_backtrace')) {
@@ -13,13 +14,13 @@ if (!function_exists('get_debug_backtrace')) {
     {
         $dbgTrace = debug_backtrace();
         $dbgMsg = '';
-        $dbgMsg .= "\nDebug backtrace begin:\n\n";
+        $dbgMsg .= "\n\e[38;5;39mDebug backtrace begin:\e[0m\n\n";
 
         foreach ($dbgTrace as $dbgIndex => $dbgInfo) {
-            $dbgMsg .= "    at $dbgIndex  " . $dbgInfo['file'] . " (line " . $dbgInfo['line'] . ") -> " . $dbgInfo['function'] . "(" . join(",", $dbgInfo['args']) . ")\n";
+            $dbgMsg .= "    at $dbgIndex " . $dbgInfo['file'] . " (line " . $dbgInfo['line'] . ") -> \e[92m" . $dbgInfo['function'] . "(" . join(",", $dbgInfo['args']) . ")\e[0m\n";
         }
 
-        $dbgMsg .= "\nDebug backtrace end\n";
+        $dbgMsg .= "\n\e[38;5;39mDebug backtrace end\e[0m\n";
         return $dbgMsg;
     }
 }
@@ -52,8 +53,8 @@ if (!function_exists('var_dump_debug')) {
      */
     function var_dump_debug(...$values): void
     {
-        foreach ($values[0] as $value) {
-            if (isCli() == true) {
+        foreach ($values as $value) {
+            if (ModernPHPException::isCli() == true) {
                 CliDump::set('string', ['0000FF', 'light_blue']);
                 new CliDump($value);
 
@@ -73,11 +74,22 @@ if (!function_exists('dump_die')) {
      *
      * @param mixed $value
      * 
-     * @return void
+     * @return never
      */
-    function dump_die(...$values): void
+    function dump_die(...$values): never
     {
-        var_dump_debug($values);
+        foreach ($values as $value) {
+            if (ModernPHPException::isCli() == true) {
+                CliDump::set('string', ['0000FF', 'light_blue']);
+                new CliDump($value);
+
+                if (!CliMessage::colorIsSupported() || !CliMessage::are256ColorsSupported())
+                    CliDump::safe($value);
+            } else {
+                $dump = new BrowserDump();
+                echo $dump->dump($value);
+            }
+        }
         exit;
     }
 }
@@ -140,25 +152,5 @@ if (!function_exists('getClass')) {
         // This line triggers autoloader!
         if (!class_exists($type->getName())) return null;
         return new \ReflectionClass($type->getName());
-    }
-}
-
-if (!function_exists('isCli')) {
-    function isCli(): bool
-    {
-        if (defined('STDIN')) return true;
-        if (php_sapi_name() === "cli") return true;
-        if (PHP_SAPI === 'cli') return true;
-        if (stristr(PHP_SAPI, 'cgi') and getenv('TERM')) return true;
-
-        if (
-            empty($_SERVER['REMOTE_ADDR']) and
-            !isset($_SERVER['HTTP_USER_AGENT']) and
-            count ((array)$_SERVER["argv"])
-        ) {
-            return true;
-        }
-
-        return false;
     }
 }

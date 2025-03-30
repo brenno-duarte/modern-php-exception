@@ -20,12 +20,11 @@ class UserTest
 
     public static function staticCall()
     {
-        throw new CustomException("Error Processing Request");
+        throw new CustomException("Error {Processing} Request");
     }
 
     public function triggerTest()
     {
-        //echo $a;
         trigger_error("This is a trigger_error test", E_USER_ERROR);
     }
 }
