@@ -222,13 +222,16 @@ class BrowserDump
         $array = (array) $var;
 
         foreach ($array as $key => $value) {
-            $explKey = explode("\0", $key);
-            if (count($explKey) == 1) {
-                $props[self::SEP_OBJECT.'public'.self::SEP_OBJECT.$key] = $value;
-            } elseif ($explKey[1] == '*') {
-                $props[self::SEP_OBJECT.'protected'.self::SEP_OBJECT.$explKey[2]] = $value;
-            } else {
-                $props[self::SEP_OBJECT.'protected'.self::SEP_OBJECT.$explKey[2]] = $value;
+            if (is_string($key)) {
+                $explKey = explode("\0", $key);
+                
+                if (count($explKey) == 1) {
+                    $props[self::SEP_OBJECT.'public'.self::SEP_OBJECT.$key] = $value;
+                } elseif ($explKey[1] == '*') {
+                    $props[self::SEP_OBJECT.'protected'.self::SEP_OBJECT.$explKey[2]] = $value;
+                } else {
+                    $props[self::SEP_OBJECT.'protected'.self::SEP_OBJECT.$explKey[2]] = $value;
+                }
             }
         }
 

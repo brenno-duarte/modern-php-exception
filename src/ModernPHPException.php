@@ -9,7 +9,7 @@ class ModernPHPException
 {
     use HelpersTrait, HandlerAssetsTrait, RenderTrait;
 
-    public const VERSION = "3.4.0";
+    public const VERSION = "3.4.1";
 
     /**
      * @var Bench
@@ -204,9 +204,15 @@ class ModernPHPException
     private function shutdown(): void
     {
         if (isset(self::$config_yaml)) {
-            if (isset(self::$config_yaml['enable_logs']) && self::$config_yaml['enable_logs'] == true) {
+            if (
+                isset(self::$config_yaml['enable_logs']) && 
+                self::$config_yaml['enable_logs'] == true
+            ) {
 
-                if (isset(self::$config_yaml['dir_logs']) && self::$config_yaml['dir_logs'] != "") {
+                if (
+                    isset(self::$config_yaml['dir_logs']) && 
+                    self::$config_yaml['dir_logs'] != ""
+                ) {
                     Debug::dirLogger(self::$config_yaml['dir_logs']);
                 }
 

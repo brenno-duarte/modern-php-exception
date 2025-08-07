@@ -20,6 +20,11 @@ $exc->start();
 /* trigger_error("Test trigger", E_USER_DEPRECATED);
 echo "After trigger function"; */
 
+$handler = set_exception_handler(null);
+restore_exception_handler();
+
+dump_die($handler);
+
 UserTest::staticCall();
 
 /* function dividir($x, $y) {

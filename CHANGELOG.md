@@ -1,5 +1,13 @@
 # Released Notes
 
+## v3.4.1 - (2025-08-07)
+
+### Fixed
+
+- Fixed `BrowserDump` class
+
+--------------------------------------------------------------------------
+
 ## v3.4.0 - (2025-03-30)
 
 ### Added
@@ -10,7 +18,7 @@
 
 ### Changed
 
-- Changed `isCli` method in ``HelpersTrait` to public and static
+- Changed `isCli` method in `HelpersTrait` to public and static
 - Changed colors in trace in CLI
 
 ### Removed
